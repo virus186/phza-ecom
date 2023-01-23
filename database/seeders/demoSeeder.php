@@ -40,7 +40,7 @@ class demoSeeder extends BaseSeeder
                 'role_id' => \App\Models\Role::ADMIN,
                 'nice_name' => 'Admin',
                 'name' => 'Admin User',
-                'email' => 'admin@phza24.com',
+                'email' => 'admin@demo.com',
                 'password' => bcrypt('123456'),
                 'active' => 1,
             ])

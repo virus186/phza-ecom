@@ -2,15 +2,26 @@
 
 namespace App\Http\Controllers\Api;
 
+// use App\Shop;
+// use App\Product;
+// use App\Category;
 use App\Models\Inventory;
 use App\Helpers\ListHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\DealOfTheDayResource;
 use App\Http\Resources\ImageResource;
 use App\Http\Resources\ItemResource;
+// use App\Http\Resources\ItemLightResource;
 use App\Http\Resources\ListingResource;
+// use App\Http\Resources\AttributeResource;
+// use App\Http\Resources\ShopListingResource;
+// use App\Http\Resources\ManufacturerResource;
+// use App\Http\Resources\ShippingOptionResource;
+// use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+
+// use Carbon\Carbon;
 
 class DealController extends Controller
 {
@@ -22,7 +33,7 @@ class DealController extends Controller
      */
     public function flashDeals()
     {
-        if (is_incevio_package_loaded('flashdeal')) {
+        if (is_phza24_package_loaded('flashdeal')) {
             $flashdeals = Cache::remember('flashdeals', config('cache.remember.deals', 0), function () {
                 return get_flash_deals();
             });

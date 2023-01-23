@@ -3,7 +3,6 @@
 namespace App\Http\Requests\Validations;
 
 use App\Http\Requests\Request;
-use Illuminate\Support\Facades\Auth;
 
 class UpdatePhotoRequest extends Request
 {
@@ -14,7 +13,7 @@ class UpdatePhotoRequest extends Request
      */
     public function authorize()
     {
-        return Auth::check() || Auth::guard('vendor_api')->check();
+        return \Auth::check();
     }
 
     /**
@@ -25,7 +24,7 @@ class UpdatePhotoRequest extends Request
     public function rules()
     {
         return [
-            'image' => 'required|mimes:jpg,jpeg,png',
+           'image' => 'required|mimes:jpg,jpeg,png',
         ];
     }
 

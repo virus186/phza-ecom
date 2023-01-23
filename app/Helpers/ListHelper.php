@@ -2,39 +2,36 @@
 
 namespace App\Helpers;
 
-use App\Models\SubscriptionPlan;
-use Carbon\Carbon;
+use App\Models\Manufacturer;
+use App\Models\Attribute;
 use App\Models\Blog;
+use App\Models\Category;
+use App\Models\CategoryGroup;
+use App\Models\CategorySubGroup;
+use App\Models\Customer;
+use App\Models\Dispute;
+use App\Models\Inventory;
+use App\Models\Language;
+use App\Models\Message;
+use App\Models\Module;
+use App\Models\Order;
 use App\Models\Page;
+use App\Models\PaymentMethod;
+use App\Models\Permission;
+use App\Models\Product;
+use App\Models\Refund;
 use App\Models\Role;
 use App\Models\Shop;
-use App\Models\User;
-use App\Models\Order;
-use App\Models\Module;
-use App\Models\Refund;
+use App\Models\Supplier;
 use App\Models\System;
 use App\Models\Ticket;
-use App\Models\Dispute;
-use App\Models\Message;
-use App\Models\Product;
-use App\Models\Category;
-use App\Models\Customer;
-use App\Models\Language;
-use App\Models\Supplier;
-use App\Models\Attribute;
+use App\Models\User;
 use App\Models\BaseModel;
-use App\Models\Inventory;
-use App\Models\Permission;
-use App\Models\Manufacturer;
-use App\Models\CategoryGroup;
-use App\Models\PaymentMethod;
-use App\Models\CategorySubGroup;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Database\Eloquent\Collection as EluquentCollection;
 
 /**
  * This is a helper class to process,upload and remove images from different models
@@ -85,15 +82,6 @@ class ListHelper
             Order::STATUS_AWAITING_DELIVERY     =>  trans('app.statuses.awaiting_delivery'),
             Order::STATUS_DELIVERED             =>  trans('app.statuses.delivered'),
             Order::STATUS_RETURNED              =>  trans('app.statuses.refunded'),
-        ];
-    }
-
-    public static function item_conditions()
-    {
-        return [
-            'New' => trans('app.new'),
-            'Used' => trans('app.used'),
-            'Refurbished' => trans('app.refurbished')
         ];
     }
 
@@ -394,9 +382,7 @@ class ListHelper
      */
     public static function categories()
     {
-        return Cache::rememberForever('category_list_for_form', function () {
-            return DB::table('categories')->whereNull('deleted_at')->pluck('name', 'id');
-        });
+        return Category::orderBy('name', 'asc')->pluck('name', 'id');
     }
 
     /**
@@ -604,7 +590,7 @@ class ListHelper
      */
     public static function top_customers($limit = 5)
     {
-        incevioAutoloadHelpers(getMysqliConnection());
+        phza24AutoloadHelpers(getMysqliConnection());
         return Customer::select('id', 'nice_name', 'name', 'email')
             ->with('image:path,imageable_id,imageable_type')
             ->whereHas('orders', function ($query) {
@@ -721,9 +707,7 @@ class ListHelper
      */
     public static function suppliers()
     {
-        $shop = $shop ?? Auth::user()->merchantId(); //Get current user's shop_id
-
-        return DB::table('suppliers')->where('shop_id', $shop)
+        return DB::table('suppliers')->where('shop_id', Auth::user()->merchantId())
             ->where('deleted_at', null)
             ->where('active', BaseModel::ACTIVE)
             ->orderBy('name', 'asc')->pluck('name', 'id');
@@ -751,12 +735,10 @@ class ListHelper
      *
      * @return array
      */
-    public static function warehouses($shop_id = null)
+    public static function warehouses()
     {
-        $shop_id = $shop_id ?? Auth::user()->merchantId();
-
         return DB::table('warehouses')
-            ->where('shop_id', $shop_id)
+            ->where('shop_id', Auth::user()->merchantId())
             ->where('deleted_at', null)
             ->where('active', BaseModel::ACTIVE)
             ->orderBy('name', 'asc')->pluck('name', 'id');
@@ -809,7 +791,9 @@ class ListHelper
      */
     public static function inventories($shop = null)
     {
-        $shop = $shop ?? Auth::user()->merchantId();
+        if (!$shop) {
+            $shop = Auth::user()->merchantId();
+        }
 
         return DB::table('inventories')->where('shop_id', $shop)->where('deleted_at', null)
             ->groupBy('product_id', 'shop_id')->orderBy('title', 'asc')->pluck('title', 'id');
@@ -817,16 +801,10 @@ class ListHelper
 
     /**
      * Get top listing_items list for merchnat.
-     *
-     * @param [type] $shop
-     * @param integer $count between 5 and 100
-     * 
      * @return array
      */
     public static function top_listing_items($shop = null, $count = 5)
     {
-        $count = $count < 5 ? 5 : ($count > 100 ? 100 : $count);
-
         if (Auth::user()->isFromPlatform() && $shop) {
             $items = Inventory::where('inventories.shop_id', $shop);
         } else {
@@ -837,10 +815,7 @@ class ListHelper
             ->select(
                 'inventories.id',
                 'inventories.shop_id',
-                'inventories.title',
-                'inventories.stock_quantity',
                 'inventories.sku',
-                'inventories.active',
                 'products.name',
                 'inventories.product_id',
                 DB::raw('SUM(order_items.quantity) as sold_qtt'),
@@ -1039,7 +1014,7 @@ class ListHelper
 
     /**
      * Get variants of product of given item
-     * @return collecction
+     * @return array
      */
     public static function variants_of_product($item, $shop = null)
     {
@@ -1059,7 +1034,7 @@ class ListHelper
 
     /**
      * Get related products of given item
-     * @return collection
+     * @return array
      */
     public static function related_products($item, $limit = 10)
     {
@@ -1093,7 +1068,7 @@ class ListHelper
 
     /**
      * Get linked items of given item
-     * @return collection
+     * @return array
      */
     public static function linked_items($item)
     {
@@ -1181,15 +1156,9 @@ class ListHelper
      *
      * @return array
      */
-    public static function latest_orders($limit = 10)
+    public static function latest_orders()
     {
-        if ($limit < 5) {
-            $limit = 5;
-        } elseif ($limit > 100) {
-            $limit = 100;
-        }
-
-        return Order::mine()->with('customer')->latest()->limit($limit)->get();
+        return Order::mine()->with('customer')->latest()->limit(10)->get();
     }
 
     /**
@@ -1421,30 +1390,6 @@ class ListHelper
     }
 
     /**
-     * Return the list of trending categories in array
-     *
-     * @return array
-     */
-    public static function trending_categories()
-    {
-        if ($trending_ids = get_from_option_table('trending_categories', [])) {
-            return Category::whereIn('id', $trending_ids)->get()->pluck('name', 'id')->toArray();
-        }
-
-        return [];
-    }
-
-    /**
-     * Return the deal of the day item
-     *
-     * @return Inventory | null
-     */
-    public static function deal_of_the_day()
-    {
-        return Inventory::where('id', get_from_option_table('deal_of_the_day'))->first();
-    }
-
-    /**
      * Get featured_categories list for theme.
      */
     // public static function hot_categories()
@@ -1537,108 +1482,5 @@ class ListHelper
         }
 
         return $attrs;
-    }
-
-    /**
-     * Return attribute list for the given product
-     *
-     * @param Product $product
-     * @return collection
-     */
-    public static function product_attributes(Product $product)
-    {
-        $attrs = $product->categories->pluck('attrsList');
-
-        return self::get_attr_list_with_values($attrs->flatten()->unique('id'));
-    }
-
-    /**
-     * Return attribute list for the given category
-     *
-     * @param Category $category
-     * @return collection
-     */
-    public static function category_attributes(Category $category)
-    {
-        return self::get_attr_list_with_values($category->attrsList);
-    }
-
-    /**
-     * prepare the list of attribute and include all the calues of the attributes
-     *
-     * @param mix $attrs
-     * @return array
-     */
-    // Required PHP 8.1 to support multiple type cast
-    // public static function get_attr_list_with_values(Collection|EluquentCollection $attrs)
-    public static function get_attr_list_with_values($attrs)
-    {
-        $result = [];
-
-        if ($ids = $attrs->pluck('id')) {
-            $values = DB::table('attribute_values')
-                ->select('id', 'value', 'color', 'attribute_id', 'order')
-                ->whereIn('attribute_id', $ids)
-                ->orderBy('order')->get();
-
-            foreach ($attrs as $attr) {
-                $result[$attr->id] = [
-                    'attribute' => $attr->name,
-                    'values' => $values->where('attribute_id', $attr->id)->pluck('value', 'id')
-                ];
-            }
-        }
-
-        return $result;
-    }
-
-    /**
-     * Return formated weekdays
-     *
-     * @return array
-     */
-    public static function business_days()
-    {
-        return [
-            'Sat' => 'Saturday',
-            'Sun' => 'Sunday',
-            'Mon' => 'Monday',
-            'Tues' => 'Tuesday',
-            'Wed' => 'Wednesday',
-            'Thurs' => 'Thursday',
-            'Fri' => 'Friday'
-        ];
-    }
-
-    /**
-     * Subscription plans list array
-     *
-     * @return array
-     */
-    public static function subscriptionPlans()
-    {
-        return DB::table('subscription_plans')->orderBy('order', 'asc')
-            ->pluck('plan_id', 'name')->toArray();
-    }
-
-    /**
-     * List of the navigation items
-     *
-     * @return array
-     */
-    public static function navigations()
-    {
-        $navigations = [
-            "Categories" => "Categories",
-            "Brands" => "Brands",
-            "Vendors" => "Vendors",
-            "Sale" => "Sale",
-        ];
-
-        if (is_incevio_package_loaded('eventy')) {
-            $navigations["Events"] = "Events";
-        }
-
-        return $navigations;
     }
 }

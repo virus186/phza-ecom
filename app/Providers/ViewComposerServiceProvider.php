@@ -16,7 +16,6 @@ use App\Helpers\ListHelper;
 use App\Helpers\Statistics;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -63,7 +62,7 @@ class ViewComposerServiceProvider extends ServiceProvider
 
         $this->composeCategorySubGroupForm();
 
-        //        $this->composeChatPage();
+//        $this->composeChatPage();
 
         $this->composeConfigPage();
 
@@ -85,7 +84,11 @@ class ViewComposerServiceProvider extends ServiceProvider
 
         $this->composeFaqForm();
 
+        $this->composeFeaturedCategoriesForm();
+
         $this->composeInventoryForm();
+
+       // $this->composeInventoryVariantForm();
 
         $this->composeManufacturerForm();
 
@@ -367,17 +370,11 @@ class ViewComposerServiceProvider extends ServiceProvider
                 $view->with('featured_brands', get_featured_brands());
 
                 $view->with('featured_categories', ListHelper::featured_categories());
-
-                $view->with('trending_categories', ListHelper::trending_categories());
-
-                $view->with('deal_of_the_day', ListHelper::deal_of_the_day());
-
-                $view->with('main_nav_categories', get_main_nav_categories());
-
-                $view->with('hidden_menu_items', hidden_menu_items());
             }
         );
     }
+
+
 
     /**
      * compose partial view of inventory and inventory variant form
@@ -389,7 +386,7 @@ class ViewComposerServiceProvider extends ServiceProvider
             ['admin.inventory._form', 'admin.inventory._formWithVariant'],
 
             function ($view) {
-                //                $view->with('packagings', ListHelper::packagings());
+//                $view->with('packagings', ListHelper::packagings());
 
                 $view->with('warehouses', ListHelper::warehouses());
 
@@ -525,14 +522,13 @@ class ViewComposerServiceProvider extends ServiceProvider
             'admin.account._billing',
 
             function ($view) {
-                $view->with('plans', DB::table('subscription_plans')
+                $view->with('plans', \DB::table('subscription_plans')
                     ->where('deleted_at', null)->orderBy('order', 'asc')
                     ->select('plan_id', 'name', 'cost')->get());
 
                 $view->with('current_plan', Auth::user()->getCurrentPlan());
 
-                $view->with('billable', Auth::user()->shop);
-                // $view->with('billable', Auth::user()->shop->hasPaymentMethods() ? Auth::user()->shop : null);
+                $view->with('billable', Auth::user()->shop->hasPaymentMethods() ? Auth::user()->shop : null);
 
                 if (SystemConfig::isPaymentConfigured('stripe')) {
                     $view->with('intent', Auth::user()->shop->createSetupIntent());
@@ -569,7 +565,6 @@ class ViewComposerServiceProvider extends ServiceProvider
 
             function ($view) {
                 $view->with('staffs', ListHelper::staffs());
-                $view->with('business_days', ListHelper::business_days());
             }
         );
     }
@@ -795,17 +790,17 @@ class ViewComposerServiceProvider extends ServiceProvider
         );
     }
 
-    //    private function composeChatPage()
-    //    {
-    //        View::composer(
-    //
-    //            'livechat::_left_nav',
-    //
-    //            function ($view) {
-    //                $view->with('chats', \Incevio\Package\LiveChat\Models\ChatConversation::mine()->get());
-    //            }
-    //        );
-    //    }
+//    private function composeChatPage()
+//    {
+//        View::composer(
+//
+//            'livechat::_left_nav',
+//
+//            function ($view) {
+//                $view->with('chats', \Incevio\Package\LiveChat\Models\ChatConversation::mine()->get());
+//            }
+//        );
+//    }
 
     /**
      * compose partial view of Config Page
@@ -823,7 +818,7 @@ class ViewComposerServiceProvider extends ServiceProvider
                 $view->with('suppliers', ListHelper::suppliers());
                 $view->with('warehouses', ListHelper::warehouses());
 
-                if (is_incevio_package_loaded('packaging')) {
+                if (is_phza24_package_loaded('packaging')) {
                     $view->with('packagings', ListHelper::packagings());
                 }
 
@@ -1204,6 +1199,22 @@ class ViewComposerServiceProvider extends ServiceProvider
 
             function ($view) {
                 $view->with('groups', ListHelper::banner_groups());
+            }
+        );
+    }
+
+    /**
+     * compose partial view of Theme Option
+     */
+    private function composeFeaturedCategoriesForm()
+    {
+        View::composer(
+
+            'admin.promotions._edit_featured_categories',
+
+            function ($view) {
+                $view->with('categories', ListHelper::categories());
+                $view->with('featured_categories', ListHelper::featured_categories()->toArray());
             }
         );
     }

@@ -48,7 +48,7 @@ class CreateInventoryWithVariantRequest extends Request
             'image.*' => 'mimes:jpg,jpeg,png,gif',
         ];
 
-        if (is_incevio_package_loaded('pharmacy')) {
+        if (is_phza24_package_loaded('pharmacy')) {
             $expiry_date_required = get_from_option_table('pharmacy_expiry_date_required', 1);
 
             $rules['expiry_date'] = (bool) $expiry_date_required ? 'required|date' : 'nullable|date';

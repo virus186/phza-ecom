@@ -36,7 +36,6 @@
         "league/glide-laravel": "^1.0",
         "nao-pon/flysystem-google-drive": "~1.1",
         "paypal/paypal-checkout-sdk": "^1.0",
-        "predis/predis": "^2.0",
         "pusher/pusher-php-server": "^7.0",
         "ramsey/uuid": "^4.2",
         "rap2hpoutre/fast-excel": "^3.0",
@@ -53,7 +52,6 @@
         "teamtnt/laravel-scout-tntsearch-driver": "^11.6",
         "torann/geoip": "^3.0",
         "tucker-eric/eloquentfilter": "^2.1",
-        "twilio/sdk": "^6.40",
         "yabacon/paystack-php": "^2.1",
         "yajra/laravel-datatables-oracle": "^9.18"
     },

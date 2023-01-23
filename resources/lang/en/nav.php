@@ -55,7 +55,7 @@ return [
     'payment_methods' => 'Payment methods',
     'payment_statuses' => 'Payment statuses',
     'email_templates' => 'Email templates',
-    'configurations' => 'Configurations',
+    'config' => 'Configuration',
     'general' => 'General config',
     'orders' => 'Orders',
     'carts' => 'Carts',
@@ -73,7 +73,6 @@ return [
     'visitors' => 'Visitors',
     'sales_report' => 'Sales',
     'system_settings' => 'System settings',
-    'shop_settings' => 'Shop settings',
     'subscription_plans' => 'Plans',
 
     // Version 1.4.0

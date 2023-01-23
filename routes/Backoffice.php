@@ -15,7 +15,7 @@ Route::middleware('auth')->name('admin.')->prefix('admin')->group(function () {
 
     // Markerplace Admin only routes
     Route::middleware(['admin'])->group(function () {
-        include 'incevio.php';
+        include 'phza24.php';
 
         Route::namespace('Report')->group(function () {
             include 'admin/Report.php';
@@ -59,7 +59,7 @@ Route::middleware('auth')->name('admin.')->prefix('admin')->group(function () {
         Route::name('admin.')->prefix('admin')->group(function () {
             include 'admin/User.php';
             include 'admin/Customer.php';
-            include 'admin/DeliveryBoy.php';
+            include 'admin/Deliveryboy.php';
         });
 
         // Vendors Routes for Admin
@@ -91,7 +91,7 @@ Route::middleware('auth')->name('admin.')->prefix('admin')->group(function () {
             include 'admin/ShippingZone.php';
             include 'admin/ShippingRate.php';
             include 'admin/Carrier.php';
-            //            include 'admin/Packaging.php';
+//            include 'admin/Packaging.php';
         });
 
         // Order Routes for Admin/Merchant

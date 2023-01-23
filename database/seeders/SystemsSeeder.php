@@ -22,7 +22,7 @@ class SystemsSeeder extends BaseSeeder
             'email' => 'notify@demo.com',
             // 'description' => 'Etc marketplace.',
             'support_phone' => '(+1) 84382648364',
-            'support_email' => 'help.incevio@gmail.com',
+            'support_email' => 'help.phza24@gmail.com',
             'is_multi_vendor' => 1,
             // 'date_format' => 'YYYY-MM-DD',
             // 'date_separator' => '-',

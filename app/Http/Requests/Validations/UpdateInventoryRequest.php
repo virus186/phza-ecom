@@ -26,34 +26,26 @@ class UpdateInventoryRequest extends Request
         if (!$this->input('key_features')) {
             $this->merge(['key_features' => null]);
         }
-
         if (!$this->input('linked_items')) {
             $this->merge(['linked_items' => null]);
         }
 
         $shop_id = $this->user()->merchantId(); //Get current user's shop_id
-        $inventory = $this->route('inventory'); // Current model ID
+        $id = $this->route('inventory'); //Current model ID
 
         $rules = [
+            'sku' => 'bail|required|composite_unique:inventories,sku,shop_id:' .  $shop_id . ',' . $id,
             'title' => 'required',
             'sale_price' => 'required|numeric',
             'offer_price' => 'nullable|numeric',
             'available_from' => 'nullable|date',
             'offer_start' => 'nullable|date|required_with:offer_price',
             'offer_end' => 'nullable|date|required_with:offer_price|after:offer_start',
+            'slug' => 'bail|required|alpha_dash|composite_unique:inventories,slug, ' . $id,
             'image' => 'mimes:jpg,jpeg,png,gif',
         ];
 
-        //request check
-        if ($this->is("api/vendor/*")) {
-            $rules['sku'] = 'bail|required|composite_unique:inventories,sku,shop_id:' .  $shop_id . ',' . $inventory->id;
-            $rules['slug'] = 'bail|required|alpha_dash|unique:inventories,slug, ' . $inventory->id;
-        } else {
-            $rules['sku'] = 'bail|required|composite_unique:inventories,sku,shop_id:' .  $shop_id . ',' . $inventory;
-            $rules['slug'] = 'bail|required|alpha_dash|unique:inventories,slug, ' . $inventory;
-        }
-
-        if (is_incevio_package_loaded('pharmacy')) {
+        if (is_phza24_package_loaded('pharmacy')) {
             $expiry_date_required = get_from_option_table('pharmacy_expiry_date_required', 1);
 
             $rules['expiry_date'] = (bool) $expiry_date_required ? 'required|date' : 'nullable|date';

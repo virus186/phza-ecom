@@ -1,16 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\DeliveryBoy\AuthController;
-use App\Http\Controllers\Api\DeliveryBoy\HomeController;
-use App\Http\Controllers\Api\DeliveryBoy\OrderController;
-use App\Http\Controllers\Api\DeliveryBoy\AccountController;
-use App\Http\Controllers\Api\DeliveryBoy\CustomerController;
-use App\Http\Controllers\Api\DeliveryBoy\ShopController;
-use App\Http\Controllers\Api\DeliveryBoy\DeliveryBoyController;
+use App\Http\Controllers\Api\Deliveryboy\AuthController;
+use App\Http\Controllers\Api\Deliveryboy\HomeController;
+use App\Http\Controllers\Api\Deliveryboy\OrderController;
+use App\Http\Controllers\Api\Deliveryboy\AccountController;
 
 //Delivery boy
-Route::prefix('deliveryboy')->namespace('DeliveryBoy')->group(function () {
+Route::prefix('deliveryboy')->namespace('Deliveryboy')->group(function () {
 
   //Delivery boy authentication
   Route::post('login', [AuthController::class, 'login']);
@@ -27,29 +24,25 @@ Route::prefix('deliveryboy')->namespace('DeliveryBoy')->group(function () {
     Route::post('password/update', [AuthController::class, 'updatePassword']);
 
     // Orders
-    Route::get('orders', [OrderController::class, 'index']);
-    Route::get('orders/{order}', [OrderController::class, 'show']);
-    Route::post('orders/status/{order}', [OrderController::class, 'updateOrderStatus']);
-    Route::post('orders/{order}/markasdelivered', [OrderController::class, 'markAsDelivered']);
-    Route::post('orders/{order}/markaspaid', [OrderController::class, 'markAsPaid']);
+    Route::get('orders', [
+      OrderController::class, 'index'
+    ]);
 
-    // Delivery boy App Version 2.0
-    Route::post('assign/{active_order_id}/order', [OrderController::class, 'assignActiveOrder']);
+    Route::get('orders/{order}', [
+      OrderController::class, 'show'
+    ]);
 
-    // This route need to improve
-    Route::get('today/orders', [OrderController::class, 'todayOrders']);
+    Route::post('orders/status/{order}', [
+      OrderController::class, 'updateOrderStatus'
+    ]);
 
-    // Contact to Customer
-    Route::get('customer/contact/{order_id}', [CustomerController::class, 'contact']);
+    Route::post('orders/{order}/markasdelivered', [
+      OrderController::class, 'markAsDelivered'
+    ]);
 
-    // Delivery boy
-    Route::get('deliveryboy/status', [DeliveryBoyController::class, 'status']);
-
-    // Shop Info
-    Route::get('shop/info', [ShopController::class, 'index']);
-
-    // End version 2.0
-
+    Route::post('orders/{order}/markaspaid', [
+      OrderController::class, 'markAsPaid'
+    ]);
 
     // Other APIs
     Route::get('system_configs', [HomeController::class, 'system_configs']);

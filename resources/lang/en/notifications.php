@@ -353,13 +353,6 @@ return [
         'button_text' => 'Go to the Dashboard',
     ],
 
-    'vendor_password_reset' => [
-        'subject' => 'Reset Password Notification',
-        'greeting' => 'Hello!',
-        'message' => 'You are receiving this email because we received a password reset request for your account. If you did not request a password reset, Just ignore this notification and no further button_text is required.',
-        'button_text' => 'Reset Password',
-    ],
-
     // User/Merchant Notification
     'email_verification' => [
         'subject' => 'Verify your :marketplace account!',

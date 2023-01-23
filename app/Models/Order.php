@@ -3,25 +3,23 @@
 namespace App\Models;
 
 // use Konekt\PdfInvoice\InvoicePrinter;
-use Carbon\Carbon;
-use App\Common\Loggable;
 use App\Common\Attachable;
-use App\Services\PdfInvoice;
-use Illuminate\Http\Request;
+use App\Common\Loggable;
+use App\Events\Order\OrderCancellationRequestApproved;
+use App\Events\Order\OrderCancelled;
 use App\Events\Order\OrderPaid;
 use App\Events\Order\OrderUpdated;
+use App\Jobs\AdjustQttForCanceledOrder;
+use App\Services\PdfInvoice;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\App;
-use App\Events\Order\OrderCancelled;
-use App\Events\Order\OrderFulfilled;
 use Illuminate\Support\Facades\Auth;
-use App\Jobs\AdjustQttForCanceledOrder;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use App\Events\Order\OrderCancellationRequestApproved;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Carbon\Carbon;
 
 class Order extends BaseModel
 {
@@ -392,17 +390,6 @@ class Order extends BaseModel
         return $query->where('order_status_id', '<', static::STATUS_FULFILLED);
     }
 
-
-    /**
-     * Scope a query to only include fulfilled orders.
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopefulfilled($query)
-    {
-        return $query->where('order_status_id', '>=', static::STATUS_FULFILLED);
-    }
-
     /**
      * Return all the orders which are not delivered yet
      *
@@ -410,8 +397,7 @@ class Order extends BaseModel
      */
     public function scopeToDeliver(Builder $query)
     {
-        return $query->where('order_status_id', '>=', static::STATUS_FULFILLED)
-            ->where('order_status_id', '<', static::STATUS_DELIVERED);
+        return $query->where('order_status_id', '<=', static::STATUS_DELIVERED);
     }
 
     /**
@@ -423,16 +409,6 @@ class Order extends BaseModel
     {
         return $query->where('delivery_boy_id', Auth::guard('delivery_boy-api')->id())
             ->oldest();
-    }
-
-    /**
-     * Return all the orders which are not delivered yet
-     *
-     * @return [not delivered orders]
-     */
-    public function scopeUnAssigned(Builder $query)
-    {
-        return $query->where('delivery_boy_id', Null)->oldest();
     }
 
     /**
@@ -557,10 +533,10 @@ class Order extends BaseModel
         return $this->update(['feedback_id' => $feedback_id]);
     }
 
-    public function markAsFulfilled()
-    {
-        $this->forceFill(['order_status_id' => static::STATUS_FULFILLED])->save();
-    }
+    // public function markAsFulfilled()
+    // {
+    //     $this->forceFill(['order_status_id' => static::STATUS_FULFILLED])->save();
+    // }
 
     /**
      * Return Tracking Url for the order
@@ -785,11 +761,8 @@ class Order extends BaseModel
      */
     public function cancel($partial = false, $cancellation_fee = null)
     {
-        // Check if the system have selected items to cancel, null means whole order will be canceled
-        $canelled_items = $this->cancellation ? $this->cancellation->items : null;
-
         // Sync up the inventory. Increase the stock of the order items from the listing
-        AdjustQttForCanceledOrder::dispatch($this, $canelled_items);
+        AdjustQttForCanceledOrder::dispatch($this);
 
         // Refund into wallet if money goes to admin and wallet is loaded
         if (!vendor_get_paid_directly() && $this->isPaid() && customer_has_wallet()) {
@@ -797,7 +770,7 @@ class Order extends BaseModel
 
             if ($partial) {
                 $amount = DB::table('order_items')->where('order_id', $this->id)
-                    ->whereIn('inventory_id', $canelled_items)
+                    ->whereIn('inventory_id', $this->cancellation->items)
                     ->select(DB::raw('quantity * unit_price AS total'))
                     ->get()->sum('total');
             }
@@ -833,7 +806,7 @@ class Order extends BaseModel
 
         $this->save();
 
-        if (!vendor_get_paid_directly() && is_incevio_package_loaded('wallet')) {
+        if (!vendor_get_paid_directly() && is_phza24_package_loaded('wallet')) {
             $fee = getPlatformFeeForOrder($this);
 
             // Deposit the order amount into vendor's wallet
@@ -893,35 +866,6 @@ class Order extends BaseModel
     }
 
     /**
-     * Fulfill the order
-     *
-     * @return $this
-     */
-    public function fulfill(Request $request)
-    {
-        $this->carrier_id = $request->input('carrier_id');
-        $this->tracking_id = $request->input('tracking_id');
-
-        if ($this->order_status_id < static::STATUS_FULFILLED) {
-            $this->order_status_id = static::STATUS_FULFILLED;
-        }
-
-        $this->save();
-
-        if ($this->hasPendingCancellationRequest()) {
-            $this->cancellation->decline();
-        }
-
-        event(new OrderFulfilled($this, $request->filled('notify_customer')));
-
-        if (config('shop_settings.auto_archive_order') && $this->isPaid()) {
-            $this->archive();
-        }
-
-        return $this;
-    }
-
-    /**
      * Refund the cancellation value to the customers wallet
      *
      * @return void
@@ -962,7 +906,6 @@ class Order extends BaseModel
         $this->payment_status = $amount < $this->grand_total ?
             static::PAYMENT_STATUS_PARTIALLY_REFUNDED :
             static::PAYMENT_STATUS_REFUNDED;
-
         $this->save();
     }
 

@@ -23,14 +23,14 @@ class UpdateManufacturerRequest extends Request
      */
     public function rules()
     {
-        $id = $this->route('manufacturer');
+        $shop_id = Request::user()->merchantId(); //Get current user's shop_id
+        $id = Request::segment(count(Request::segments())); //Current model ID
 
         return [
-            'name' => 'bail|required|unique:manufacturers,name,' . $id,
-            'slug' => 'bail|unique:manufacturers,slug,' . $id,
-            'email' =>  'email|max:255|nullable',
-            'active' => 'required',
-            'image' => 'mimes:jpg,jpeg,png,gif|max:' . config('system_settings.max_img_size_limit_kb'),
+           'name' => 'bail|required|composite_unique:manufacturers, '.$id,
+           'email' =>  'email|max:255|nullable',
+           'active' => 'required',
+           'image' => 'mimes:jpg,jpeg,png,gif|max:'.config('system_settings.max_img_size_limit_kb'),
         ];
     }
 

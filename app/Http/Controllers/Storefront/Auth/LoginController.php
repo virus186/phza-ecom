@@ -3,13 +3,11 @@
 namespace App\Http\Controllers\Storefront\Auth;
 
 use App\Http\Controllers\SocialiteBaseController;
-use App\Models\Customer;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\URL;
-use Twilio\Rest\Client;
 
 class LoginController extends SocialiteBaseController
 {
@@ -51,12 +49,6 @@ class LoginController extends SocialiteBaseController
      */
     public function username()
     {
-        $phone = request()->input('phone');
-
-        if (is_incevio_package_loaded('otp-login') && !is_null($phone)) {
-            return 'phone';
-        }
-
         return 'email';
     }
 
@@ -76,34 +68,13 @@ class LoginController extends SocialiteBaseController
     /**
      * Handle a login request to the application.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Http\JsonResponse
      */
     public function login(Request $request)
     {
-        if (is_incevio_package_loaded('otp-login') && $request->has('phone')) {
-            $this->validate($request, [
-                $this->username() => 'required',
-            ]);
-
-            if (!Customer::where('phone', $request['phone'])->exists()) {
-                return redirect()->route('customer.login')
-                    ->withErrors([trans('otp-login::lang.not_registered')]);
-            }
-
-            try {
-                send_otp_code($request['phone'], 'customer.login');
-            } catch (\Exception $e) {
-                return redirect()->route('customer.login')
-                    ->withErrors([trans('otp-login::lang.phone_session_expired')]);
-            }
-
-            return redirect()->route('phoneverification.notice')
-                ->with(['phone_number' => $request['phone']]);
-        }
-
         $this->validate($request, [
-            $this->username($request) => 'required|string',
+            $this->username() => 'required|string',
             'password' => 'required|string',
         ]);
 
@@ -133,14 +104,14 @@ class LoginController extends SocialiteBaseController
     /**
      * Attempt to log the user into the application.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return bool
      */
     protected function attemptLogin(Request $request)
     {
         return Auth::guard('customer')
             ->attempt(
-                $request->only($this->username($request), 'password'),
+                $request->only($this->username(), 'password'),
                 $request->filled('remember')
             );
     }
@@ -148,7 +119,7 @@ class LoginController extends SocialiteBaseController
     /**
      * Log the user out of the application.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function logout(Request $request)

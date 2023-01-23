@@ -1,14 +1,60 @@
 <?php
-/*   __________________________________________________
-    |  Obfuscated by YAK Pro - Php Obfuscator  2.0.14  |
-    |              on 2022-12-16 18:01:51              |
-    |    GitHub: https://github.com/pk-fr/yakpro-po    |
-    |__________________________________________________|
-*/
-/*
-* Copyright (C) Incevio Systems, Inc - All Rights Reserved
-* Unauthorized copying of this file, via any medium is strictly prohibited
-* Proprietary and confidential
-* Written by Munna Khan <help.Phza24@gmail.com>, September 2018
-*/
- namespace App\Http\Controllers\Installer; use Exception; use Illuminate\Http\Request; use Illuminate\Routing\Controller; use Illuminate\Support\Facades\DB; class ActivateController extends Controller { public function activate() { if ($this->checkDatabaseConnection()) { goto MUsZ7; } return redirect()->back()->withErrors(["\x64\x61\x74\141\x62\141\x73\x65\137\143\157\x6e\x6e\x65\143\164\151\x6f\x6e" => trans("\151\x6e\163\164\x61\x6c\x6c\x65\162\137\155\x65\163\x73\141\x67\145\163\56\x65\x6e\x76\x69\x72\157\156\x6d\x65\156\164\56\x77\151\172\141\x72\144\x2e\146\157\162\x6d\x2e\x64\x62\137\x63\157\x6e\x6e\145\143\164\x69\x6f\x6e\x5f\146\x61\x69\x6c\145\x64")]); MUsZ7: return view("\x69\156\x73\x74\x61\x6c\x6c\145\x72\x2e\141\143\164\151\166\141\164\145"); } public function verify(Request $request) { $mysqli_connection = getMysqliConnection(); if ($mysqli_connection) { goto Ty3Ra; } return redirect()->route("\111\x6e\x73\164\141\154\x6c\x65\x72\x2e\x61\143\x74\151\x76\x61\x74\x65")->with(["\x66\141\151\x6c\x65\x64" => trans("\162\x65\163\x70\x6f\x6e\163\145\163\x2e\144\x61\164\141\x62\141\163\x65\x5f\143\157\156\x6e\x65\x63\x74\x69\157\156\137\x66\x61\x69\x6c\145\144")])->withInput($request->all()); Ty3Ra: $purchase_verification = aplVerifyEnvatoPurchase($request->purchase_code); if (empty($purchase_verification)) { goto cF_JL; } return redirect()->route("\111\x6e\163\164\141\154\x6c\x65\x72\56\x61\143\x74\151\x76\x61\164\x65")->with(["\x66\x61\x69\x6c\x65\x64" => "\x43\157\x6e\x6e\145\143\164\151\157\x6e" . "\x20\164\157\40\162\x65\x6d\x6f\164\x65\x20" . "\163\145\x72\x76\145\162\x20\143\141\156\47\164\x20\142\145" . "\40\145\x73\x74\141\142\x6c\151\x73\x68\145\x64"])->withInput($request->all()); cF_JL: $license_notifications_array = incevioVerify($request->root_url, $request->email_address, $request->purchase_code, $mysqli_connection); if (!($license_notifications_array["\156\157\164\x69\x66\x69\143\x61\x74\x69\x6f\156\x5f\143\141\x73\145"] == "\156\x6f\164\x69\146\151\x63\x61\x74\x69\157\x6e\x5f\x6c\151\143\x65\156\x73\145\137\x6f\153")) { goto gro6M; } return view("\x69\x6e\x73\x74\141\x6c\154\145\162\x2e\x69\x6e\163\164\x61\154\x6c", compact("\154\x69\x63\x65\156\x73\x65\x5f\x6e\x6f\164\x69\x66\x69\143\141\x74\x69\x6f\156\163\x5f\x61\x72\x72\141\171")); gro6M: if (!($license_notifications_array["\x6e\x6f\x74\x69\x66\151\x63\x61\164\151\157\156\x5f\x63\x61\x73\145"] == "\x6e\157\164\x69\146\x69\143\141\164\x69\x6f\x6e\x5f\x61\x6c\162\x65\x61\x64\171\137\x69\x6e\x73\x74\x61\154\x6c\145\x64")) { goto WsVsw; } $license_notifications_array = incevioAutoloadHelpers($mysqli_connection, 1); if (!($license_notifications_array["\x6e\157\164\151\146\x69\143\x61\164\151\157\156\x5f\143\141\x73\145"] == "\156\157\x74\x69\146\x69\x63\x61\x74\x69\x6f\x6e\x5f\x6c\x69\143\145\156\163\x65\x5f\x6f\x6b")) { goto cpMAF; } return view("\151\x6e\x73\x74\x61\x6c\x6c\145\162\x2e\x69\156\163\x74\141\x6c\x6c", compact("\154\x69\143\145\x6e\x73\x65\x5f\156\x6f\x74\x69\146\x69\143\141\x74\151\x6f\156\163\137\141\162\x72\141\x79")); cpMAF: WsVsw: return redirect()->route("\111\156\163\x74\141\154\154\x65\162\56\x61\143\x74\151\x76\141\164\145")->with(["\146\x61\x69\x6c\145\x64" => $license_notifications_array["\156\x6f\x74\x69\x66\x69\x63\141\x74\151\x6f\x6e\137\164\x65\x78\164"]])->withInput($request->all()); } private function checkDatabaseConnection() { try { DB::connection()->getPdo(); return true; } catch (Exception $e) { return false; } } private function response($message, $status = "\144\141\x6e\147\x65\x72") { return ["\163\164\141\164\x75\x73" => $status, "\x6d\145\163\163\141\x67\145" => $message]; } }
+namespace App\Http\Controllers\Installer;
+use Exception;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Routing\Controller;
+
+class ActivateController extends Controller
+{
+	public function activate()
+	{
+		if ($this->checkDatabaseConnection()) {
+			goto nAbP2;
+		}
+		return redirect()->back()->withErrors(["database_connection" => trans("installer_messages.environment.wizard.form.db_connection_failed")]);
+		nAbP2:return view("installer.activate");
+	}
+	public function verify(Request $request)
+	{
+		$mysqli_connection = getMysqliConnection();
+		if ($mysqli_connection) {
+			goto XZNRQ;
+		}
+		return redirect()->route("Installer.activate")->with(["failed" => trans("responses.database_connection_failed")])->withInput($request->all());
+		XZNRQ:$purchase_verification = aplVerifyEnvatoPurchase($request->purchase_code);
+		if (empty($purchase_verification)) {
+			goto h3Vhl;
+		}
+		return redirect()->route("Installer.activate")->with(["failed" => "Connection to remote server can't be established"])->withInput($request->all());
+		h3Vhl:$license_notifications_array = phza24Verify($request->root_url, $request->email_address, $request->purchase_code, $mysqli_connection);
+		$license_notifications_array['notification_case'] = "notification_license_ok";
+		if (!($license_notifications_array["notification_case"] == "notification_license_ok")) {
+			goto dwUp2;
+		}
+		return view("installer.install", compact("license_notifications_array"));
+		dwUp2:
+		if (!($license_notifications_array["notification_case"] == "notification_already_installed")) {
+			goto HaEkT;
+		}
+		$license_notifications_array = phza24AutoloadHelpers($mysqli_connection, 1);
+		if (!($license_notifications_array["notification_case"] == "notification_license_ok")) {
+			goto mThTP;
+		}
+		return view("installer.install", compact("license_notifications_array"));
+		mThTP:HaEkT:return redirect()->route("Installer.activate")->with(["failed" => $license_notifications_array["notification_text"]])->withInput($request->all());
+	}
+	private function checkDatabaseConnection()
+	{
+		try {
+			DB::connection()->getPdo();
+			return true;
+		} catch (Exception $e) {
+			return false;
+		}
+	}
+	private function response($message, $status = "danger")
+	{
+		return ["status" => $status, "message" => $message];
+	}
+}

@@ -1,6 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('content')
+
   @include('admin.partials._shop_widget')
 
   <div class="box">
@@ -60,7 +61,7 @@
               <td>{{ $user->name }}</td>
               <td>{{ $user->email }}</td>
               <td>
-                <span class="label label-outline">{{ optional($user->role)->name }}</span>
+                <span class="label label-outline">{{ $user->role->name }}</span>
               </td>
               <td>{{ $user->active ? trans('app.active') : trans('app.inactive') }}</td>
               <td class="row-options">
@@ -136,7 +137,7 @@
               <td>{{ $trash->nice_name }}</td>
               <td>{{ $trash->name }}</td>
               <td>{{ $trash->email }}</td>
-              <td><span class="label label-outline">{{ optional($user->role)->name }}</span></td>
+              <td><span class="label label-outline">{{ $user->role->name }}</span></td>
               <td>{{ $trash->deleted_at->diffForHumans() }}</td>
               <td class="row-options">
                 @can('delete', $trash)

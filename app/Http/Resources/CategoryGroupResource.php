@@ -19,15 +19,9 @@ class CategoryGroupResource extends JsonResource
             'name' => $this->name,
             'slug' => $this->slug,
             'description' => $this->description,
-            'sub_groups_count' => $this->sub_groups_count,
-            'meta_title' => $this->meta_title,
-            'meta_description' => $this->meta_description,
-            'active' => (bool) $this->active,
-            'order' => $this->order,
             'icon' => $this->icon,
-            'icon_image' => $this->iconImage ? get_icon_url($this) : null,
+            'icon_image' => $this->logoImage ? get_logo_url($this, 'full') : null,
             'cover_image' => get_cover_img_src($this, 'category'),
-            'background_image' => $this->backgroundImage ? get_storage_file_url(optional($this->backgroundImage)->path, 'medium') : null,
         ];
     }
 }

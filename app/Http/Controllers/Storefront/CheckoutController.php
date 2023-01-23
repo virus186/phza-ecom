@@ -23,7 +23,7 @@ class CheckoutController extends Controller
      */
     public function __construct()
     {
-        if (!is_incevio_package_loaded('guestCheckout')) {
+        if (!is_phza24_package_loaded('guestCheckout')) {
             $this->middleware('auth:customer');
         }
     }
@@ -64,7 +64,7 @@ class CheckoutController extends Controller
         }
 
         // When coupons module available
-        if (is_incevio_package_loaded('coupons')) {
+        if (is_phza24_package_loaded('coupons')) {
             $cart->load('coupon:id,shop_id,name,code,value,min_order_amount,type');
         }
 
@@ -93,7 +93,7 @@ class CheckoutController extends Controller
         $shipping_options[$cart->id] = isset($shipping_zones[$cart->id]->id) ? getShippingRates($shipping_zones[$cart->id]->id) : 'NaN';
 
         // When packaging module available
-        if (is_incevio_package_loaded('packaging')) {
+        if (is_phza24_package_loaded('packaging')) {
             $shop->load(['packagings' => function ($query) {
                 $query->active();
             }]);

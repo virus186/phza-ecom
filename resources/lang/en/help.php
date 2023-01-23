@@ -250,8 +250,6 @@ return [
 
     'product_active' => 'Merchants will find active items only.',
 
-    'product_slug' => 'This will be used as your product URL, You can not change it later. Be creative to choose the slug for your product',
-
     'product_description' => 'Customers will see this. This is the core and common product description.',
 
     'model_number' => 'An identifier of a product given by its manufacturer. Not required but recommended',
@@ -295,16 +293,6 @@ return [
     // 'supplier_address' => 'The system will use this address to create invoice.',
 
     'shop_address' => 'The physical address of the shop.',
-
-    'payout_bank_info' => 'Your bank information will help you to get paid your payment from market.',
-
-    'account_type' => 'Type of your bank account like saving, current, checking etc.',
-
-    'account_routing_number' => 'A routing number is a nine-digit code used to identify a financial institution',
-
-    'account_swift_bic_code' => 'A SWIFT/BIC code identifies banks and financial institutions globally.',
-
-    'account_iban' => 'For most kinds of payments, senders should use your IBAN number.',
 
     'search_product' => 'You can use any GTIN identifier like UPC, ISBN, EAN, JAN or ITF. You can also use name and model number OR part of name or model number.',
 
@@ -802,6 +790,8 @@ return [
 
     'you_can_use_span_tag' => 'You can use <span> tag to highlight important words.',
 
+    'trending_now_category_help' => 'For better view add maximum 5 category',
+
     'social_auth' => 'If enable social login option will show on customer login and register page',
 
     'slider_text_position' => 'Set your content position on slider. default position right',
@@ -833,16 +823,4 @@ return [
     'changes_can_take_time' => 'The changes can take up to :time to affect the result.',
 
     'category_attributes' => 'List of attributes attached to this category. These attribute fields will be shown on the listing creation form.',
-
-    'show_category_on_main_nav' => 'This categoried will be linked to the front theme main navigation, keep it limited.',
-
-    'hide_item_from_main_nav' => 'This options will be removed from the front theme main navigation',
-
-    'hide_technical_details_on_product_page' => 'Hide technical details on the product page at the front end. Customers will not see the technical details on the product page.',
-
-    'hide_out_of_stock_items' => 'When enabled, the system will hide out of stock items from the marketplace. Out of stock items will not be visible in search result, promotions, and any other list.',
-
-    'shop_not_exist' => 'Shop has been removed or disabled.',
-
-    'trending_now_category_help' => 'Trending now categories will get more attentions at front-end. keep it limited, 2-3 categories are recommended.',
 ];

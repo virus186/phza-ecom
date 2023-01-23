@@ -27,13 +27,13 @@ class CreateWarehouseRequest extends Request
         Request::merge(['shop_id' => $shop_id]); //Set shop_id
 
         return [
-            'name' => 'bail|required',
-            'email' =>  'nullable|email',
+            'name' => 'bail|required|composite_unique:warehouses,shop_id:'.$shop_id,
+            'email' =>  'nullable|email|max:255|composite_unique:warehouses,shop_id:'.$shop_id,
             'opening_time' => 'required',
             'close_time' => 'required',
-            'business_days' => 'required',
+            'business_day' => 'required',
             'active' => 'required',
-            'image' => 'max:' . config('system_settings.max_img_size_limit_kb') . '|mimes:jpg,jpeg,png,gif',
+            'image' => 'max:'.config('system_settings.max_img_size_limit_kb').'|mimes:jpg,jpeg,png,gif',
         ];
     }
 

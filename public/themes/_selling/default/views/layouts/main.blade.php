@@ -52,6 +52,7 @@
     @yield('content')
   </section>
 
+
   <!-- Contact Section -->
   <section id="contact">
     @include('contact')

@@ -33,12 +33,21 @@ class EloquentCategorySubGroup extends EloquentRepository implements BaseReposit
     {
         $category = parent::store($request);
 
+        /* if ($request->hasFile('image'))
+            $category->saveImage($request->file('image'), true);*/
+
         return $category;
     }
 
     public function update(Request $request, $id)
     {
         $category = parent::update($request, $id);
+
+        /*   if ($request->hasFile('image') || ($request->input('delete_image') == 1))
+            $category->deleteFeaturedImage();
+
+        if ($request->hasFile('image'))
+            $category->saveImage($request->file('image'), true);*/
 
         return $category;
     }

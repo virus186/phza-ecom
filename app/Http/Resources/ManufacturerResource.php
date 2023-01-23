@@ -18,15 +18,12 @@ class ManufacturerResource extends JsonResource
     public function toArray($request)
     {
         return [
-
             'id' => $this->id,
             'name' => $this->name,
             'slug' => $this->slug,
-            'url' => $this->url ?? null,
-            'email' => $this->email ?? null,
-            'phone' => $this->phone ?? null,
-            'description' => $this->description ?? null,
-            'origin' => $this->country->name ?? null,
+            'url' => $this->url,
+            'description' => $this->description,
+            'origin' => $this->country->name,
             'listing_count' => $this->inventories_count,
             'available_from' => date('F j, Y', strtotime($this->created_at)),
             'image' => get_logo_url($this, 'small'),

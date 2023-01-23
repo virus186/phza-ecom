@@ -57,7 +57,6 @@ class EloquentManufacturer extends EloquentRepository implements BaseRepository,
     public function destroy($id)
     {
         $manufacturer = parent::findTrash($id);
-
         $manufacturer->flushImages();
 
         return $manufacturer->forceDelete();

@@ -277,7 +277,7 @@
     $(document).ready(function() {
       //$("#newsletterModal").modal('show');
       $(document).on('change', '#newsletterCheckbox', function(e) {
-        document.cookie = "Phza24Apperance=newsletterPopup";
+        document.cookie = "phza24Apperance=newsletterPopup";
       });
 
       function getCookie(cookieName) {
@@ -288,13 +288,13 @@
         })
         return cookie[cookieName];
       }
-      var a = getCookie('Phza24Apperance');
+      var a = getCookie('phza24Apperance');
       if (a != "newsletterPopup") {
         $("#newsletterModal").modal('show');
       }
 
       $('#newsletteForm').submit(function(e) {
-        document.cookie = "Phza24Apperance=newsletterPopup";
+        document.cookie = "phza24Apperance=newsletterPopup";
       })
     });
   </script>

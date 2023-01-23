@@ -21,9 +21,3 @@ Route::get('general', [ConfigController::class, 'viewGeneralSetting'])
 
 Route::get('config', [ConfigController::class, 'view'])
     ->name('config.view');
-
-Route::get('config/updateBankInfo/{config}', [ConfigController::class, 'editBankInfo'])
-    ->name('bankInfo.edit')->middleware('ajax');
-
-Route::put('config/updateBankInfo/{config}', [ConfigController::class, 'updateBankInfo'])
-    ->name('bankInfo.update');

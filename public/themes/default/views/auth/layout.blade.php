@@ -11,10 +11,6 @@
 
   <link href="{{ mix('css/app.css') }}" rel="stylesheet">
 
-  @if(is_incevio_package_loaded('otp-login'))
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
-  @endif
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
@@ -43,9 +39,6 @@
       line-height: 31px !important;
     }
 
-    .iti {
-      display: block;
-    }
   </style>
 </head>
 
@@ -80,10 +73,6 @@
 
   <!-- Scripts -->
   @yield('scripts', '')
-
-  @if(is_incevio_package_loaded('otp-login'))
-    @include('otp-login::scripts')
-  @endif
 
   <script type="text/javascript">
     // ;(function($, window, document) {

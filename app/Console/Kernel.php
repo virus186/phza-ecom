@@ -26,7 +26,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('activitylog:clean')->daily(); //Clean older activity logs
-        // $schedule->command('incevio:kpi')->dailyAt('23:58');
+        // $schedule->command('phza24:kpi')->dailyAt('23:58');
         // $schedule->command('backup:clean')->daily()->at('01:00');
         // $schedule->command('backup:run')->daily()->at('02:00');
         // $schedule->command('backup:monitor')->daily()->at('03:00');
@@ -46,16 +46,11 @@ class Kernel extends ConsoleKernel
 
         // Reset demo content for demo hosting
         if (config('app.demo') == true) {
-            $schedule->command('incevio:reset-demo')->twiceDaily(1, 13); //Reset the demo applcoation
+            $schedule->command('phza24:reset-demo')->twiceDaily(1, 13); //Reset the demo applcoation
         }
 
         // Re-evaluate ratings for models
-        $schedule->command('incevio:evaluate-ratings')->daily();
-
-        // Pull orders from eBay 
-        if (is_incevio_package_loaded('ebay')) {
-            $schedule->command('incevio:ebay-pull-orders')->hourly();
-        }
+        $schedule->command('phza24:evaluate-ratings')->daily();
     }
 
     /**

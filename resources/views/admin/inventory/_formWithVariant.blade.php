@@ -95,7 +95,7 @@
       </div>
     </div>
 
-    @if (is_incevio_package_loaded('packaging'))
+    @if(is_phza24_package_loaded('packaging'))
       <div class="col-lg-3 col-md-6 nopadding-left">
         <div class="form-group">
           {!! Form::label('packaging_list[]', trans('packaging::lang.packaging'), ['class' => 'with-help']) !!}
@@ -108,7 +108,7 @@
   </div>
 @endif
 
-@if (is_incevio_package_loaded('pharmacy'))
+@if (is_phza24_package_loaded('pharmacy'))
   @include('pharmacy::inventory_form')
 @endif
 

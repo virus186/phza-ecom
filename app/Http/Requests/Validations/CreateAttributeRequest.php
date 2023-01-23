@@ -23,10 +23,10 @@ class CreateAttributeRequest extends Request
      */
     public function rules()
     {
-        // Get current user's shop_id
+        //Get current user's shop_id
         $shop_id = $this->user()->merchantId();
 
-        $this->merge(['shop_id' => $shop_id]); // Set shop_id
+        $this->merge(['shop_id' => $shop_id]); //Set shop_id
 
         return [
             'attribute_type_id' => 'required',

@@ -68,11 +68,6 @@ trait ShoppingCart
                 ->where('ip_address', get_visitor_IP())->first();
         }
 
-        // Check the available stock limit
-        if ($request->quantity > $item->stock_quantity) {
-            return response()->json(['message' => trans('api.item_max_stock')], 409);
-        }
-
         // Check if the item is alrealy in the cart
         if ($old_cart) {
             $item_in_cart = DB::table('cart_items')->where('cart_id', $old_cart->id)
@@ -135,7 +130,6 @@ trait ShoppingCart
 
         // Makes item_description field
         $attributes = implode(' - ', $item->attributeValues->pluck('value')->toArray());
-
         // Prepare pivot data
         $cart_item_pivot_data = [];
         $cart_item_pivot_data[$item->id] = [

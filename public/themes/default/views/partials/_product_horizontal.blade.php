@@ -29,11 +29,7 @@
       <div class="feature__items-action box-action">
         @include('theme::partials._btn_quick_view')
 
-        @if (is_incevio_package_loaded('comparison'))
-          @include('comparison::_btn_add_to_compare')
-        @endif
-
-        @if (is_incevio_package_loaded('wishlist'))
+        @if (is_phza24_package_loaded('wishlist'))
           @include('wishlist::_btn_wishlist')
         @endif
 

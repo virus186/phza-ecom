@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Message;
-use App\Models\Product;
-use App\Models\Category;
 use App\Models\Customer;
 use App\Models\Inventory;
+use App\Models\Message;
+use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Response;
 // use Response;
 
@@ -145,25 +144,6 @@ class SearchController extends Controller
 
         foreach ($items as $item) {
             $results[] = ['text' => $item->title . ' | ' . $item->sku . ' | ' . get_formated_currency($item->current_sale_price()), 'id' => $item->id];
-        }
-
-        return Response::json($results);
-    }
-
-    public function findCategoryForSelect(Request $request)
-    {
-        $term = $request->input('q');
-
-        $results = [];
-
-        if (strlen($term) < 3) {
-            return Response::json($results);
-        }
-
-        $categories = Category::search($term)->where('active', 1)->take(15)->get();
-
-        foreach ($categories as $category) {
-            $results[] = ['text' => $category->name, 'id' => $category->id];
         }
 
         return Response::json($results);

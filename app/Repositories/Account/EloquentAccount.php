@@ -24,7 +24,7 @@ class EloquentAccount extends EloquentRepository implements BaseRepository, Acco
         $user = Auth::user();
 
         if ($request->hasFile('image')) {
-            $user->saveImage($request->file('image'), 'avatar');
+            $user->saveImage($request->file('image'));
         }
 
         return $user;
@@ -44,16 +44,5 @@ class EloquentAccount extends EloquentRepository implements BaseRepository, Acco
         return $request->user()->fill([
             'password' => $request->input('password'),
         ])->save();
-    }
-
-    public function delete(Request $request)
-    {
-        $user = $request->user();
-
-        $user->flushAddresses();
-
-        $user->flushImages();
-
-        return $user->delete();
     }
 }

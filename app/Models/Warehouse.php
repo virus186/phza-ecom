@@ -98,24 +98,4 @@ class Warehouse extends BaseModel
     {
         return $this->hasManyThrough(Product::class, Inventory::class);
     }
-
-    /**
-     * Set business_days for the model.
-     *
-     * @return array
-     */
-    public function setBusinessDaysAttribute($business_days)
-    {
-        $this->attributes['business_days'] = serialize($business_days);
-    }
-
-    /**
-     * Get business_days for the model.
-     *
-     * @return array
-     */
-    public function getBusinessDaysAttribute($business_days)
-    {
-        return unserialize($business_days);
-    }
 }

@@ -23,12 +23,12 @@ class UpdateCategoryRequest extends Request
      */
     public function rules()
     {
-        $id = $this->route('category');
+        $id = Request::segment(count(Request::segments())); //Current model ID
 
         return [
             'category_sub_group_id' => 'required',
             'name' =>  'required',
-            'slug' =>  'required|alpha_dash|composite_unique:categories, ' . $id,
+            'slug' =>  'required|alpha_dash|composite_unique:categories, '.$id,
             'image' => 'mimes:jpg,jpeg,png',
             'active' => 'required',
         ];

@@ -276,7 +276,7 @@ class SystemController extends Controller
             DB::beginTransaction();
 
             try {
-                $license_notifications_array = incevioUninstallLicense(getMysqliConnection());
+                $license_notifications_array = phza24UninstallLicense(getMysqliConnection());
             } catch (\Exception $e) {
                 // rollback the transaction and log the error
                 DB::rollback();
@@ -323,7 +323,7 @@ class SystemController extends Controller
      */
     public function updateAppLicense(UpdateSystemRequest $request)
     {
-        $license_notifications_array = incevioUpdateLicense(getMysqliConnection());
+        $license_notifications_array = phza24UpdateLicense(getMysqliConnection());
 
         if ($license_notifications_array['notification_case'] == 'notification_license_ok') {
             return back()->with('success', trans('messages.license_updated'));

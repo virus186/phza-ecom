@@ -8,10 +8,12 @@
           @if ($item->shop->isVerified() && Route::current()->getName() != 'show.store')
             <li>@lang('theme.from_verified_seller')</li>
           @endif
+
           @foreach ($item->getLabels() as $label)
             <li>{!! $label !!}</li>
           @endforeach
         </ul>
+
         <div class="product-img-wrap">
           <img class="product-img-primary" src="{{ get_product_img_src($item, 'medium') }}" alt="{{ $item->title }}" title="{{ $item->title }}" />
 
@@ -21,21 +23,15 @@
         </div>
 
         <div class="product-actions btn-group">
-
-          @if (is_incevio_package_loaded('comparison'))
-            @include('comparison::_product_list_compare_btn')
-          @endif
-
-          @if (is_incevio_package_loaded('wishlist'))
+           @if(is_phza24_package_loaded('wishlist'))
             @include('wishlist::_product_list_wishlist_btn')
           @endif
           <a class="btn btn-default flat itemQuickView" href="{{ route('quickView.product', $item->slug) }}">
             <i class="far fa-external-link" data-toggle="tooltip" title="@lang('theme.button.quick_view')"></i> <span>@lang('theme.button.quick_view')</span>
           </a>
 
-          <a class="btn btn-primary flat sc-add-to-cart add-to-card-mod" data-link="{{ route('cart.addItem', $item->slug) }}">
-            <i class="far fa-shopping-cart"></i>
-            {{--            @lang('theme.button.add_to_cart') --}}
+          <a class="btn btn-primary flat sc-add-to-cart" data-link="{{ route('cart.addItem', $item->slug) }}">
+            <i class="far fa-shopping-cart"></i> @lang('theme.button.add_to_cart')
           </a>
         </div>
 

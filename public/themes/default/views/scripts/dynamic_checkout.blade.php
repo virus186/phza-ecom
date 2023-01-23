@@ -284,7 +284,7 @@
       });
 
       // Coupon
-      @if (is_incevio_package_loaded('coupons'))
+      @if (is_phza24_package_loaded('coupons'))
         $('.apply_seller_coupon').on('click', function(e) {
           e.preventDefault();
           var cart = $(this).data('cart');
@@ -315,13 +315,13 @@
                 } else if (500 === response.status) {
                   // console.log(response);
                 } else if (403 === response.status) {
-                  @include('theme::layouts.notification', ['message' => trans('coupons::lang.coupon_not_valid'), 'type' => 'warning', 'icon' => 'times-circle'])
+                  @include('theme::layouts.notification', ['message' => trans('coupons::lang.theme.coupon_not_valid'), 'type' => 'warning', 'icon' => 'times-circle'])
                 } else if (404 === response.status) {
-                  @include('theme::layouts.notification', ['message' => trans('coupons::lang.coupon_not_exist'), 'type' => 'danger', 'icon' => 'times-circle'])
+                  @include('theme::layouts.notification', ['message' => trans('coupons::lang.theme.coupon_not_exist'), 'type' => 'danger', 'icon' => 'times-circle'])
                 } else if (443 === response.status) {
-                  @include('theme::layouts.notification', ['message' => trans('coupons::lang.coupon_not_valid_for_zone'), 'type' => 'warning', 'icon' => 'times-circle'])
+                  @include('theme::layouts.notification', ['message' => trans('coupons::lang.theme.coupon_not_valid_for_zone'), 'type' => 'warning', 'icon' => 'times-circle'])
                 } else if (444 === response.status) {
-                  @include('theme::layouts.notification', ['message' => trans('coupons::lang.coupon_limit_expired'), 'type' => 'warning', 'icon' => 'times-circle'])
+                  @include('theme::layouts.notification', ['message' => trans('coupons::lang.theme.coupon_limit_expired'), 'type' => 'warning', 'icon' => 'times-circle'])
                 } else {
                   @include('theme::layouts.notification', ['message' => trans('theme.notify.failed'), 'type' => 'danger', 'icon' => 'times-circle'])
                 }
@@ -539,7 +539,7 @@
       }
 
       function calculateDiscount(cart) {
-        @unless(is_incevio_package_loaded('coupons'))
+        @unless(is_phza24_package_loaded('coupons'))
           return;
         @endunless
 
@@ -554,7 +554,7 @@
         var totalPrice = getOrderTotal(cart);
 
         if (coupon.min_order_amount && totalPrice < coupon.min_order_amount) {
-          @include('theme::layouts.notification', ['message' => trans('coupons::lang.coupon_min_order_value'), 'type' => 'danger', 'icon' => 'times-circle'])
+          @include('theme::layouts.notification', ['message' => trans('coupons::lang.theme.coupon_min_order_value'), 'type' => 'danger', 'icon' => 'times-circle'])
 
           resetDiscount(cart);
           return;
@@ -740,7 +740,7 @@
 
         calculateCartTotal(cart);
 
-        @include('theme::layouts.notification', ['message' => trans('coupons::lang.coupon_applied'), 'type' => 'success', 'icon' => 'check-circle'])
+        @include('theme::layouts.notification', ['message' => trans('coupons::lang.theme.coupon_applied'), 'type' => 'success', 'icon' => 'check-circle'])
 
         return;
       }

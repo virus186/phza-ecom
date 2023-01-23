@@ -70,7 +70,7 @@ $can_update = Gate::allows('update', $config) ?: null;
                 </div>
               </div>
 
-                @if(is_incevio_package_loaded('packaging'))
+                @if(is_phza24_package_loaded('packaging'))
                     <div class="form-group">
                         {!! Form::label('default_packaging_ids', trans('app.default_packagings') . ':', ['class' => 'with-help col-sm-4 control-label']) !!}
                         <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="left"
@@ -224,27 +224,25 @@ $can_update = Gate::allows('update', $config) ?: null;
                   </div>
                 </div>
 
-{{--                  pay in person feature off for version 2.6.7:::December-22--}}
-
-{{--                <div class="row">--}}
-{{--                  <div class="col-sm-6 text-right">--}}
-{{--                    <div class="form-group">--}}
-{{--                      {!! Form::label('pay_in_person', trans('app.pay_in_person') . ':', ['class' => 'with-help control-label']) !!}--}}
-{{--                      <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="left" title="{{ trans('help.pay_in_person') }}"></i>--}}
-{{--                    </div>--}}
-{{--                  </div>--}}
-{{--                  <div class="col-sm-6">--}}
-{{--                    @if ($can_update)--}}
-{{--                      <div class="handle horizontal">--}}
-{{--                        <a href="javascript:void(0)" data-link="{{ route('admin.setting.config.notification.toggle', 'pay_in_person') }}" type="button" class="btn btn-md btn-secondary btn-toggle {{ $config->pay_in_person == 1 ? 'active' : '' }}" data-toggle="button" aria-pressed="{{ $config->pay_in_person == 1 ? 'true' : 'false' }}" autocomplete="off">--}}
-{{--                          <div class="btn-handle"></div>--}}
-{{--                        </a>--}}
-{{--                      </div>--}}
-{{--                    @else--}}
-{{--                      <span>{{ $config->pay_in_person == 1 ? trans('app.on') : trans('app.off') }}</span>--}}
-{{--                    @endif--}}
-{{--                  </div>--}}
-{{--                </div>--}}
+                <div class="row">
+                  <div class="col-sm-6 text-right">
+                    <div class="form-group">
+                      {!! Form::label('pay_in_person', trans('app.pay_in_person') . ':', ['class' => 'with-help control-label']) !!}
+                      <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="left" title="{{ trans('help.pay_in_person') }}"></i>
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    @if ($can_update)
+                      <div class="handle horizontal">
+                        <a href="javascript:void(0)" data-link="{{ route('admin.setting.config.notification.toggle', 'pay_in_person') }}" type="button" class="btn btn-md btn-secondary btn-toggle {{ $config->pay_in_person == 1 ? 'active' : '' }}" data-toggle="button" aria-pressed="{{ $config->pay_in_person == 1 ? 'true' : 'false' }}" autocomplete="off">
+                          <div class="btn-handle"></div>
+                        </a>
+                      </div>
+                    @else
+                      <span>{{ $config->pay_in_person == 1 ? trans('app.on') : trans('app.off') }}</span>
+                    @endif
+                  </div>
+                </div>
                 <!-- /.row -->
               </fieldset>
             </div>

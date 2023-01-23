@@ -1,13 +1,13 @@
 @php
-  $geoip = geoip(get_visitor_IP());
-  $shipping_country = $business_areas->where('iso_code', $geoip->iso_code)->first();
-  $shipping_state = \DB::table('states')
-      ->select('id', 'name', 'iso_code')
-      ->where([['country_id', '=', $shipping_country->id], ['iso_code', '=', $geoip->state]])
-      ->first();
+$geoip = geoip(get_visitor_IP());
+$shipping_country = $business_areas->where('iso_code', $geoip->iso_code)->first();
+$shipping_state = \DB::table('states')
+    ->select('id', 'name', 'iso_code')
+    ->where([['country_id', '=', $shipping_country->id], ['iso_code', '=', $geoip->state]])
+    ->first();
 
-  $shipping_zone = get_shipping_zone_of($item->shop_id, $shipping_country->id, optional($shipping_state)->id);
-  $shipping_options = isset($shipping_zone->id) ? getShippingRates($shipping_zone->id) : 'NaN';
+$shipping_zone = get_shipping_zone_of($item->shop_id, $shipping_country->id, optional($shipping_state)->id);
+$shipping_options = isset($shipping_zone->id) ? getShippingRates($shipping_zone->id) : 'NaN';
 @endphp
 
 <section>
@@ -115,12 +115,6 @@
                 <i class="fal fa-shopping-cart"></i> @lang('theme.button.add_to_cart')
               </a>
 
-              @if (is_incevio_package_loaded('comparison'))
-                <a data-link="{{ route('comparable.add', $item->id) }}" class="btn btn-default btn-lg add-to-product-compare" id="product-compare-btn">
-                  <i class="far fa-repeat-alt"></i> @lang('theme.button.compare')
-                </a>
-              @endif
-
               @if ($item->product->inventories_count > 1)
                 <a href="{{ route('show.offers', $item->product->slug) }}" class="d-none d-sm-inline-block btn btn-sm btn-link">
                   @lang('theme.view_more_offers', ['count' => $item->product->inventories_count])
@@ -219,114 +213,111 @@
 
               {!! $item->product->description !!}
 
-              {{-- Hide technical details from configuration --}}
-              @unless(config('system_settings.hide_technical_details_on_product_page'))
-                <hr class="style4 muted my-4" />
+              {{-- <div class="clearfix space30"></div> --}}
 
-                <h4 class="mb-3">{{ trans('theme.technical_details') }}: </h4>
+              <hr class="style4 muted my-4" />
 
-                <table class="table table-striped noborder">
-                  <tbody>
-                    @if ($item->product->brand)
-                      <tr class="noborder">
-                        <th class="text-right noborder">{{ trans('theme.brand') }}:</th>
-                        <td class="noborder" style="width: 65%;">{{ $item->product->brand }}</td>
-                      </tr>
-                    @endif
+              <h3 class="mb-3">{{ trans('theme.technical_details') }}: </h3>
 
-                    @if ($item->expiry_date)
-                      <tr class="noborder">
-                        <th class="text-right noborder">{{ trans('pharmacy::lang.expiry_date') }}:</th>
-                        <td class="noborder" style="width: 65%;">{{ $item->expiry_date }}</td>
-                      </tr>
-                    @endif
-
-                    @if ($item->product->model_number)
-                      <tr class="noborder">
-                        <th class="text-right noborder">{{ trans('theme.model_number') }}:</th>
-                        <td class="noborder" style="width: 65%;">{{ $item->product->model_number }}</td>
-                      </tr>
-                    @endif
-
-                    @if ($item->product->gtin_type && $item->product->gtin)
-                      <tr class="noborder">
-                        <th class="text-right noborder">{{ $item->product->gtin_type }}:</th>
-                        <td class="noborder" style="width: 65%;">{{ $item->product->gtin }}</td>
-                      </tr>
-                    @endif
-
-                    @if ($item->product->mpn)
-                      <tr class="noborder">
-                        <th class="text-right noborder">{{ trans('theme.mpn') }}:</th>
-                        <td class="noborder" style="width: 65%;">{{ $item->product->mpn }}</td>
-                      </tr>
-                    @endif
-
-                    @if ($item->sku)
-                      <tr class="noborder">
-                        <th class="text-right noborder">{{ trans('theme.sku') }}:</th>
-                        <td class="noborder" id="item_sku" style="width: 65%;">{{ $item->sku }}</td>
-                      </tr>
-                    @endif
-
-                    @if (config('system_settings.show_item_conditions'))
-                      <tr class="noborder">
-                        <th class="text-right noborder">{{ trans('theme.condition') }}:</th>
-                        <td class="noborder" id="item_condition" style="width: 65%;">
-                          {{ $item->condition }}
-                          @if ($item->condition_note)
-                            <sup data-toggle="tooltip" data-placement="top" title="{!! $item->condition_note !!}">
-                              <i class="fas fa-question-circle" id="item_condition_note"></i>
-                            </sup>
-                          @endif
-                        </td>
-                      </tr>
-                    @endif
-
-                    @if (optional($item->product->manufacturer)->name)
-                      <tr class="noborder">
-                        <th class="text-right noborder">{{ trans('theme.manufacturer') }}:</th>
-                        <td class="noborder" style="width: 65%;">{{ $item->product->manufacturer->name }}</td>
-                      </tr>
-                    @endif
-
-                    @if ($item->product->origin)
-                      <tr class="noborder">
-                        <th class="text-right noborder">{{ trans('theme.origin') }}:</th>
-                        <td class="noborder" style="width: 65%;">{{ $item->product->origin->name }}</td>
-                      </tr>
-                    @endif
-
+              <table class="table table-striped noborder">
+                <tbody>
+                  @if ($item->product->brand)
                     <tr class="noborder">
-                      <th class="text-right noborder">{{ trans('theme.availability') }}:</th>
-                      <td class="noborder" style="width: 65%;">{{ $item->availability }}</td>
+                      <th class="text-right noborder">{{ trans('theme.brand') }}: </th>
+                      <td class="noborder" style="width: 65%;">{{ $item->product->brand }}</td>
                     </tr>
+                  @endif
 
-                    @if ($item->min_order_quantity)
-                      <tr class="noborder">
-                        <th class="text-right noborder">{{ trans('theme.min_order_quantity') }}:</th>
-                        <td class="noborder" id="item_min_order_qtt" style="width: 65%;">{{ $item->min_order_quantity }}</td>
-                      </tr>
-                    @endif
+                  @if ($item->expiry_date)
+                    <tr class="noborder">
+                      <th class="text-right noborder">{{ trans('pharmacy::lang.expiry_date') }}: </th>
+                      <td class="noborder" style="width: 65%;">{{ $item->expiry_date }}</td>
+                    </tr>
+                  @endif
 
-                    @if ($item->shipping_weight)
-                      <tr class="noborder">
-                        <th class="text-right noborder">{{ trans('theme.shipping_weight') }}:</th>
-                        <td class="noborder" id="item_shipping_weight" style="width: 65%;">{{ $item->shipping_weight . ' ' . config('system_settings.weight_unit') }}</td>
-                      </tr>
-                    @endif
+                  @if ($item->product->model_number)
+                    <tr class="noborder">
+                      <th class="text-right noborder">{{ trans('theme.model_number') }}:</th>
+                      <td class="noborder" style="width: 65%;">{{ $item->product->model_number }}</td>
+                    </tr>
+                  @endif
 
-                    @if ($item->product->created_at)
-                      <tr class="noborder">
-                        <th class="text-right noborder">{{ trans('theme.first_listed_on', ['platform' => get_platform_title()]) }}
-                          :
-                        </th>
-                        <td class="noborder" style="width: 65%;">{{ $item->product->created_at->toFormattedDateString() }}</td>
-                      </tr>
-                    @endif
-                  </tbody>
-                </table>
-              @endunless
+                  @if ($item->product->gtin_type && $item->product->gtin)
+                    <tr class="noborder">
+                      <th class="text-right noborder">{{ $item->product->gtin_type }}: </th>
+                      <td class="noborder" style="width: 65%;">{{ $item->product->gtin }}</td>
+                    </tr>
+                  @endif
+
+                  @if ($item->product->mpn)
+                    <tr class="noborder">
+                      <th class="text-right noborder">{{ trans('theme.mpn') }}: </th>
+                      <td class="noborder" style="width: 65%;">{{ $item->product->mpn }}</td>
+                    </tr>
+                  @endif
+
+                  @if ($item->sku)
+                    <tr class="noborder">
+                      <th class="text-right noborder">{{ trans('theme.sku') }}: </th>
+                      <td class="noborder" id="item_sku" style="width: 65%;">{{ $item->sku }}</td>
+                    </tr>
+                  @endif
+
+                  @if (config('system_settings.show_item_conditions'))
+                    <tr class="noborder">
+                      <th class="text-right noborder">{{ trans('theme.condition') }}: </th>
+                      <td class="noborder" id="item_condition" style="width: 65%;">
+                        {{ $item->condition }}
+                        @if ($item->condition_note)
+                          <sup data-toggle="tooltip" data-placement="top" title="{!! $item->condition_note !!}">
+                            <i class="fas fa-question-circle" id="item_condition_note"></i>
+                          </sup>
+                        @endif
+                      </td>
+                    </tr>
+                  @endif
+
+                  @if (optional($item->product->manufacturer)->name)
+                    <tr class="noborder">
+                      <th class="text-right noborder">{{ trans('theme.manufacturer') }}: </th>
+                      <td class="noborder" style="width: 65%;">{{ $item->product->manufacturer->name }}</td>
+                    </tr>
+                  @endif
+
+                  @if ($item->product->origin)
+                    <tr class="noborder">
+                      <th class="text-right noborder">{{ trans('theme.origin') }}: </th>
+                      <td class="noborder" style="width: 65%;">{{ $item->product->origin->name }}</td>
+                    </tr>
+                  @endif
+
+                  <tr class="noborder">
+                    <th class="text-right noborder">{{ trans('theme.availability') }}: </th>
+                    <td class="noborder" style="width: 65%;">{{ $item->availability }}</td>
+                  </tr>
+
+                  @if ($item->min_order_quantity)
+                    <tr class="noborder">
+                      <th class="text-right noborder">{{ trans('theme.min_order_quantity') }}: </th>
+                      <td class="noborder" id="item_min_order_qtt" style="width: 65%;">{{ $item->min_order_quantity }}</td>
+                    </tr>
+                  @endif
+
+                  @if ($item->shipping_weight)
+                    <tr class="noborder">
+                      <th class="text-right noborder">{{ trans('theme.shipping_weight') }}: </th>
+                      <td class="noborder" id="item_shipping_weight" style="width: 65%;">{{ $item->shipping_weight . ' ' . config('system_settings.weight_unit') }}</td>
+                    </tr>
+                  @endif
+
+                  @if ($item->product->created_at)
+                    <tr class="noborder">
+                      <th class="text-right noborder">{{ trans('theme.first_listed_on', ['platform' => get_platform_title()]) }}:</th>
+                      <td class="noborder" style="width: 65%;">{{ $item->product->created_at->toFormattedDateString() }}</td>
+                    </tr>
+                  @endif
+                </tbody>
+              </table>
             </div>
 
             <div role="tabpanel" class="tab-pane fade" id="seller_desc_tab">

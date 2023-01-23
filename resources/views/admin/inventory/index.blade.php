@@ -56,7 +56,7 @@
                 <th>{{ trans('app.condition') }}</th>
                 <th>{{ trans('app.sale_price') }} <small>( {{ trans('app.excl_tax') }} )</small> </th>
                 <th>{{ trans('app.quantity') }}</th>
-                @if (is_incevio_package_loaded('pharmacy'))
+                @if (is_phza24_package_loaded('pharmacy'))
                   <th>{{ trans('app.expiry_date') }}</th>
                 @endif
                 <th>{{ trans('app.option') }}</th>
@@ -95,7 +95,7 @@
                 <th>{{ trans('app.condition') }}</th>
                 <th>{{ trans('app.sale_price') }} <small>( {{ trans('app.excl_tax') }} )</small> </th>
                 <th>{{ trans('app.quantity') }}</th>
-                @if (is_incevio_package_loaded('pharmacy'))
+                @if (is_phza24_package_loaded('pharmacy'))
                   <th>{{ trans('app.expiry_date') }}</th>
                 @endif
                 <th>{{ trans('app.option') }}</th>
@@ -134,7 +134,7 @@
                 <th>{{ trans('app.condition') }}</th>
                 <th>{{ trans('app.sale_price') }} <small>( {{ trans('app.excl_tax') }} )</small> </th>
                 <th>{{ trans('app.quantity') }}</th>
-                @if (is_incevio_package_loaded('pharmacy'))
+                @if (is_phza24_package_loaded('pharmacy'))
                   <th>{{ trans('app.expiry_date') }}</th>
                 @endif
                 <th>{{ trans('app.option') }}</th>

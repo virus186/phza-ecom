@@ -8,13 +8,6 @@ use App\Models\Refund;
 class RefundObserver
 {
     /**
-     * Handle events after all transactions are committed.
-     *
-     * @var bool
-     */
-    public $afterCommit = true;
-
-    /**
      * Listen to the refund saved event. This will trigger when create and update
      *
      * @param  \App\refund  $refund

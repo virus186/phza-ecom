@@ -6,7 +6,6 @@ use App\Models\Category;
 use App\Repositories\BaseRepository;
 use App\Repositories\EloquentRepository;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 
 class EloquentCategory extends EloquentRepository implements BaseRepository, CategoryRepository
 {
@@ -38,20 +37,12 @@ class EloquentCategory extends EloquentRepository implements BaseRepository, Cat
     //Create Category
     public function store(Request $request)
     {
-        $result = parent::store($request);
-
-        $this->clear_cache($result);
-
-        return $result;
+        return parent::store($request);
     }
 
     public function update(Request $request, $id)
     {
-        $result = parent::update($request, $id);
-
-        $this->clear_cache($result);
-
-        return $result;
+        return parent::update($request, $id);
     }
 
     public function destroy($id)
@@ -60,11 +51,7 @@ class EloquentCategory extends EloquentRepository implements BaseRepository, Cat
 
         $category->flushImages();
 
-        $result = $category->forceDelete();
-
-        $this->clear_cache($result);
-
-        return $result;
+        return $category->forceDelete();
     }
 
     public function massDestroy($ids)
@@ -75,11 +62,7 @@ class EloquentCategory extends EloquentRepository implements BaseRepository, Cat
             $catSubGrp->flushImages();
         }
 
-        $result = parent::massDestroy($ids);
-
-        $this->clear_cache($result);
-
-        return $result;
+        return parent::massDestroy($ids);
     }
 
     public function emptyTrash()
@@ -90,21 +73,6 @@ class EloquentCategory extends EloquentRepository implements BaseRepository, Cat
             $catSubGrp->flushImages();
         }
 
-        $result = parent::emptyTrash();
-
-        $this->clear_cache($result);
-
-        return $result;
-    }
-
-    private function clear_cache($result = false)
-    {
-        if ($result) {
-            Cache::forget('category_list_for_form');
-
-            return true;
-        }
-
-        return false;
+        return parent::emptyTrash();
     }
 }

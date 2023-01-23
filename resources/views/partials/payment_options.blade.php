@@ -10,6 +10,7 @@
   @foreach ($paymentMethods as $paymentMethod)
     {{-- When admin get paid but still give option to vendors on/off a active payment method --}}
     @continue(!vendor_get_paid_directly() && isset($shop) && vendor_can_on_off_payment_method() && !in_array($paymentMethod->id, $active_payment_methods))
+
     @php
       $config = get_payment_config_info($paymentMethod->code, $config_shop);
       
@@ -49,12 +50,12 @@
 @include('partials.strip_card_form')
 
 {{-- Razorpay --}}
-@if (is_incevio_package_loaded('razorpay'))
+@if (is_phza24_package_loaded('razorpay'))
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 @endif
 
 {{-- M-Pesa Payment --}}
-@if (is_incevio_package_loaded('mpesa'))
+@if (is_phza24_package_loaded('mpesa'))
   @include('mpesa::mpesa_payment_form')
 @endif
 

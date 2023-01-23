@@ -23,13 +23,13 @@ class UpdateAttributeRequest extends Request
      */
     public function rules()
     {
-        $shop_id = Request::user()->merchantId(); // Get current user's shop_id
-        $ignore = $this->route('attribute'); // Current model ID
+        $shop_id = Request::user()->merchantId(); //Get current user's shop_id
+        $ignore = Request::segment(count(Request::segments())); //Current model ID
 
         return [
-            'attribute_type_id' => 'required',
-            'name' => 'bail|required|composite_unique:attributes,shop_id:' . $shop_id . ', ' . $ignore,
-            'order' => 'integer|nullable',
+           'attribute_type_id' => 'required',
+           'name' => 'bail|required|composite_unique:attributes,shop_id:'.$shop_id.', '.$ignore,
+           'order' => 'integer|nullable',
         ];
     }
 

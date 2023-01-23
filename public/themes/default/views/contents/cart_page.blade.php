@@ -5,7 +5,7 @@
         @php
           $cart_total = 0;
           
-          if (is_incevio_package_loaded('packaging')) {
+          if (is_phza24_package_loaded('packaging')) {
               $packaging_options = optional($cart->shop)->packagings;
           
               if ($cart->shop) {
@@ -28,7 +28,7 @@
             {{ Form::hidden('shop_id', $cart->shop->id, ['id' => 'shop-id' . $cart->id]) }}
             {{ Form::hidden('tax_id', isset($shipping_zones[$cart->id]->id) ? $shipping_zones[$cart->id]->tax_id : null, ['id' => 'tax-id' . $cart->id]) }}
             {{ Form::hidden('taxrate', null, ['id' => 'cart-taxrate' . $cart->id]) }}
-            @if (is_incevio_package_loaded('packaging'))
+            @if (is_phza24_package_loaded('packaging'))
               {{ Form::hidden('packaging_id', $default_packaging ? $default_packaging->id : null, ['id' => 'packaging-id' . $cart->id]) }}
             @endif
             {{ Form::hidden('ship_to', $cart->ship_to, ['id' => 'ship-to' . $cart->id]) }}
@@ -36,7 +36,7 @@
             {{ Form::hidden('shipping_rate_id', $cart->shipping_rate_id, ['id' => 'shipping-rate-id' . $cart->id]) }}
             {{ Form::hidden('ship_to_country_id', $cart->ship_to_country_id, ['id' => 'shipto-country-id' . $cart->id]) }}
             {{ Form::hidden('ship_to_state_id', $cart->ship_to_state_id, ['id' => 'shipto-state-id' . $cart->id]) }}
-            @if (is_incevio_package_loaded('coupons'))
+            @if (is_phza24_package_loaded('coupons'))
               {{ Form::hidden('coupon_raw', json_encode($cart->coupon), ['id' => 'coupon-raw' . $cart->id]) }}
             @endif
             {{ Form::hidden('handling_cost', optional($cart->shop->config)->order_handling_cost, ['id' => 'handling-cost' . $cart->id]) }}
@@ -141,14 +141,14 @@
               <tfoot>
                 <tr>
                   <td colspan="6">
-                    @if (is_incevio_package_loaded('coupons'))
+                    @if (is_phza24_package_loaded('coupons'))
                       <div class="input-group full-width">
                         <span class="input-group-addon flat">
                           <i class="fa fa-ticket"></i>
                         </span>
-                        <input name="coupon" value="{{ $cart->coupon ? $cart->coupon->code : null }}" id="coupon{{ $cart->id }}" class="form-control flat" type="text" placeholder="@lang('coupons::lang.have_coupon_from_seller')">
+                        <input name="coupon" value="{{ $cart->coupon ? $cart->coupon->code : null }}" id="coupon{{ $cart->id }}" class="form-control flat" type="text" placeholder="@lang('coupons::lang.theme.have_coupon_from_seller')">
                         <span class="input-group-btn">
-                          <button class="btn btn-default flat apply_seller_coupon" type="button" data-cart="{{ $cart->id }}">@lang('coupons::lang.apply_coupon')</button>
+                          <button class="btn btn-default flat apply_seller_coupon" type="button" data-cart="{{ $cart->id }}">@lang('coupons::lang.theme.apply_coupon')</button>
                         </span>
                       </div><!-- /input-group -->
                     @endif
@@ -197,7 +197,7 @@
                   </span>
                 </li>
 
-                @if (is_incevio_package_loaded('packaging'))
+                @if (is_phza24_package_loaded('packaging'))
                   @unless(empty(json_decode($packaging_options)))
                     <li>
                       <span>
@@ -217,7 +217,7 @@
                   @endunless
                 @endif
 
-                @if (is_incevio_package_loaded('coupons'))
+                @if (is_phza24_package_loaded('coupons'))
                   <li id="discount-section-li{{ $cart->id }}" style="display: {{ $cart->coupon ? 'block' : 'none' }};">
                     <span>{{ trans('theme.discount') }}
                       <em id="summary-discount-name{{ $cart->id }}" class="small text-muted">{{ $cart->coupon ? $cart->coupon->name . ' (' . $cart->coupon->getFormatedAmountText() . ')' : '' }}</em>
@@ -262,7 +262,7 @@
           <a href="{{ url('/') }}" class="btn btn-black flat">{{ trans('theme.button.continue_shopping') }}</a>
         </div>
         <div class="col-6 nopadding-left text-right">
-          @if (is_incevio_package_loaded('checkout'))
+          @if (is_phza24_package_loaded('checkout'))
             @include('checkout::_checkout_button')
           @endif
         </div>

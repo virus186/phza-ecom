@@ -254,7 +254,7 @@ ul.DTTT_dropdown.dropdown-menu li:hover a {
 }
 
 div.DTTT_collection_background {
-	z-index: 2002;
+	z-index: 2002;	
 }
 
 /* TableTools information display */
@@ -274,7 +274,7 @@ div.DTTT_print_info {
 	background-color: white;
 	border: 1px solid rgba(0, 0, 0, 0.2);
 	border-radius: 6px;
-
+	
 	-webkit-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.5);
 	        box-shadow: 0 3px 7px rgba(0, 0, 0, 0.5);
 }
@@ -325,7 +325,7 @@ table.DTFC_Cloned tr.even {
     background-color: white;
     margin-bottom: 0;
 }
-
+ 
 div.DTFC_RightHeadWrapper table ,
 div.DTFC_LeftHeadWrapper table {
 	border-bottom: none !important;
@@ -334,7 +334,7 @@ div.DTFC_LeftHeadWrapper table {
     border-bottom-left-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
 }
-
+ 
 div.DTFC_RightHeadWrapper table thead tr:last-child th:first-child,
 div.DTFC_RightHeadWrapper table thead tr:last-child td:first-child,
 div.DTFC_LeftHeadWrapper table thead tr:last-child th:first-child,
@@ -342,20 +342,20 @@ div.DTFC_LeftHeadWrapper table thead tr:last-child td:first-child {
     border-bottom-left-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
 }
-
+ 
 div.DTFC_RightBodyWrapper table,
 div.DTFC_LeftBodyWrapper table {
     border-top: none;
     margin: 0 !important;
 }
-
+ 
 div.DTFC_RightBodyWrapper tbody tr:first-child th,
 div.DTFC_RightBodyWrapper tbody tr:first-child td,
 div.DTFC_LeftBodyWrapper tbody tr:first-child th,
 div.DTFC_LeftBodyWrapper tbody tr:first-child td {
     border-top: none;
 }
-
+ 
 div.DTFC_RightFootWrapper table,
 div.DTFC_LeftFootWrapper table {
     border-top: none;
@@ -10434,122 +10434,4 @@ img.verified-badge {
     > .treeview-menu {
     border-left: 1px solid #d2d6de;
   }
-}
-
-.hide_menu_item label {
-	display: inline-block;
-	margin: 0px 10px;
-}
-
-/* CREDIT CARD IMAGE STYLING */
-.creditcard {
-  width: 100%;
-  margin: auto;
-  max-width: 400px;
-  max-height: 251px;
-  height: 54vw;
-}
-
-.creditcard .front {
-  position: absolute;
-  width: 100%;
-  max-width: 400px;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  -webkit-font-smoothing: antialiased;
-  color: #47525d;
-}
-
-#ccsingle {
-  position: absolute;
-  right: 15px;
-  top: 20px;
-}
-
-#ccsingle svg {
-  width: 100px;
-  max-height: 60px;
-}
-
-.creditcard svg#cardfront {
-  width: 100%;
-  -webkit-box-shadow: 1px 2px 3px 0px black;
-  box-shadow: 1px 2px 3px 0px black;
-  border-radius: 22px;
-}
-
-/* CHANGEABLE CARD ELEMENTS */
-.creditcard .lightcolor,
-.creditcard .darkcolor {
-  -webkit-transition: fill .5s;
-  transition: fill .5s;
-}
-
-.creditcard .grey {
-  fill: #bdbdbd;
-}
-
-.creditcard .greydark {
-  fill: #616161;
-}
-
-#svgname {
-  text-transform: uppercase;
-}
-
-#cardfront .st2 {
-  fill: #FFFFFF;
-}
-
-#cardfront .st3 {
-  font-family: 'Source Code Pro', monospace;
-  font-weight: 600;
-}
-
-#cardfront .st4 {
-  font-size: 54.7817px;
-}
-
-#cardfront .st5 {
-  font-family: 'Source Code Pro', monospace;
-  font-weight: 400;
-}
-
-#cardfront .st6 {
-  font-size: 33.1112px;
-}
-
-#cardfront .st7 {
-  opacity: 0.6;
-  fill: #FFFFFF;
-}
-
-#cardfront .st8 {
-  font-size: 24px;
-}
-
-#cardfront .st9 {
-  font-size: 36.5498px;
-}
-
-#cardfront .st10 {
-  font-family: 'Source Code Pro', monospace;
-  font-weight: 300;
-}
-
-#cardfront .st11 {
-  font-size: 16.1716px;
-}
-
-#cardfront .st12 {
-  fill: #4C4C4C;
-}
-
-.admin-login-mod{
-	padding: 18px;
-	background-color: white;
-}
-.customer-login-mod{
-	padding: 18px;
-	background-color: white;
 }

@@ -4,17 +4,17 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Product;
 use App\Models\Inventory;
-use App\Helpers\ListHelper;
 use App\Common\Authorizable;
-use Illuminate\Http\Request;
-use Yajra\DataTables\DataTables;
+use App\Helpers\ListHelper;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use App\Repositories\Inventory\InventoryRepository;
 use App\Http\Requests\Validations\AddInventoryRequest;
 use App\Http\Requests\Validations\CreateInventoryRequest;
 use App\Http\Requests\Validations\UpdateInventoryRequest;
 use App\Http\Requests\Validations\CreateInventoryWithVariantRequest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Yajra\DataTables\DataTables;
 
 class InventoryController extends Controller
 {
@@ -140,7 +140,7 @@ class InventoryController extends Controller
         $attributes = ListHelper::getAttributesBy($product);
 
         // When packaging module available
-        if (is_incevio_package_loaded('packaging')) {
+        if (is_phza24_package_loaded('packaging')) {
             $packagings = ListHelper::packagings();
 
             return view('admin.inventory.create', compact('product', 'attributes', 'packagings'));
@@ -169,7 +169,7 @@ class InventoryController extends Controller
 
         $product = $this->inventory->findProduct($id);
 
-        if (is_incevio_package_loaded('packaging')) {
+        if (is_phza24_package_loaded('packaging')) {
             $packagings = ListHelper::packagings();
 
             return view('admin.inventory.createWithVariant', compact('combinations', 'attributes', 'product', 'packagings'));
@@ -232,19 +232,13 @@ class InventoryController extends Controller
     {
         $inventory = $this->inventory->find($id);
 
-        // dd($inventory->toArray());
-        // $client = new \Incevio\Package\Ebay\SDK\Ebay();
-        // $response = $client->createOrUpdateItem($inventory);
-        // $response = $client->getItemFromEbay($inventory->sku);
-        // dd(json_decode($response->getBody()->getContents()));
-
         $product = $this->inventory->findProduct($inventory->product_id);
 
         $preview = $inventory->previewImages();
 
         $attributes = ListHelper::getAttributesBy($product);
 
-        if (is_incevio_package_loaded('packaging')) {
+        if (is_phza24_package_loaded('packaging')) {
             $packagings = ListHelper::packagings();
 
             return view('admin.inventory.edit', compact('inventory', 'product', 'preview', 'attributes', 'packagings'));

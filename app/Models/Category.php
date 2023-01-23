@@ -6,11 +6,10 @@ use App\Common\Imageable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Laravel\Scout\Searchable;
 
 class Category extends BaseModel
 {
-    use HasFactory, SoftDeletes, Imageable, Searchable;
+    use HasFactory, SoftDeletes, Imageable;
 
     /**
      * The database table used by the model.
@@ -35,22 +34,6 @@ class Category extends BaseModel
         'meta_title',
         'meta_description',
     ];
-
-    /**
-     * Get the indexable data array for the model.
-     *
-     * @return array
-     */
-    public function toSearchableArray()
-    {
-        $searchable = [];
-        $searchable['id'] = $this->id;
-        $searchable['name'] = $this->name;
-        $searchable['slug'] = $this->slug;
-        $searchable['active'] = (bool) $this->active;
-
-        return $searchable;
-    }
 
     /**
      * Get all listings for the category.

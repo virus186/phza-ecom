@@ -41,10 +41,10 @@
             @if (is_subscription_enabled())
               <th>{{ trans('app.current_billing_plan') }}</th>
             @endif
-            {{-- @if (is_incevio_package_loaded('wallet'))
+            {{-- @if (is_phza24_package_loaded('wallet'))
               <th>{{ trans('wallet::lang.balance') }}</th>
             @endif --}}
-            @if (is_incevio_package_loaded('dynamicCommission'))
+            @if (is_phza24_package_loaded('dynamicCommission'))
               <th>{{ trans('dynamicCommission::lang.periodic_sold_amount') }}</th>
             @endif
             <th>{{ trans('app.owner') }}</th>
@@ -96,11 +96,11 @@
                 </td>
               @endif
 
-              {{-- @if (is_incevio_package_loaded('wallet'))
+              {{-- @if (is_phza24_package_loaded('wallet'))
                 <td>{{ get_formated_currency($shop->balance) }}</td>
               @endif --}}
 
-              @if (is_incevio_package_loaded('dynamicCommission'))
+              @if (is_phza24_package_loaded('dynamicCommission'))
                 <td>{{ get_formated_currency($shop->periodic_sold_amount) }}</td>
               @endif
 

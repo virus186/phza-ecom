@@ -14,12 +14,11 @@ use Illuminate\Support\Facades\Route;
 use Laravel\Scout\Searchable;
 use Carbon\Carbon;
 
-// Uncomment below line to enable Inspector plugin. (Have to install the plugin.)
 // use Incevio\Package\Inspector\Traits\HasInspector;
 
 class Inventory extends BaseModel
 {
-    // Uncomment below line to enable Inspector plugin. (Have to install the plugin.)
+    // Enable this line when you installed the Inspector plugin
     // use HasInspector;
 
     use HasFactory, SoftDeletes, CascadeSoftDeletes, Taggable, Imageable, Searchable, Filterable, Feedbackable;
@@ -122,7 +121,6 @@ class Inventory extends BaseModel
             'sale_price' => $this->sale_price,
             'sku' => $this->sku,
             'key_features' => $this->key_features ? implode(', ', unserialize($this->key_features)) : null,
-            'attributes' => $this->attributeValues,
             'shop' => $this->shop->name,
             'product' => $this->product->name,
             'product_gtin' => $this->product->gtin,
@@ -292,7 +290,7 @@ class Inventory extends BaseModel
             return false;
         }
 
-        if (is_incevio_package_loaded('pharmacy')) {
+        if (is_phza24_package_loaded('pharmacy')) {
             return $this->expiry_date > Carbon::now();
         }
 
@@ -446,17 +444,11 @@ class Inventory extends BaseModel
             $q->active();
         })->where([
             ['active', '=', 1],
-            // ['stock_quantity', '>', 0],
+            ['stock_quantity', '>', 0],
             ['available_from', '<=', Carbon::now()],
         ])->zipcode();
 
-        // Hide out-of-stock items when enabled
-        if (config('system_settings.hide_out_of_stock_items')) {
-            $query = $query->where('stock_quantity', '>', 0);
-        }
-
-        // Check expiry date when pharmacy plugin is enabled
-        if (is_incevio_package_loaded('pharmacy')) {
+        if (is_phza24_package_loaded('pharmacy')) {
             $query = $query->where('expiry_date', '>', Carbon::now());
         }
 
@@ -494,7 +486,11 @@ class Inventory extends BaseModel
      */
     public function scopeNewArraivals($query)
     {
-        return $query->where('inventories.created_at', '>', Carbon::now()->subDays(config('system.filter.new_arraival', 7)));
+        return $query->where(
+            'inventories.created_at',
+            '>',
+            Carbon::now()->subDays(config('system.filter.new_arraival', 7))
+        );
     }
 
     /**
@@ -532,8 +528,7 @@ class Inventory extends BaseModel
             ['available_from', '<=', Carbon::now()],
         ]);
 
-        // Check expiry date when pharmacy plugin is enabled
-        if (is_incevio_package_loaded('pharmacy')) {
+        if (is_phza24_package_loaded('pharmacy')) {
             $query = $query->where('expiry_date', '>', Carbon::now());
         }
 
@@ -549,7 +544,7 @@ class Inventory extends BaseModel
     {
         $query = $query->where('active', '!=', static::ACTIVE);
 
-        if (is_incevio_package_loaded('pharmacy')) {
+        if (is_phza24_package_loaded('pharmacy')) {
             $query = $query->orWhere(
                 function ($q) {
                     $q->whereNull('expiry_date')
@@ -648,7 +643,7 @@ class Inventory extends BaseModel
      */
     public function scopeZipcode($query): object
     {
-        if (is_incevio_package_loaded('zipcode')) {
+        if (is_phza24_package_loaded('zipcode')) {
             return $query->whereHas('shop.address', function ($builder) {
                 return $builder->where('zip_code', session('zipcode_default'));
             });

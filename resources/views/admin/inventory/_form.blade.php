@@ -20,9 +20,9 @@
           if (isset($inventory)) {
               $product = $inventory->product;
           }
-          
+
           $requires_shipping = $product->requires_shipping || (isset($inventory) && $inventory->product->requires_shipping);
-          
+
           $title_classes = isset($inventory) ? 'form-control' : 'form-control makeSlug';
         @endphp
 
@@ -76,7 +76,7 @@
             <div class="file-loading">
               <input id="dropzone-input" name="images[]" type="file" accept="image/*" multiple>
             </div>
-            <span class="small"><i class="fa fa-info-circle"></i> {{ trans('help.multi_img_upload_instruction', ['size' => getAllowedMaxImgSize(), 'number' => getMaxNumberOfImgsForInventory()]) }}</span>
+            <span class="small"><i class="fa fa-info-circle"></i> {{ trans('help.multi_img_upload_instruction', ['size' => getAllowedMaxImgSize(),'number' => getMaxNumberOfImgsForInventory()]) }}</span>
           </div>
         </fieldset>
 
@@ -211,7 +211,7 @@
           </div>
         </div>
 
-        @if (is_incevio_package_loaded('pharmacy'))
+        @if (is_phza24_package_loaded('pharmacy'))
           @include('pharmacy::inventory_form')
         @endif
 
@@ -232,7 +232,7 @@
             <div class="form-group">
               {!! Form::label('warehouse_id', trans('app.form.warehouse'), ['class' => 'with-help']) !!}
               <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="top" title="{{ trans('help.select_warehouse') }}"></i>
-              {!! Form::select('warehouse_id', $warehouses, isset($inventory) ? null : config('shop_settings.default_warehouse_id'), ['class' => 'form-control select2', 'placeholder' => trans('app.placeholder.select')]) !!}
+              {!! Form::select('warehouse_id', $warehouses, isset($inventory) ? null : config('shop_settings.default_warehouse_id'), ['class' => 'form-control select2', 'placeholder' => trans('app.placeholder.select'), 'required']) !!}
             </div>
 
             <div class="form-group">
@@ -245,7 +245,7 @@
               <div class="help-block with-errors"></div>
             </div>
 
-            @if (is_incevio_package_loaded('packaging'))
+            @if(is_phza24_package_loaded('packaging'))
               <div class="form-group">
                 {!! Form::label('packaging_list[]', trans('packaging::lang.packagings'), ['class' => 'with-help']) !!}
                 <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="top" title="{{ trans('help.select_packagings') }}"></i>
@@ -265,7 +265,7 @@
                   <option value="">{{ trans('app.placeholder.select') }}</option>
 
                   @foreach ($attribute->attributeValues as $attributeValue)
-                    <option value="{{ $attributeValue->id }}" {{ isset($inventory) && count($inventory->attributes) && in_array($attributeValue->id, $inventory->attributeValues->pluck('id')->toArray()) ? 'selected' : '' }}>
+                    <option value="{{ $attributeValue->id }}" {{ isset($inventory) &&count($inventory->attributes) &&in_array($attributeValue->id, $inventory->attributeValues->pluck('id')->toArray())? 'selected': '' }}>
 
                       {{ $attributeValue->value }}
 
@@ -312,7 +312,7 @@
           <div class="form-group">
             {!! Form::label('slug', trans('app.form.slug') . '*', ['class' => 'with-help']) !!}
             <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="top" title="{{ trans('help.slug') }}"></i>
-            {!! Form::text('slug', null, ['class' => 'form-control slug', 'placeholder' => trans('app.placeholder.slug'), 'required']) !!}
+            {!! Form::text('slug', null, ['class' => 'form-control slug', 'placeholder' => 'SEO Friendly URL', 'required']) !!}
             <div class="help-block with-errors"></div>
           </div>
 

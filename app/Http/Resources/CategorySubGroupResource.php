@@ -21,14 +21,6 @@ class CategorySubGroupResource extends JsonResource
             'slug' => $this->slug,
             'description' => $this->description,
             'cover_image' => get_cover_img_src($this, 'category'),
-            $this->mergeWhen($request->is('api/vendor/*'), [
-                'parent_group' => [
-                    'id' => $this->group->id,
-                    'name' => $this->group->name,
-                    'deleted_at' => $this->group->deleted_at,
-                ],
-            ]),
-            'active' => (bool) $this->active,
         ];
     }
 }

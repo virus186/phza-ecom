@@ -43,7 +43,7 @@
 
   <div class="row mb-2">
     <div class="col-6 nopadding-right">
-        @if(is_incevio_package_loaded('wishlist'))
+        @if(is_phza24_package_loaded('wishlist'))
       <a href="javascript:void(0)" data-link="{{ route('wishlist.add', $item) }}" class="btn btn-link add-to-wishlist">
         <i class="far fa-heart"></i> @lang('theme.button.add_to_wishlist')
       </a>

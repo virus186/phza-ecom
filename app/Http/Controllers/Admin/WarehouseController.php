@@ -61,6 +61,7 @@ class WarehouseController extends Controller
      */
     public function store(CreateWarehouseRequest $request)
     {
+        $request->merge(['business_days' => implode(',', $request->get('business_day'))]);
         $this->warehouse->store($request);
 
         return back()->with('success', trans('messages.created', ['model' => $this->model_name]));
@@ -101,6 +102,7 @@ class WarehouseController extends Controller
      */
     public function update(UpdateWarehouseRequest $request, $id)
     {
+        $request->merge(['business_days' => implode(',', $request->get('business_day'))]);
         $this->warehouse->update($request, $id);
 
         return back()->with('success', trans('messages.updated', ['model' => $this->model_name]));

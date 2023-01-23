@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\DeliveryBoy;
+namespace App\Http\Controllers\Api\Deliveryboy;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\SystemConfigResource;

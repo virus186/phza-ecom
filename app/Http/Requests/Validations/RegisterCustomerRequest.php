@@ -23,18 +23,12 @@ class RegisterCustomerRequest extends Request
      */
     public function rules()
     {
-        $rules = [
+        return [
             'name' => 'required|min:3|max:255',
             'email' => 'required|email|max:255|unique:customers',
             'password' => 'required|string|min:6|confirmed',
             'agree' => 'required',
         ];
-
-        if (is_incevio_package_loaded('otp-login')) {
-            $rules['phone'] = 'required|string|max:255|unique:customers';
-        }
-
-        return $rules;
     }
 
     /**

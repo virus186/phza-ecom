@@ -81,30 +81,6 @@ $has_config = false;
                                 @endif
                               @break
 
-                              @case('iyzico')
-                                @if($config->iyzico)
-                                  @php
-                                    $has_config = true;
-                                  @endphp
-                                @endif
-                              @break
-
-                              @case('paypal')
-                                @if($config->paypal)
-                                  @php
-                                    $has_config = true;
-                                  @endphp
-                                @endif
-                              @break
-
-                              @case('payfast')
-                                @if($config->payfast)
-                                  @php
-                                    $has_config = true;
-                                  @endphp
-                                @endif
-                              @break
-
                               @case('authorizenet')
                                 @if ($config->authorizeNet)
                                   @php

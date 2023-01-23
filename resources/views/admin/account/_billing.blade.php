@@ -75,7 +75,6 @@
               @endforeach
             </tbody>
           </table>
-
           @if ((bool) config('system_settings.trial_days'))
             <span class="spacer10"></span>
             <span class="text-info">
@@ -88,52 +87,28 @@
     </div>
 
     @if (Auth::user()->isMerchant())
-      <div class="panel panel-default">
-        <div class="panel-body">
-          <fieldset>
-            <legend>{{ trans('app.billing') }}</legend>
-            @unless(\App\Models\SystemConfig::isBillingThroughWallet())
-              @if (\App\Models\SystemConfig::isPaymentConfigured('stripe'))
-                {{-- When Strip is configured for billing --}}
-                @if (isset($billable) && $billable->stripe_id && $billable->pm_last_four)
-                  @include('admin.account._creditcard_view', ['billable' => $billable])
-
-                  <span class="spacer10"></span>
-                  <p class="text-center">
-                    <button type="button" class="btn btn-link" data-toggle="modal" data-target="#cardUpdateModal">
-                      {{ trans('app.update_card') }}
-                      <i class="icon fa fa-edit"></i>
-                    </button>
-                  </p>
-
-                  <div class="modal fade" id="cardUpdateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-sm">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                          {{ trans('app.update_card') }}
-                        </div>
-                        <div class="modal-body">
-                          @include('admin.account._card_update')
-                          <div class="spacer10"></div>
-                        </div>
-                      </div> <!-- / .modal-content -->
-                    </div> <!-- / .modal-dialog -->
-                  </div>
-                @else
-                  {{-- Show notich if card info not added yet --}}
-                  <div class="alert alert-info">
-                    <strong><i class="icon fa fa-credit-card"></i></strong>
-                    {{ trans('messages.no_billing_info') }}
-                  </div>
-
-                  @include('admin.account._card_update')
-                @endif
-              @endif
-            @endunless
-          </fieldset>
+      {{-- @if (config('system.subscription.billing') == 'stripe') --}}
+      @unless(\App\Models\SystemConfig::isBillingThroughWallet())
+        <div class="alert alert-info">
+          <strong><i class="icon fa fa-credit-card"></i></strong>
+          {{ trans('messages.no_billing_info') }}
         </div>
-      </div>
+
+        @if (\App\Models\SystemConfig::isPaymentConfigured('stripe'))
+          <div class="panel panel-default">
+            <div class="panel-body">
+              {!! Form::model($profile, ['method' => 'PUT', 'route' => ['admin.account.card.update'], 'id' => 'stripe-form', 'data-toggle' => 'validator']) !!}
+
+              @include('auth.stripe_form')
+
+              <div class="pull-right">
+                {!! Form::submit(trans('app.update'), ['class' => 'btn btn-lg btn-new', 'id' => 'card-button', 'data-secret' => $intent->client_secret]) !!}
+              </div>
+              {!! Form::close() !!}
+            </div>
+          </div>
+        @endif
+      @endunless
 
       <div class="panel panel-default">
         <div class="panel-body">

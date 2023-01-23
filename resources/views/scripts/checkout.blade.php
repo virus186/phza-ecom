@@ -149,11 +149,11 @@
             }
           });
         } else if (payment_method == 'razorpay' && !$('input[name=razorpay_payment_id]').val()) {
-          @if (is_incevio_package_loaded('razorpay'))
+          @if (is_phza24_package_loaded('razorpay'))
             @include('razorpay::script')
           @endif
 
-          @if (is_incevio_package_loaded('mpesa'))
+          @if (is_phza24_package_loaded('mpesa'))
             // // Create and get access token
             // var request = $.ajax({
             // url: "{!-- isset($cart) ? route(config('mpesa.routes.get_token'), $cart) : (isset($one_checkout_form) ? route(config('mpesa.routes.get_token'), 'all_checkout') : route(config('mpesa.routes.get_token'))) --}",

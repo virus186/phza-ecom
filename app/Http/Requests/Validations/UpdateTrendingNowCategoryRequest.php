@@ -13,7 +13,7 @@ class UpdateTrendingNowCategoryRequest extends Request
      */
     public function authorize()
     {
-        incevioAutoloadHelpers(getMysqliConnection());
+        phza24AutoloadHelpers(getMysqliConnection());
         return true;
     }
 

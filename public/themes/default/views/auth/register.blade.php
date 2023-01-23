@@ -8,7 +8,7 @@
     <div class="box-body">
       {!! Form::open(['route' => 'customer.register', 'id' => 'form', 'data-toggle' => 'validator']) !!}
       <div class="form-group has-feedback">
-        {!! Form::text('name', null, ['class' => 'form-control input-lg', 'placeholder' => trans('theme.placeholder.full_name')]) !!}
+        {!! Form::text('name', null, ['class' => 'form-control input-lg', 'placeholder' => trans('theme.placeholder.full_name'), 'required']) !!}
         <span class="glyphicon glyphicon-user form-control-feedback"></span>
         <div class="help-block with-errors"></div>
       </div>
@@ -17,11 +17,6 @@
         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
         <div class="help-block with-errors"></div>
       </div>
-
-      @if (is_incevio_package_loaded('otp-login'))
-        @include('otp-login::phone_field')
-      @endif
-
       <div class="form-group has-feedback">
         {!! Form::password('password', ['class' => 'form-control input-lg', 'id' => 'password', 'placeholder' => trans('theme.placeholder.password'), 'data-minlength' => '6', 'required']) !!}
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
@@ -33,7 +28,7 @@
         <div class="help-block with-errors"></div>
       </div>
 
-      @if (is_incevio_package_loaded('zipcode'))
+      @if (is_phza24_package_loaded('zipcode'))
         @include('address._form')
       @endif
 
@@ -69,15 +64,15 @@
 
       @if (config('system_settings.social_auth'))
         <div class="social-auth-links text-center">
-          @if (is_incevio_package_loaded('facebook-login'))
+          @if (is_phza24_package_loaded('facebook-login'))
             <a href="{{ route('socialite.customer.facebook') }}" class="btn btn-block btn-social btn-facebook btn-lg btn-flat"><i class="fa fa-facebook"></i> {{ trans('theme.button.login_with_fb') }}</a>
           @endif
 
-          @if (is_incevio_package_loaded('google-login'))
+            @if (is_phza24_package_loaded('google-login'))
             <a href="{{ route('socialite.customer.google') }}" class="btn btn-block btn-social btn-google btn-lg btn-flat"><i class="fa fa-google"></i> {{ trans('theme.button.login_with_g') }}</a>
           @endif
 
-          @if (is_incevio_package_loaded('apple-login'))
+          @if (is_phza24_package_loaded('apple-login'))
             <a href="{{ route('socialite.customer', 'apple') }}" class="btn btn-block btn-social btn-apple btn-lg btn-flat">
               <i class="fa fa-apple"></i> {{ trans('appleLogin::lang.login_with_apple') }}
             </a>

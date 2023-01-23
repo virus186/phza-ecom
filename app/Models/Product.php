@@ -10,12 +10,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Scout\Searchable;
 
-// Uncomment below line to enable Inspector plugin. (Have to install the plugin.)
 // use Incevio\Package\Inspector\Traits\HasInspector;
 
 class Product extends BaseModel
 {
-    // Uncomment below line to enable Inspector plugin. (Have to install the plugin.)
     // use HasInspector;
 
     use HasFactory, SoftDeletes, CascadeSoftDeletes, Taggable, Imageable, Searchable, Feedbackable;

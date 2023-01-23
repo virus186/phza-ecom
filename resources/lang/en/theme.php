@@ -42,8 +42,6 @@ return [
         'add_to_wishlist'     => 'Add to Wishlist',
         'add_new_address'   => 'Add New Address',
         'appeal'            => 'Appeal',
-        'clear_all'               => 'Clear All',
-        'compare'                 => 'Compare',
         'buy_now'             => 'Buy Now',
         'buy_from_this_seller' => 'Buy From This Seller',
         'cancel'            => 'Cancel',
@@ -329,6 +327,7 @@ return [
     'your_cart' => 'Your Cart',
     'your_order_history' => 'Your orders',
     'up' => 'Up',
+
     'help' => [
         'be_honest_when_leave_feedbacks' => 'Your feedback will help other shoppers to make their decision. So, be wise, sincere and honest to leave your feedback.',
         'card_exp_month' => 'Select expiration month',
@@ -721,11 +720,5 @@ return [
     'settings' => 'Settings',
     'menu_options' => 'Menu Options',
     'languages' => 'Languages',
-    'condition_note' => 'Condition note',
-    'offer_price' => 'Offer price',
-    'seller_rating' => 'Seller rating',
-    'stock_quantity' => 'Stock quantity',
-    'gtin' => 'GTIN',
-    'has_return_policy' => 'Has return policy',
-    'offer_ends_at' => 'Offer ends at',
+
 ];

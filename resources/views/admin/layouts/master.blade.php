@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, shrink-to-fit=no">
-  <meta name="author" content="Incevio | incevio.com">
+  <meta name="author" content="Incevio | phza24.com">
 
   <title>{!! $title ?? get_site_title() !!}</title>
 
@@ -20,7 +20,7 @@
   <link href="{{ mix('css/app.css') }}" rel="stylesheet">
 
   <!-- START Page specific Stylesheets -->
-  @yield('page-style')
+  @yield("page-style")
   <!-- END Page specific Stylesheets -->
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -29,17 +29,6 @@
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-
-  @if (is_incevio_package_loaded('otp-login'))
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
-  @endif
-
-  <style>
-    .iti {
-      display: block;
-    }
-  </style>
 </head>
 <!--
   BODY TAG OPTIONS:
@@ -87,7 +76,7 @@
           </h1>
           <span class='opt-button'>
 
-            @yield('buttons')
+            @yield("buttons")
 
           </span>
         </section>
@@ -138,7 +127,7 @@
         @endif
 
         {{-- Main content --}}
-        @yield('content')
+        @yield("content")
 
       </section>
       <!-- /.content -->
@@ -176,13 +165,8 @@
   @include('admin.notification')
 
   <!-- START Page specific Script -->
-  @yield('page-script')
+  @yield("page-script")
   <!-- END Page specific Script -->
-
-
-  @if (is_incevio_package_loaded('otp-login'))
-    @include('otp-login::scripts')
-  @endif
 
   <!-- Scripts -->
   @include('admin.footer_js')

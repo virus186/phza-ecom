@@ -28,18 +28,6 @@
       {{ get_from_option_table('theme_custom_styling') }}
     </style>
   @endif
-
-  @if (is_incevio_package_loaded('otp-login'))
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
-  @endif
-
-  <style>
-    .iti {
-      display: block;
-    }
-  </style>
-
 </head>
 
 <body class="{{ config('active_locales')->firstWhere('code', App::getLocale())->rtl ? 'rtl' : 'ltr' }}">
@@ -63,7 +51,7 @@
     @endif
 
     <!-- Global Announcement -->
-    @if (is_incevio_package_loaded('announcement'))
+    @if (is_phza24_package_loaded('announcement'))
       @include('announcement::announcement')
     @endif
 
@@ -107,7 +95,7 @@
     <!-- my Dynamic Modal-->
     <div id="myDynamicModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false"></div>
 
-    {{-- @if (is_incevio_package_loaded('zipcode')) --}}
+    {{-- @if (is_phza24_package_loaded('zipcode')) --}}
     {{-- @include('theme::modals.zipcode') --}}
     {{-- @include('zipcode::_modal') --}}
     {{-- @endif --}}
@@ -130,24 +118,14 @@
   <!-- AppJS -->
   @include('theme::scripts.appjs')
 
-  <!-- otp-login scripts -->
-  @if (is_incevio_package_loaded('otp-login'))
-    @include('otp-login::scripts')
-  @endif
-
   {{-- Search Autocomplete script --}}
-  @if (is_incevio_package_loaded('searchAutocomplete'))
+  @if (is_phza24_package_loaded('searchAutocomplete'))
     @include('searchAutocomplete::scripts')
   @endif
 
   {{-- Wishlist script --}}
-  @if (is_incevio_package_loaded('wishlist'))
+  @if (is_phza24_package_loaded('wishlist'))
     @include('wishlist::script')
-  @endif
-
-  {{-- Comparison script --}}
-  @if (is_incevio_package_loaded('comparison'))
-    @include('comparison::script')
   @endif
 
   {{-- Coupons script --}}
@@ -155,11 +133,6 @@
 
   <!-- Page Scripts -->
   @yield('scripts')
-
-  {{-- Purchase button popup --}}
-  @if (config('app.demo') == true && \Str::contains(url()->current(), 'Phza24'))
-    @include('partials.demo_purchase_btn')
-  @endif
 </body>
 
 </html>

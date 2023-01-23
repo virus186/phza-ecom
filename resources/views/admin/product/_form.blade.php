@@ -1,9 +1,4 @@
-@php
-  $title_classes = isset($product) ? 'form-control' : 'form-control makeSlug';
-@endphp
-
-@if (config('system_settings.can_use_own_catalog_only') &&
-    auth()->user()->isFromPlatform())
+@if (config('system_settings.can_use_own_catalog_only'))
   <div class="row">
     <div class="col-md-8 col-md-offset-2">
       <div class="alert alert-danger alert-dismissible">
@@ -31,7 +26,7 @@
               <div class="form-group">
                 {!! Form::label('name', trans('app.form.name') . '*', ['class' => 'with-help']) !!}
                 <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="top" title="{{ trans('help.product_name') }}"></i>
-                {!! Form::text('name', null, ['class' => $title_classes, 'placeholder' => trans('app.placeholder.title'), 'required']) !!}
+                {!! Form::text('name', null, ['class' => 'form-control', 'placeholder' => trans('app.placeholder.title'), 'required']) !!}
                 <div class="help-block with-errors"></div>
               </div>
             </div>
@@ -77,6 +72,11 @@
             <div class="help-block with-errors">{!! $errors->first('description', ':message') !!}</div>
           </div>
 
+          <div class="form-group">
+            {!! Form::label('tag_list[]', trans('app.form.tags'), ['class' => 'with-help']) !!}
+            {!! Form::select('tag_list[]', $tags, null, ['class' => 'form-control select2-tag', 'multiple' => 'multiple']) !!}
+          </div>
+
           <fieldset>
             <legend>
               {{ trans('app.form.images') }}
@@ -86,7 +86,7 @@
               <div class="file-loading">
                 <input id="dropzone-input" name="images[]" type="file" accept="image/*" multiple>
               </div>
-              <span class="small"><i class="fa fa-info-circle"></i> {{ trans('help.multi_img_upload_instruction', ['size' => getAllowedMaxImgSize(), 'number' => getMaxNumberOfImgsForInventory()]) }}</span>
+              <span class="small"><i class="fa fa-info-circle"></i> {{ trans('help.multi_img_upload_instruction', ['size' => getAllowedMaxImgSize(),'number' => getMaxNumberOfImgsForInventory()]) }}</span>
             </div>
           </fieldset>
 
@@ -200,12 +200,6 @@
             </div>
 
             <div class="form-group">
-              {!! Form::label('manufacturer_id', trans('app.form.manufacturer'), ['class' => 'with-help']) !!}
-              {!! Form::select('manufacturer_id', $manufacturers, null, ['class' => 'form-control select2', 'placeholder' => trans('app.placeholder.manufacturer')]) !!}
-              <div class="help-block with-errors"></div>
-            </div>
-
-            <div class="form-group">
               {!! Form::label('brand', trans('app.form.brand'), ['class' => 'with-help']) !!}
               <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="top" title="{{ trans('help.brand') }}"></i>
               {!! Form::text('brand', null, ['class' => 'form-control', 'placeholder' => trans('app.placeholder.brand')]) !!}
@@ -216,20 +210,11 @@
               <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="top" title="{{ trans('help.model_number') }}"></i>
               {!! Form::text('model_number', null, ['class' => 'form-control', 'placeholder' => trans('app.placeholder.model_number')]) !!}
             </div>
-          </fieldset>
 
-          <fieldset>
-            <legend>{{ trans('app.seo') }}</legend>
             <div class="form-group">
-              {!! Form::label('slug', trans('app.form.slug') . '*', ['class' => 'with-help']) !!}
-              <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="top" title="{{ trans('help.product_slug') }}"></i>
-              {!! Form::text('slug', null, ['class' => 'form-control slug', 'placeholder' => trans('app.placeholder.slug'), isset($product) ? 'disabled' : 'required']) !!}
+              {!! Form::label('manufacturer_id', trans('app.form.manufacturer'), ['class' => 'with-help']) !!}
+              {!! Form::select('manufacturer_id', $manufacturers, null, ['class' => 'form-control select2', 'placeholder' => trans('app.placeholder.manufacturer')]) !!}
               <div class="help-block with-errors"></div>
-            </div>
-
-            <div class="form-group">
-              {!! Form::label('tag_list[]', trans('app.form.tags'), ['class' => 'with-help']) !!}
-              {!! Form::select('tag_list[]', $tags, null, ['class' => 'form-control select2-tag', 'multiple' => 'multiple']) !!}
             </div>
           </fieldset>
         </div>

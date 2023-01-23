@@ -16,7 +16,7 @@ class SelfPasswordUpdateRequest extends Request
      */
     public function authorize()
     {
-        return Auth::guard('customer')->check() || Auth::guard('api')->check() || Auth::guard('vendor_api')->check();
+        return Auth::guard('customer')->check() || Auth::guard('api')->check();
     }
 
     /**
@@ -30,8 +30,6 @@ class SelfPasswordUpdateRequest extends Request
             $password = Auth::guard('customer')->user()->password;
         } elseif (Auth::guard('api')->check()) {
             $password = Auth::guard('api')->user()->password;
-        } elseif (Auth::guard('vendor_api')->check()) {
-            $password = Auth::guard('vendor_api')->user()->password;
         }
 
         Validator::extend('check_current_password', function ($attribute, $value, $parameters) use ($password) {

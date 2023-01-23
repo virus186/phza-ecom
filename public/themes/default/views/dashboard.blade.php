@@ -30,15 +30,15 @@
             {!! $content !!}
           @else
             @if ($tab == 'wishlist')
-              @if (is_incevio_package_loaded('wishlist'))
+              @if (is_phza24_package_loaded('wishlist'))
                 @include('wishlist::wishlist')
               @endif
             @elseif($tab == 'coupons')
-              @if (is_incevio_package_loaded('coupons'))
+              @if (is_phza24_package_loaded('coupons'))
                 @include('coupons::coupons')
               @endif
             @elseif($tab == 'events')
-              @if (is_incevio_package_loaded('eventy'))
+              @if (is_phza24_package_loaded('eventy'))
                 @include('eventy::frontend.customer_events')
               @endif
             @else

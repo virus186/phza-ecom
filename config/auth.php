@@ -45,7 +45,7 @@ return [
             'driver' => 'session',
             'provider' => 'customers',
         ],
-
+        
         'delivery_boy' => [
             'driver' => 'session',
             'provider' => 'delivery_boys'
@@ -59,18 +59,6 @@ return [
         'api' => [
             'driver' => 'token',
             'provider' => 'customers',
-            'hash' => false,
-        ],
-
-        'vendor' => [
-            'driver' => 'session',
-            'provider' => 'vendor_api',
-            'hash' => false,
-        ],
-
-        'vendor_api' => [
-            'driver' => 'token',
-            'provider' => 'vendor_api',
             'hash' => false,
         ],
     ],
@@ -106,16 +94,6 @@ return [
         'delivery_boys' => [
             'driver' => 'eloquent',
             'model' => App\Models\DeliveryBoy::class,
-        ],
-
-        'vendor' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\User::class,
-        ],
-
-        'vendor_api' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\User::class,
         ],
 
         // 'users' => [
@@ -155,11 +133,6 @@ return [
 
         'delivery_boys' => [
             'provider' => 'delivery_boys',
-            'table' => 'password_resets',
-            'expire' => 60,
-        ],
-        'vendor' => [
-            'provider' => 'vendor',
             'table' => 'password_resets',
             'expire' => 60,
         ],

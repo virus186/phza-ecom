@@ -3,7 +3,6 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Auth;
 
 class DisputeResource extends JsonResource
 {
@@ -15,8 +14,6 @@ class DisputeResource extends JsonResource
      */
     public function toArray($request)
     {
-        $vendor = $request->is('api/vendor/*');
-
         return [
             'id' => $this->id,
             'reason' => $this->dispute_type->detail,
@@ -29,8 +26,7 @@ class DisputeResource extends JsonResource
             'refund_amount' => $this->refund_amount ? get_formated_currency($this->refund_amount, config('system_settings.decimals', 2)) : null,
             'refund_amount_raw' => $this->refund_amount,
             'updated_at' => $this->updated_at->diffForHumans(),
-            'shop' => $this->when(!$vendor, new ShopLightResource($this->shop)),
-            'customer' => $this->when($vendor, new CustomerLightResource($this->customer)),
+            'shop' => new ShopLightResource($this->shop),
             'order_details' => new OrderLightResource($this->order),
             'attachments' => AttachmentResource::collection($this->attachments),
             'replies' => ReplyResource::collection($this->replies),

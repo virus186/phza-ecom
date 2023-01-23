@@ -21,7 +21,7 @@ class ManufacturerLightResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'slug' => $this->slug,
-            'description' => $this->when(!$request->is('api/vendor/*'), Str::limit($this->description, 100)),
+            'description' => Str::limit($this->description, 100),
             // 'origin' => $this->country->name,
             // 'listing_count' => $this->inventories_count,
             'available_from' => date('F j, Y', strtotime($this->created_at)),

@@ -66,7 +66,7 @@ class EloquentInventory extends EloquentRepository implements BaseRepository, In
 
         $this->setAttributes($inventory, $request->input('variants'));
 
-        if (is_incevio_package_loaded('packaging') && $request->input('packaging_list')) {
+        if (is_phza24_package_loaded('packaging') && $request->input('packaging_list')) {
             $inventory->packagings()->sync($request->input('packaging_list'));
         }
 
@@ -146,7 +146,7 @@ class EloquentInventory extends EloquentRepository implements BaseRepository, In
         $images = $request->file('image');
 
         // Relations
-        if (is_incevio_package_loaded('packaging')) {
+        if (is_phza24_package_loaded('packaging')) {
             $packaging_lists = $request->input('packaging_list');
         }
 
@@ -189,7 +189,7 @@ class EloquentInventory extends EloquentRepository implements BaseRepository, In
             }
 
             // Sync packaging
-            if (is_incevio_package_loaded('packaging') && $packaging_lists) {
+            if (is_phza24_package_loaded('packaging') && $packaging_lists) {
                 $inventory->packagings()->sync($packaging_lists);
             }
 
@@ -222,7 +222,7 @@ class EloquentInventory extends EloquentRepository implements BaseRepository, In
 
         $this->setAttributes($inventory, $request->input('variants'));
 
-        if (is_incevio_package_loaded('packaging')) {
+        if (is_phza24_package_loaded('packaging')) {
             $inventory->packagings()->sync($request->input('packaging_list', []));
         }
 

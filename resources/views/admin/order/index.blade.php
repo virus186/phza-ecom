@@ -1,18 +1,15 @@
 @extends('admin.layouts.master')
 
-@section('buttons')
-  @if (is_incevio_package_loaded('ebay') && is_ebay_configured())
-    @include('ebay::_pull_btn')
-  @endif
-
-  @if (Auth::user()->isFromMerchant())
+@if (Auth::user()->isFromMerchant())
+  @section('buttons')
     @can('create', \App\Models\Order::class)
-      <a href="javascript:void(0)" data-link="{{ route('admin.order.order.searchCutomer') }}" class="ajax-modal-btn btn btn-new btn-lg btn-flat">{{ trans('app.add_order') }}</a>
+      <a href="javascript:void(0)" data-link="{{ route('admin.order.order.searchCutomer') }}" class="ajax-modal-btn btn btn-new btn-flat">{{ trans('app.add_order') }}</a>
     @endcan
-  @endif
-@endsection
+  @endsection
+@endif
 
 @section('content')
+
   {{-- @include('admin.partials._filter') --}}
 
   @php
@@ -251,9 +248,8 @@
           {!! Form::open(['route' => ['admin.order.order.emptyTrash'], 'method' => 'delete', 'class' => 'data-form']) !!}
           {!! Form::button('<i class="fa fa-trash-o"></i>', ['type' => 'submit', 'class' => 'confirm btn btn-default btn-flat ajax-silent', 'title' => trans('help.empty_trash'), 'data-toggle' => 'tooltip', 'data-placement' => 'right']) !!}
           {!! Form::close() !!}
-          {{ trans('app.archived_orders') }}
         @else
-          <i class="fa fa-trash-o"></i> {{ trans('app.archived_orders') }}
+          <i class="fa fa-trash-o"></i>
         @endcan
       </h3>
       <div class="box-tools pull-right">

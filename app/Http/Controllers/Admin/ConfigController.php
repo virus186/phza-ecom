@@ -43,17 +43,7 @@ class ConfigController extends Controller
         // $files = \Illuminate\Support\Facades\Storage::disk('google')->allFiles();
         $shop = Shop::findOrFail(Auth::user()->merchantId());
 
-        $shop_config = Config::find(Auth::user()->merchantId(), [
-            'ac_holder_name',
-            'ac_number',
-            'ac_iban',
-            'ac_swift_bic_code',
-            'ac_routing_number',
-            'ac_type',
-            'ac_bank_address',
-        ]);
-
-        return view('admin.config.general', compact('shop', 'shop_config'));
+        return view('admin.config.general', compact('shop'));
     }
 
     /**
@@ -111,13 +101,6 @@ class ConfigController extends Controller
         return back()->with('success', trans('messages.updated', ['model' => $this->model_name]));
     }
 
-    /**
-     * Update configurations
-     *
-     * @param UpdateConfigRequest $request
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
     public function updateConfig(UpdateConfigRequest $request, $id)
     {
         if (config('app.demo') == true && $id <= config('system.demo.shops', 2)) {
@@ -225,40 +208,5 @@ class ConfigController extends Controller
         }
 
         return response('error', 405);
-    }
-
-    /**
-     * Puputalet the edit form for bank details
-     *
-     * @param int $shopId
-     * @return \Illuminate\Http\Response
-     */
-    public function editBankInfo($shopId)
-    {
-        $bankInfo = Config::find($shopId, [
-            'shop_id',
-            'ac_holder_name',
-            'ac_number',
-            'ac_type',
-            'ac_routing_number',
-            'ac_swift_bic_code',
-            'ac_iban',
-            'ac_bank_address'
-        ]);
-
-        return view('admin.config._update_bank_info', compact('bankInfo'));
-    }
-
-    /**
-     * Update the bank information
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function updateBankInfo(Request $request)
-    {
-        Config::find(Auth::user()->shop_id)->update($request->all());
-
-        return back()->with('success', trans('messages.created', ['model' => $this->model_name]));
     }
 }

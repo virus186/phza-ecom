@@ -250,7 +250,7 @@
                   </td>
                 </tr>
 
-                @if (is_incevio_package_loaded('packaging') && $order->shippingPackage)
+                @if (is_phza24_package_loaded('packaging') && $order->shippingPackage)
                   <tr>
                     <td class="text-right">
                       <span>{{ trans('app.packaging') }}</span><br />
@@ -393,22 +393,18 @@
           <div class="box-body">
             <img src="{{ get_storage_file_url(optional($order->shop->image)->path, 'mini') }}" class="" alt="{{ trans('app.logo') }}">
             <p class="indent10">
-              @if (Gate::allows('view', $order->shop) && $order->shop->id)
+              @if (Gate::allows('view', $order->shop))
                 <a href="javascript:void(0)" data-link="{{ route('admin.vendor.shop.show', $order->shop->id) }}" class="ajax-modal-btn">
                   {{ $order->shop->name }}
                 </a>
               @else
-                <h4>{!! trans('help.shop_not_exist') !!}</h4>
                 <span class="lead">{{ $order->shop->name }}</span>
               @endif
             </p>
 
-            @if($order->shop->id)
             <a href="{{ route('show.store', $order->shop->slug) }}" target="_blank" class="small pull-right">
               <i class=" fa fa-external-link"></i> {{ trans('app.store_front') }}
             </a>
-            @endif
-
           </div>
         </div>
       @endif
@@ -490,7 +486,7 @@
             <a href="{{ route('admin.support.dispute.show', $order->dispute) }}" class="btn btn-sm btn-danger btn-flat">{{ trans('app.view_dispute') }}</a>
           @endif
 
-          @if (is_incevio_package_loaded('pharmacy'))
+          @if (is_phza24_package_loaded('pharmacy'))
             <fieldset>
               <legend><i class="far fa-stethoscope"></i> {{ trans('pharmacy::lang.prescription') }}</legend>
             </fieldset>

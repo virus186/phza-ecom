@@ -43,7 +43,7 @@
               <span class="d"><i class="fas fa-shopping-cart"></i> @lang('theme.orders')</span>
             </a>
           </li>
-          @if (is_incevio_package_loaded('wishlist'))
+          @if (is_phza24_package_loaded('wishlist'))
             <li>
               <a href="{{ route('account', 'wishlist') }}">
                 <span class="v">{{ $dashboard->wishlists_count }}</span>
@@ -106,7 +106,7 @@
       </tbody>
     </table>
   </div><!-- .col-sm-6 -->
-  @if (is_incevio_package_loaded('wishlist'))
+  @if (is_phza24_package_loaded('wishlist'))
     <div class="col-md-6 nopadding-left">
       <table class="table table-bordered">
         <thead>

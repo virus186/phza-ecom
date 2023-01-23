@@ -27,7 +27,7 @@
       $('.nav a').on('show.bs.tab', function(e) {
         window.location = $(this).attr('href');
       });
-
+      
       $(function() {
         var hash = window.location.hash;
         hash && $('ul.nav a[href="' + hash + '"]').tab('show');
@@ -192,37 +192,6 @@
       $("#mobile-lang ul li a.close-button").closest('li').remove();
     });
 
-    // Search box without kyeword submission off
-    $("#search-categories-form").on('submit', function(e) {
-      var qeary = $('input#autoSearchInput').val();
-
-      if (qeary.length > 2) {
-        $('#search-nav-feedabck').addClass('hide');
-        this.submit();
-      } else {
-        $('#search-nav-feedabck').removeClass('hide');
-        e.preventDefault();
-      }
-
-      return;
-    });
-
-    // Product compare function    
-    $(function() {
-      $('#compare-criteria').on("change", function() {
-        var section = $(this).find("option:selected").val().toLowerCase();
-
-        if (section == "all") {
-          $('tbody[data-filter="target"]').css("display", "table-row-group")
-        } else {
-          $('tbody[data-filter="target"]').css("display", "none");
-          $("#" + section).css("display", "table-row-group");
-        }
-
-        $(this).css("display", "block");
-      });
-    })
-
     //App plugins
     function initAppPlugins() {
       //Initialize validator
@@ -263,14 +232,13 @@
               @include('theme::layouts.notification', ['message' => trans('theme.item_not_available'), 'type' => 'warning', 'icon' => 'info-circle'])
             } else if (444 == xhr.status) {
               @include('theme::layouts.notification', ['message' => trans('theme.notify.item_added_already_in_cart'), 'type' => 'info', 'icon' => 'info-circle'])
-            } else if (409 == xhr.status) {
-              @include('theme::layouts.notification', ['message' => trans('theme.out_of_stock'), 'type' => 'warning', 'icon' => 'info-circle'])
             } else {
               @include('theme::layouts.notification', ['message' => trans('theme.notify.failed'), 'type' => 'warning', 'icon' => 'times-circle'])
             }
           },
         });
       });
+
 
       // Bootstrap fixes
       $('[data-toggle="tooltip"]').tooltip();

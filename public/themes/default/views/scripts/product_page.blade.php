@@ -11,7 +11,6 @@ foreach ($variants as &$value) {
   "use strict";;
   (function($, window, document) {
     let free_shipping = '{{ $item->free_shipping }}';
-    let stock_quantity = '{{ $item->stock_quantity }}';
     let shop_id = '{{ $item->shop_id }}';
     let handlingCost = getFromPHPHelper('getShopConfig', [shop_id, 'order_handling_cost']);
     let unitPrice = '{{ $item->current_sale_price() }}';
@@ -115,7 +114,6 @@ foreach ($variants as &$value) {
           }, 500);
         }
       });
-
       $('.product-rating-count').on('click', function(e) {
         $('html,body').animate({
           scrollTop: $("#item-desc-section").offset().top
@@ -183,51 +181,6 @@ foreach ($variants as &$value) {
         popup.focus();
         e.preventDefault();
       }
-    });
-
-    // Highlight all avaialble variants on hover
-    $(document).on("mouseenter", ".radioSelectContainer label span", function() {
-      // Temporarily remove highlight from all selected attrs except the hovered element
-      $('.radioSelectContainer label span.selected').not(this).addClass('deselect');
-
-      // Get the id of the hovered element
-      let hovered_attr_id = $(this).data('value');
-
-      // Get the parent attribute of the hovered element
-      let current_attr = $(this).closest('.radioSelectContainer')
-        .children(".product-attribute-selector:first").attr('id');
-
-      // Loop through all parrent level attributes
-      $('.product-attribute-selector').each(function() {
-        // Skip the iteration for the hovered line of attributes
-        if ($(this).attr('id') == current_attr) return true;
-
-        // Loop through all the variants
-        $.each($.parseJSON(variants), function(index, item) {
-          // Pluck only the attribute values combinations from variants
-          let attrs = item.attribute_values.map(a => a.id);
-
-          attrs.find(function(t_attr) {
-            // When the hovered_attr_id found in attributes
-            if (t_attr == hovered_attr_id) {
-              // Remove the hovered_attr_id from the result set
-              let new_attrs = $.grep(attrs, function(tt_attr) {
-                return tt_attr != hovered_attr_id;
-              });
-
-              // Now we got the final result set. 
-              $.each(new_attrs, function(index, item) {
-                // Highlight ellements thats available
-                $('.radioSelectContainer label span[data-value="' + item + '"]')
-                  .removeClass('deselect').addClass('highlight');
-              });
-            }
-          });
-        });
-      });
-    }).on('mouseleave', ".radioSelectContainer label span", function() {
-      // Reset all highlight effects
-      $('.radioSelectContainer label span').removeClass('highlight deselect');
     });
 
     // Variation updates
@@ -419,7 +372,7 @@ foreach ($variants as &$value) {
     });
 
     //////////////////////////
-    /// Attribute Changes ////
+    /// Attribute Changes ///
     //////////////////////////
     function filterItems(options) {
       options = JSON.stringify(options.sort());
@@ -587,7 +540,7 @@ foreach ($variants as &$value) {
       ).then(function() {
         let filtered = getShippingOptions();
 
-        if (filtered.length && stock_quantity > 0) {
+        if (filtered.length) {
           if (free_shipping == 1) {
             setShippingCost({
               name: '{{ trans('theme.free_shipping') }}',

@@ -26,7 +26,7 @@ class SystemConfigResource extends JsonResource
 
     return [
       "maintenance_mode" => (bool) $this->maintenance_mode,
-      // "install_verion" => System::VERSION, // Need to fix the spelling in app end also, will be removed soon
+      "install_verion" => System::VERSION, // Need to fix the spelling in app end also, will be removed soon
       "install_version" => System::VERSION,
       "compatible_app_version" => $this->when(isset($compatibility), $compatibility),
       "name" => $this->name,
@@ -64,7 +64,6 @@ class SystemConfigResource extends JsonResource
       "address_show_map" => (bool) $this->address_show_map,
       "allow_guest_checkout" => (bool) $this->allow_guest_checkout,
       "enable_chat" => (bool) $this->enable_chat,
-      "vendor_get_paid" => (bool) vendor_get_paid_directly(),
       "currency" => [
         'name' => $this->currency['name'],
         'iso_code' => $this->currency['iso_code'],

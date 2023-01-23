@@ -36,6 +36,6 @@ return [
     'password_reset_email' => 'We sent you a password reset email, please check your inbox & spam folder!',
     'password_reset_token_invalid' => 'Invalid password reset code, try again!',
     'order_status_updated' => 'Order status updated',
-    'something_went_wrong' => 'Something went wrong, please try again!',
+    'something_Went_wrong' => 'Something went wrong, please try again!',
     'delivery_boy_password_reset' => 'A request has been accepted to reset your password for your delivery boy account. Please use this code to reset your password!'
 ];

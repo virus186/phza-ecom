@@ -18,8 +18,7 @@ class CheckIfBillingInfoRequired
         if (
             !is_billing_info_required() ||
             $request->user()->isFromPlatform() ||
-            $request->user()->hasBillingInfo() ||
-            ($request->user()->shop->stripe_id && $request->user()->shop->pm_last_four)
+            $request->user()->hasBillingInfo()
         ) {
             return $next($request);
         }

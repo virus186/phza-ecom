@@ -1,4 +1,4 @@
-<section class="mt-5 mb-0">
+<section class="mt-1 mb-0">
   <div class="container">
     <div class="featured-categories owl-carousel hide">
       @foreach ($featured_category as $item)

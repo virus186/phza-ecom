@@ -29,7 +29,7 @@ class CartController extends Controller
         }
 
         // When the coupon plugin active
-        if (is_incevio_package_loaded('coupons')) {
+        if (is_phza24_package_loaded('coupons')) {
             $carts = $carts->with('coupon:id,shop_id,name,code,value,type');
         }
 
@@ -68,6 +68,7 @@ class CartController extends Controller
      */
     public function addToCart(Request $request, $slug)
     {
+     //   return 'hello';
         $item = Inventory::where('slug', $slug)->first();
 
         if (!$item) {
@@ -102,8 +103,7 @@ class CartController extends Controller
         if ($old_cart) {
             $item_in_cart = DB::table('cart_items')
                 ->where('cart_id', $old_cart->id)
-                ->where('inventory_id', $item->id)
-                ->first();
+                ->where('inventory_id', $item->id)->first();
 
             // Item alrealy in cart
             if ($item_in_cart) {
@@ -147,7 +147,7 @@ class CartController extends Controller
         $cart->total = $old_cart ?
             ($old_cart->total + ($qtt * $unit_price)) : ($qtt * $unit_price);
 
-        if (is_incevio_package_loaded('packaging')) {
+        if (is_phza24_package_loaded('packaging')) {
             $cart->packaging_id = $old_cart ?
                 $old_cart->packaging_id : \Incevio\Package\Packaging\Models\Packaging::FREE_PACKAGING_ID;
         }
@@ -276,7 +276,7 @@ class CartController extends Controller
             $cart->shipping = optional($cart->shippingRate)->rate;
         }
 
-        if (is_incevio_package_loaded('packaging')) {
+        if (is_phza24_package_loaded('packaging')) {
             if ($request->packaging_id) {
                 $cart->packaging_id = $request->packaging_id;
                 $cart->packaging = optional($cart->shippingPackage)->cost;

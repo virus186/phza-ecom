@@ -32,7 +32,7 @@ class ApplicationKeyController extends Controller
             return back()->with('warning', trans('messages.demo_restriction'));
         }
 
-        Artisan::call('incevio:generate-key');
+        Artisan::call('phza24:generate-key');
         Artisan::call('config:clear');
 
         return back()->with('success', trans('app.application_key_regenarated'));

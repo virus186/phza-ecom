@@ -37,7 +37,7 @@
                 </span>
               @endif
 
-              {!! Form::number('custom_subscription_fee', null, ['class' => 'form-control', 'step' => 'any', 'min' => '0', 'placeholder' => trans('subscription::lang.bill_amount'), is_incevio_package_loaded('subscription') ? '' : 'disabled']) !!}
+              {!! Form::number('custom_subscription_fee', null, ['class' => 'form-control', 'step' => 'any', 'min' => '0', 'placeholder' => trans('subscription::lang.bill_amount'), is_phza24_package_loaded('subscription') ? '' : 'disabled']) !!}
 
               @if (get_currency_suffix())
                 <span class="input-group-addon" id="basic-addon1">
@@ -46,7 +46,7 @@
               @endif
             </div>
             <div class="help-block with-errors">
-              @unless(is_incevio_package_loaded('subscription'))
+              @unless(is_phza24_package_loaded('subscription'))
                 <small class="text-danger">
                   <i class="fa fa-ban"></i>
                   {{ trans('help.option_dependence_module', ['dependency' => 'Subscription']) }}
@@ -61,11 +61,11 @@
             {!! Form::label('commission_rate', trans('dynamicCommission::lang.custom_commission_rate'), ['class' => 'with-help']) !!}
             <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="bottom" title="{{ trans('dynamicCommission::lang.custom_commission_rate_help_text') }}"></i>
             <div class="input-group">
-              {!! Form::number('commission_rate', null, ['class' => 'form-control', 'step' => 'any', 'placeholder' => trans('dynamicCommission::lang.custom_commission_rate'), is_incevio_package_loaded('dynamicCommission') ? '' : 'disabled']) !!}
+              {!! Form::number('commission_rate', null, ['class' => 'form-control', 'step' => 'any', 'placeholder' => trans('dynamicCommission::lang.custom_commission_rate'), is_phza24_package_loaded('dynamicCommission') ? '' : 'disabled']) !!}
               <span class="input-group-addon"><i class="fa fa-percent"></i></span>
             </div>
             <div class="help-block with-errors">
-              @unless(is_incevio_package_loaded('dynamicCommission'))
+              @unless(is_phza24_package_loaded('dynamicCommission'))
                 <small class="text-danger">
                   <i class="fa fa-ban"></i>
                   {{ trans('help.option_dependence_module', ['dependency' => 'Dynamic Commission']) }}

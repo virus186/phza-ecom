@@ -23,13 +23,13 @@ class UpdateBasicConfigRequest extends Request
      */
     public function rules()
     {
-        $id = Request::route('shop'); // Current model ID
+        $id = Request::route('shop'); //Current model ID
 
         return [
             'name' => 'required',
-            'slug' => 'required|alpha_dash|unique:shops,slug,' . $id,
+            'slug' =>  'required|alpha_dash|composite_unique:shops, ' . $id,
             'legal_name' => 'required',
-            'email' => 'required|email|max:255|unique:shops,email,' . $id,
+            'email' =>  'required|email|max:255|composite_unique:shops,' . $id,
             'external_url' => 'nullable|url',
             'logo' => 'max:' . config('system_settings.max_img_size_limit_kb') . '|mimes:jpg,jpeg,png,gif',
             'cover_image' => 'mimes:jpg,jpeg,png,gif',

@@ -8,7 +8,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Validations\CreateSubscriptionPlanRequest;
 use App\Http\Requests\Validations\UpdateSubscriptionPlanRequest;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class SubscriptionPlanController extends Controller
 {
@@ -102,7 +101,7 @@ class SubscriptionPlanController extends Controller
         }
 
         try {
-            DB::beginTransaction();
+            \DB::beginTransaction();
 
             // If the plan_id changed. Update all shops that under this plan
             if ($subscriptionPlan->plan_id !== $request->plan_id) {
@@ -112,7 +111,7 @@ class SubscriptionPlanController extends Controller
 
             $subscriptionPlan->update($request->all());
 
-            DB::commit();
+            \DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
         }

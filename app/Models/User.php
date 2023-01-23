@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Common\Addressable;
-use App\Common\ApiAuthTokens;
 use App\Common\Attachable;
 use App\Common\Imageable;
 use Illuminate\Support\Facades\Hash;
@@ -19,7 +18,7 @@ use Illuminate\Support\Facades\Auth;
 // class User extends Authenticatable implements MustVerifyEmail
 class User extends Authenticatable
 {
-    use HasFactory, SoftDeletes, Notifiable, Addressable, Imageable, Attachable, ApiAuthTokens;
+    use HasFactory, SoftDeletes, Notifiable, Addressable, Imageable, Attachable;
 
     /**
      * The database table used by the model.
@@ -104,7 +103,6 @@ class User extends Authenticatable
         'name',
         'nice_name',
         'email',
-        'phone',
         'password',
         'dob',
         'description',

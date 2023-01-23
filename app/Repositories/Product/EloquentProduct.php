@@ -52,11 +52,11 @@ class EloquentProduct extends EloquentRepository implements BaseRepository, Prod
     {
         $product = parent::store($request);
 
-        if ($request->has('category_list')) {
+        if ($request->input('category_list')) {
             $product->categories()->sync($request->input('category_list'));
         }
 
-        if ($request->has('tag_list')) {
+        if ($request->input('tag_list')) {
             $product->syncTags($product, $request->input('tag_list'));
         }
 

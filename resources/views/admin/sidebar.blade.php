@@ -197,7 +197,7 @@
               </li>
             @endcan
 
-            @if ((Auth::user()->isAdmin() || Gate::allows('index', \Incevio\Package\Inspector\Models\InspectorModel::class)) && is_incevio_package_loaded('inspector'))
+            @if ((Auth::user()->isAdmin() || Gate::allows('index', \Incevio\Package\Inspector\Models\InspectorModel::class)) && is_phza24_package_loaded('inspector'))
               @can('index', \Incevio\Package\Inspector\Models\InspectorModel::class)
                 <li class="{{ Request::is('admin/inspector/inspectables*') ? 'active' : '' }}">
                   <a href="{{ url('admin/inspector/inspectables') }}">
@@ -238,7 +238,7 @@
         </li>
       @endif
 
-      @if (is_incevio_package_loaded('wallet'))
+      @if (is_phza24_package_loaded('wallet'))
         @can('payout', \Incevio\Package\Wallet\Models\Wallet::class)
           <li class="treeview {{ Request::is('admin/payouts*') || Request::is('admin/payout*') ? 'active' : '' }}">
             <a href="javascript:void(0)">
@@ -289,7 +289,7 @@
                 </li>
               @endcan
 
-              @if (is_incevio_package_loaded('packaging'))
+              @if (is_phza24_package_loaded('packaging'))
                 @can('index', \Incevio\Package\Packaging\Models\Packaging::class)
                   <li class="{{ Request::is('admin/shipping/packaging*') ? 'active' : '' }}">
                     <a href="{{ url('admin/shipping/packaging') }}">
@@ -321,7 +321,7 @@
             <i class="fa fa-angle-left pull-right"></i>
           </a>
 
-          @if (is_incevio_package_loaded('coupons'))
+          @if (is_phza24_package_loaded('coupons'))
             <ul class="treeview-menu">
               @can('index', \Incevio\Package\Coupons\Models\Coupon::class)
                 <li class="{{ Request::is('admin/promotion/coupon*') ? 'active' : '' }}">
@@ -351,7 +351,7 @@
             <i class="fa fa-angle-left pull-right"></i>
           </a>
           <ul class="treeview-menu">
-            @if (is_incevio_package_loaded('liveChat'))
+            @if (is_phza24_package_loaded('liveChat'))
               @can('index', \Incevio\Package\LiveChat\Models\ChatConversation::class)
                 <li class="{{ Request::is('admin/support/chat*') ? 'active' : '' }}">
                   <a href="{{ url('admin/support/chat') }}">
@@ -451,7 +451,7 @@
               </li>
             @endif
 
-            @if (Auth::user()->isAdmin() && is_incevio_package_loaded('trendingKeywords'))
+            @if (Auth::user()->isAdmin() && is_phza24_package_loaded('trendingKeywords'))
               <li class="{{ Request::is('admin/promotions/trendingKeywords*') ? 'active' : '' }}">
                 <a href="{{ route('admin.promotion.trendingKeywords') }}">
                   <i class="fa fa-angle-double-right"></i> {{ trans('trendingKeywords::lang.trending_keywords') }}
@@ -460,7 +460,7 @@
               </li>
             @endif
 
-            @if (is_incevio_package_loaded('flashdeal') && (new \App\Helpers\Authorize(Auth::user(), 'manage_flash_deal'))->check())
+            @if (is_phza24_package_loaded('flashdeal') && (new \App\Helpers\Authorize(Auth::user(), 'manage_flash_deal'))->check())
               <li class="{{ Request::is('admin/flashdeal*') ? 'active' : '' }}">
                 <a href="{{ route('admin.flashdeal') }}">
                   <i class="fa fa-angle-double-right"></i> {{ trans('flashdeal::lang.flashdeal') }}
@@ -516,13 +516,13 @@
           @can('view', \App\Models\Config::class)
             <li class="{{ Request::is('admin/setting/general*') ? 'active' : '' }}">
               <a href="{{ url('admin/setting/general') }}">
-                <i class="fa fa-angle-double-right"></i> {{ trans('nav.shop_settings') }}
+                <i class="fa fa-angle-double-right"></i> {{ trans('nav.general') }}
               </a>
             </li>
 
             <li class="{{ Request::is('admin/setting/config*') || Request::is('admin/setting/verify*') ? 'active' : '' }}">
               <a href="{{ url('admin/setting/config') }}">
-                <i class="fa fa-angle-double-right"></i> {{ trans('nav.configurations') }}
+                <i class="fa fa-angle-double-right"></i> {{ trans('nav.config') }}
               </a>
             </li>
 
@@ -546,12 +546,12 @@
           @can('view', \App\Models\SystemConfig::class)
             <li class="{{ Request::is('admin/setting/system/config*') ? 'active' : '' }}">
               <a href="{{ url('admin/setting/system/config') }}">
-                <i class="fa fa-angle-double-right"></i> {{ trans('nav.configurations') }}
+                <i class="fa fa-angle-double-right"></i> {{ trans('nav.config') }}
               </a>
             </li>
           @endcan
 
-          @if (is_incevio_package_loaded('announcement') && Auth::user()->isAdmin())
+          @if (is_phza24_package_loaded('announcement') && Auth::user()->isAdmin())
             <li class="{{ Request::is('admin/setting/announcement*') ? 'active' : '' }}">
               <a href="{{ url('admin/setting/announcement') }}">
                 <i class="fa fa-angle-double-right"></i> {{ trans('nav.announcements') }}
@@ -580,7 +580,7 @@
             </li>
           @endif
 
-          @if (is_incevio_package_loaded('wallet'))
+          @if (is_phza24_package_loaded('wallet'))
             @can('setting', \Incevio\Package\Wallet\Models\Wallet::class)
               <li class="{{ Request::is('admin/setting/wallet*') ? 'active' : '' }}">
                 <a href="{{ url('admin/setting/wallet') }}">
@@ -590,7 +590,7 @@
             @endcan
           @endif
 
-          @if (is_incevio_package_loaded('inspector') && Gate::allows('setting', \Incevio\Package\Inspector\Models\InspectorModel::class))
+          @if (is_phza24_package_loaded('inspector') && Gate::allows('setting', \Incevio\Package\Inspector\Models\InspectorModel::class))
             <li class="{{ Request::is('admin/setting/inspector*') ? 'active' : '' }}">
               <a href="{{ route(config('inspector.routes.settings')) }}">
                 <i class="fa fa-angle-double-right"></i> {{ trans('inspector::lang.inspector_settings') }}
@@ -598,7 +598,7 @@
             </li>
           @endif
 
-          @if (is_incevio_package_loaded('zipcode'))
+          @if (is_phza24_package_loaded('zipcode'))
             <li class="{{ Request::is('admin/setting/zipcode*') ? 'active' : '' }}">
               <a href="{{ route(config('zipcode.routes.settings')) }}">
                 <i class="fa fa-angle-double-right"></i> {{ trans('zipcode::lang.zipcode_setting') }}
@@ -607,7 +607,7 @@
             </li>
           @endif
 
-          @if (is_incevio_package_loaded('dynamicCommission') && (new \App\Helpers\Authorize(Auth::user(), 'manage_dynamic_commission'))->check())
+          @if (is_phza24_package_loaded('dynamicCommission') && (new \App\Helpers\Authorize(Auth::user(), 'manage_dynamic_commission'))->check())
             <li class="{{ Request::is('admin/setting/dynamicCommission*') ? 'active' : '' }}">
               <a href="{{ route(config('dynamicCommission.routes.settings')) }}">
                 <i class="fa fa-angle-double-right"></i> {{ trans('dynamicCommission::lang.commissions_settings') }}
@@ -616,19 +616,11 @@
             </li>
           @endif
 
-          @if (is_incevio_package_loaded('searchAutocomplete') && Auth::user()->isAdmin())
+          @if (is_phza24_package_loaded('searchAutocomplete') && Auth::user()->isAdmin())
             <li class="{{ Request::is('admin/setting/autocomplete*') ? 'active' : '' }}">
               <a href="{{ route('admin.setting.autocomplete') }}">
                 <i class="fa fa-angle-double-right"></i> {{ trans('searchAutocomplete::lang.search_settings') }}
                 @include('partials._addon_badge')
-              </a>
-            </li>
-          @endif
-
-          @if (is_incevio_package_loaded('ebay'))
-            <li class="{{ Request::is('admin/setting/ebay*') ? 'active' : '' }}">
-              <a href="{{ url('admin/setting/ebay') }}">
-                <i class="fa fa-angle-double-right"></i> {{ trans('ebay::lang.ebay_settings') }}
               </a>
             </li>
           @endif
@@ -667,7 +659,7 @@
               </li>
             @endcan
 
-            @if (is_incevio_package_loaded('eventy'))
+            @if (is_phza24_package_loaded('eventy'))
               @can('index', \Incevio\Package\Eventy\Models\Event::class)
                 <li class="{{ Request::is('admin/utility/event*') ? 'active' : '' }}">
                   <a href="{{ url('admin/utility/event') }}">
@@ -697,7 +689,7 @@
             <i class="fa fa-angle-left pull-right"></i>
           </a>
           <ul class="treeview-menu">
-            @if (is_incevio_package_loaded('wallet'))
+            @if (is_phza24_package_loaded('wallet'))
               @can('report', \Incevio\Package\Wallet\Models\Wallet::class)
                 <li class="{{ Request::is('admin/report/payout*') ? 'active' : '' }}">
                   <a href="{{ route('admin.wallet.payout.report') }}">
@@ -739,7 +731,7 @@
                 </ul>
               </li>
 
-              @if (is_incevio_package_loaded('googleAnalytics'))
+              @if (is_phza24_package_loaded('googleAnalytics'))
                 <li class="{{ Request::is('admin/report/googleAnalytics*') ? 'active' : '' }}">
                   <a href="{{ route('admin.report.googleAnalytics') }}">
                     <i class="fa fa-angle-double-right"></i> {{ trans('analytics::lang.analytics') }}

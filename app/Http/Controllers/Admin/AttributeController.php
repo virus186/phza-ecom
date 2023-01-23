@@ -4,12 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Attribute;
 use App\Common\Authorizable;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Repositories\Attribute\AttributeRepository;
 use App\Http\Requests\Validations\CreateAttributeRequest;
 use App\Http\Requests\Validations\UpdateAttributeRequest;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class AttributeController extends Controller
 {

@@ -48,7 +48,7 @@ class Incevio extends Controller
         Artisan::call('cache:clear');
         Artisan::call('route:clear');
         Artisan::call('view:clear');
-        Artisan::call('incevio:clear-cache');
+        Artisan::call('phza24:clear-cache');
 
         // Upgrading from 2.3 to 2.4
         if (System::VERSION == '2.4.0') {
@@ -139,14 +139,14 @@ class Incevio extends Controller
         $out = '<info>✔</info> ' . Artisan::output() . '<br/><br/>';
 
         if ($all) {
-            Artisan::call('incevio:clear-cache');
+            Artisan::call('phza24:clear-cache');
             $out .= '<info>✔</info> ' . Artisan::output() . '<br/><br/>';
 
             Artisan::call('cache:clear');
             $out .= '<info>✔</info> ' . Artisan::output() . '<br/><br/>';
         }
 
-        Artisan::call('incevio:boost');
+        Artisan::call('phza24:boost');
         $out .= Artisan::output() . '<br/><br/>';
 
         return $out . '<h3 style="text-align: center;"><a href="' . url()->previous() . '">' . trans('app.back') . '</a></h3>';

@@ -3,11 +3,21 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Shop;
-use Illuminate\Http\Request;
+use App\Models\ChatConversation;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\Validations\ChatConversationRequest;
+use App\Http\Requests\Validations\SaveChatConversationRequest;
+// use App\Http\Requests\Validations\OrderDetailRequest;
+// use App\Http\Requests\Validations\DirectCheckoutRequest;
+// use App\Events\Chat\NewMessageEvent;
 use App\Http\Resources\ConversationResource;
-use Incevio\Package\LiveChat\Models\ChatConversation;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
+
+// use Illuminate\Support\Str;
+// use Illuminate\Support\Facades\DB;
+// use Symfony\Component\HttpFoundation\File\File;
+// use Illuminate\Http\UploadedFile;
 
 class ConversationController extends Controller
 {
@@ -32,9 +42,12 @@ class ConversationController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function conversation(Request $request, Shop $shop)
+    public function conversation(ChatConversationRequest $request, Shop $shop)
     {
-        $conversation = ChatConversation::mine()->with('replies')->first();
+        $conversation = ChatConversation::where([
+            'customer_id' => Auth::guard('api')->id(),
+            'shop_id' => $shop->id,
+        ])->with('replies')->first();
 
         if ($conversation) {
             return new ConversationResource($conversation);
@@ -52,7 +65,7 @@ class ConversationController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function save_conversation(Request $request, Shop $shop)
+    public function save_conversation(SaveChatConversationRequest $request, Shop $shop)
     {
         $conversation = ChatConversation::where([
             'customer_id' => $request->customer_id,
@@ -61,7 +74,6 @@ class ConversationController extends Controller
 
         if ($conversation) {
             $conversation->markAsUnread();
-
             $msg_object = $conversation->replies()->create([
                 'customer_id' => $request->customer_id,
                 'user_id' => $request->user_id,

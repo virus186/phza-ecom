@@ -45,17 +45,16 @@ class Storefront
         View::share('search_category_list', ListHelper::search_categories());
         View::share('recently_viewed_items', ListHelper::recentlyViewedItems());
         View::share('cart_item_count', cart_item_count());
-        View::share('hidden_menu_items', hidden_menu_items());
         // View::share('top_vendors', ListHelper::top_vendors(5));
 
         //announcement
-        if (is_incevio_package_loaded('announcement')) {
+        if (is_phza24_package_loaded('announcement')){
             View::share('global_announcement', get_global_announcement());
         }
 
 
         // Trending Search Keywords
-        if (is_incevio_package_loaded('trendingKeywords')) {
+        if (is_phza24_package_loaded('trendingKeywords')) {
             $trending_keywords = Cache::rememberForever('trending_keywords', function () {
                 return get_from_option_table('trendingKeywords_keywords', []);
             });

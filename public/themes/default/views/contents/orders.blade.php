@@ -107,11 +107,15 @@
                   </a>
 
                   @if ($order->canBeCanceled())
+
                     {!! Form::model($order, ['method' => 'PUT', 'route' => ['order.cancel', $order]]) !!}
                     {!! Form::button('<i class="fas fa-times-circle-o"></i> ' . trans('theme.cancel_order'), ['type' => 'submit', 'class' => 'confirm btn btn-default btn-block flat', 'data-confirm' => trans('theme.confirm_action.cant_undo')]) !!}
                     {!! Form::close() !!}
+
                   @elseif($order->canRequestCancellation())
+
                     <a href="{{ route('cancellation.form', ['order' => $order, 'action' => 'cancel']) }}" class="modalAction btn btn-default btn-sm btn-block flat"><i class="fas fa-times"></i> @lang('theme.cancel_items')</a>
+
                   @endif
 
                   @if ($order->canTrack())
@@ -137,6 +141,7 @@
                       {!! Form::close() !!}
                     @endunless
                   @endif
+
                 @endunless
 
                 <a href="{{ route('order.detail', $order) . '#message-section' }}" class="btn btn-link btn-block">

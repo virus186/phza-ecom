@@ -22,7 +22,7 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
 
         //The Application Middlewares
-        // \App\Http\Middleware\CheckForInstallation::class,
+        \App\Http\Middleware\CheckForInstallation::class,
 
         // SEO
     ];

@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
-use App\Common\Billable;
-use App\Common\Taggable;
-use App\Common\Imageable;
-use App\Common\Attachable;
 use App\Common\Addressable;
 use App\Common\ApiAuthTokens;
+use App\Common\Attachable;
+use App\Common\Billable;
+use App\Common\Imageable;
+use App\Common\Taggable;
 use App\Notifications\Auth\CustomerResetPasswordNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -18,12 +18,10 @@ use Illuminate\Support\Facades\Hash;
 use Laravel\Scout\Searchable;
 // use Laravel\Passport\HasApiTokens;
 
-// Uncomment below line to enable Wallet plugin. (Have to install the plugin.)
 // use Incevio\Package\Wallet\Traits\HasWallet;
 
 class Customer extends Authenticatable
 {
-    // Uncomment below line to enable Wallet plugin. (Have to install the plugin.)
     // use HasWallet;
 
     use HasFactory, SoftDeletes, Billable, Notifiable, Addressable, Taggable, Imageable, Attachable, Searchable, ApiAuthTokens;
@@ -63,9 +61,7 @@ class Customer extends Authenticatable
         'dob' => 'date',
         'active' => 'boolean',
         'accepts_marketing' => 'boolean',
-        'phone_verified_at' => 'datetime',
     ];
-
 
     /**
      * The attributes that will be logged on activity logger.
@@ -97,8 +93,6 @@ class Customer extends Authenticatable
         'name',
         'nice_name',
         'email',
-        'phone',
-        'phone_verified',
         'password',
         'dob',
         'sex',

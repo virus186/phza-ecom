@@ -8,8 +8,5 @@ Route::namespace('Api')->group(function () {
     include 'api/Customer.php';
 
     // Delivery boy APIs
-    include 'api/DeliveryBoy.php';
-
-    //Vendor APIs
-    include 'api/Vendor.php';
+    include 'api/Deliveryboy.php';
 });

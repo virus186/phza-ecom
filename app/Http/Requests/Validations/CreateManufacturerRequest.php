@@ -26,19 +26,14 @@ class CreateManufacturerRequest extends Request
     {
         Request::merge([
             'shop_id' => Request::user()->merchantId(),
-        ]); // Set extra attributes
-
-        // Set slug
-        if (!$this->has('slug')) {
-            Request::merge(['slug' => Str::slug($this->input('name'))]);
-        }
+            'slug'    =>  Str::slug($this->input('name')),
+        ]); //Set extra attributes
 
         return [
             'name' => 'bail|required|unique:manufacturers',
-            'slug' => 'bail|required|unique:manufacturers',
             'email' =>  'email|max:255|nullable',
             'active' => 'required',
-            'image' => 'mimes:jpg,jpeg,png,gif|max:' . config('system_settings.max_img_size_limit_kb'),
+            'image' => 'mimes:jpg,jpeg,png,gif|max:'.config('system_settings.max_img_size_limit_kb'),
         ];
     }
 

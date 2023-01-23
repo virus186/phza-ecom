@@ -1,31 +1,31 @@
 @php
-  $geoip = geoip(get_visitor_IP());
-  $geoip_country = $business_areas->where('iso_code', $geoip->iso_code)->first();
-  
-  $shipping_country_id = $cart->ship_to_country_id ?? optional($geoip_country)->id;
-  
-  if (!$cart->shipping_state_id) {
-      $geoip_state = \DB::table('states')
-          ->select('id', 'name', 'iso_code')
-          ->where([['country_id', '=', $shipping_country_id], ['iso_code', '=', $geoip->state]])
-          ->first();
-  }
-  
-  $shipping_state_id = $cart->ship_to_state_id ?? optional($geoip_state)->id;
-  
-  // $shipping_zone = get_shipping_zone_of($cart->shop_id, $shipping_country_id, $shipping_state_id);
-  // $shipping_options = isset($shipping_zone->id) ? getShippingRates($shipping_zone->id) : 'NaN';
-  
-  if (is_incevio_package_loaded('packaging')) {
-      $packaging_options = optional($cart->shop)->packagings;
-  
-      $default_packaging =
-          $cart->shippingPackage ??
-          (optional($cart->shop->packagings)
-              ->where('default', 1)
-              ->first() ??
-              $platformDefaultPackaging);
-  }
+$geoip = geoip(get_visitor_IP());
+$geoip_country = $business_areas->where('iso_code', $geoip->iso_code)->first();
+
+$shipping_country_id = $cart->ship_to_country_id ?? optional($geoip_country)->id;
+
+if (!$cart->shipping_state_id) {
+    $geoip_state = \DB::table('states')
+        ->select('id', 'name', 'iso_code')
+        ->where([['country_id', '=', $shipping_country_id], ['iso_code', '=', $geoip->state]])
+        ->first();
+}
+
+$shipping_state_id = $cart->ship_to_state_id ?? optional($geoip_state)->id;
+
+// $shipping_zone = get_shipping_zone_of($cart->shop_id, $shipping_country_id, $shipping_state_id);
+// $shipping_options = isset($shipping_zone->id) ? getShippingRates($shipping_zone->id) : 'NaN';
+
+if (is_phza24_package_loaded('packaging')) {
+    $packaging_options = optional($cart->shop)->packagings;
+
+    $default_packaging =
+        $cart->shippingPackage ??
+        (optional($cart->shop->packagings)
+            ->where('default', 1)
+            ->first() ??
+            $platformDefaultPackaging);
+}
 @endphp
 
 <section>
@@ -58,16 +58,16 @@
           </a>
         </div><!-- /.seller-info -->
 
-        @if (is_incevio_package_loaded('coupons'))
+        @if (is_phza24_package_loaded('coupons'))
           <div class="input-group full-width space30">
             <span class="input-group-addon flat">
               <i class="fas fa-ticket"></i>
             </span>
 
-            <input name="coupon" value="{{ $cart->coupon ? $cart->coupon->code : null }}" id="coupon{{ $cart->id }}" class="form-control flat" type="text" placeholder="@lang('coupons::lang.have_coupon_from_seller')">
+            <input name="coupon" value="{{ $cart->coupon ? $cart->coupon->code : null }}" id="coupon{{ $cart->id }}" class="form-control flat" type="text" placeholder="@lang('coupons::lang.theme.have_coupon_from_seller')">
 
             <span class="input-group-btn">
-              <button class="btn btn-default flat apply_seller_coupon" type="button" data-cart="{{ $cart->id }}">@lang('coupons::lang.apply_coupon')</button>
+              <button class="btn btn-default flat apply_seller_coupon" type="button" data-cart="{{ $cart->id }}">@lang('coupons::lang.theme.apply_coupon')</button>
             </span>
           </div><!-- /input-group -->
         @endif
@@ -79,7 +79,7 @@
         {{ Form::hidden('tax_id', isset($shipping_zones[$cart->id]->i) ? $shipping_zones[$cart->id]->tax_id : null, ['id' => 'tax-id' . $cart->id]) }}
         {{ Form::hidden('taxrate', $cart->taxrate, ['id' => 'cart-taxrate' . $cart->id]) }}
 
-        @if (is_incevio_package_loaded('packaging'))
+        @if (is_phza24_package_loaded('packaging'))
           {{ Form::hidden('packaging_id', $cart->packaging_id ?? optional($default_packaging)->id, ['id' => 'packaging-id' . $cart->id]) }}
         @endif
 
@@ -87,7 +87,7 @@
         {{ Form::hidden('shipping_rate_id', $cart->shipping_rate_id, ['id' => 'shipping-rate-id' . $cart->id]) }}
         {{ Form::hidden('ship_to_country_id', $cart->ship_to_country_id, ['id' => 'shipto-country-id' . $cart->id]) }}
         {{ Form::hidden('ship_to_state_id', $cart->ship_to_state_id, ['id' => 'shipto-state-id' . $cart->id]) }}
-        @if (is_incevio_package_loaded('coupons'))
+        @if (is_phza24_package_loaded('coupons'))
           {{ Form::hidden('coupon_raw', json_encode($cart->coupon), ['id' => 'coupon-raw' . $cart->id]) }}
         @endif
         {{ Form::hidden('handling_cost', $cart->handling_cost > 0 ? $cart->handling_cost : optional($cart->shop->config)->order_handling_cost, ['id' => 'handling-cost' . $cart->id]) }}
@@ -127,7 +127,7 @@
             </span>
           </li>
 
-          @if (is_incevio_package_loaded('packaging'))
+          @if (is_phza24_package_loaded('packaging'))
             @unless(empty(json_decode($packaging_options)))
               <li>
                 <span>
@@ -149,7 +149,7 @@
             @endunless
           @endif
 
-          @if (is_incevio_package_loaded('coupons'))
+          @if (is_phza24_package_loaded('coupons'))
             <li id="discount-section-li{{ $cart->id }}" style="display: {{ $cart->discount > 0 ? 'block' : 'none' }};">
               <span>{{ trans('theme.discount') }}
                 <em id="summary-discount-name{{ $cart->id }}" class="small text-muted">{{ $cart->coupon ? $cart->coupon->name . ' (' . $cart->coupon->getFormatedAmountText() . ')' : '' }}</em>
@@ -269,14 +269,14 @@
             </a>
           </div>
         @else
-          @if (is_incevio_package_loaded('guestCheckout'))
+          @if (is_phza24_package_loaded('guestCheckout'))
             @include('guestCheckout::checkout_shiping_address')
           @endif
         @endif
 
         <hr class="style4 muted" />
 
-        @if (is_incevio_package_loaded('pharmacy'))
+        @if (is_phza24_package_loaded('pharmacy'))
           @include('pharmacy::checkout_form')
         @endif
 

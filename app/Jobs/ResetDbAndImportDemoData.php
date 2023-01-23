@@ -26,6 +26,6 @@ class ResetDbAndImportDemoData
      */
     public function handle()
     {
-        Artisan::call('incevio:reset-demo');
+        Artisan::call('phza24:reset-demo');
     }
 }

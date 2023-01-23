@@ -26,7 +26,7 @@ class CategoryController extends Controller
             $categories = $categories->where('category_sub_group_id', $sub_group);
         }
 
-        $categories = $categories->with(['coverImage', 'featureImage'])
+        $categories = $categories->with(['coverImage', 'coverImage'])
             ->orderBy('order', 'asc')->get();
 
         return CategoryResource::collection($categories);

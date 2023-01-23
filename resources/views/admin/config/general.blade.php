@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @php
-  $can_update = Gate::allows('update', $shop->config) ?: null;
+$can_update = Gate::allows('update', $shop->config) ?: null;
 @endphp
 
 @section('content')
@@ -218,63 +218,6 @@
 
             <div class="spacer30"></div>
           </div>
-
-          @if (is_incevio_package_loaded('wallet'))
-            <div class="form-group text-center">
-              {!! Form::label('bank_info', trans('app.bank_info'), ['class' => 'control-label with-help']) !!}
-              <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="left" title="{{ trans('help.payout_bank_info') }}"></i>
-            </div>
-
-            <div class="text-center py-0 text-dark">
-              <p>
-                {{ trans('app.form.account_holder_name') . ': ' }}
-                {{ $shop_config->ac_holder_name }}</p>
-              <p>
-                {{ trans('app.form.account_number') . ': ' }}
-                {{ $shop_config->ac_number }}
-              </p>
-
-              @if ($shop_config->ac_type)
-                <p>
-                  {{ trans('app.form.account_type') . ': ' }}
-                  {{ $shop_config->ac_type }}
-                </p>
-              @endif
-
-              @if ($shop_config->ac_routing_number)
-                <p>
-                  {{ trans('app.form.account_routing_number') . ': ' }}
-                  {{ $shop_config->ac_routing_number }}
-                </p>
-              @endif
-
-              <p>
-                {{ trans('app.form.ac_swift_bic_code') . ': ' }}
-                {{ $shop_config->ac_swift_bic_code }}
-              </p>
-
-              @if ($shop_config->ac_iban)
-                <p>
-                  {{ trans('app.form.ac_iban') . ': ' }}
-                  {{ $shop_config->ac_iban }}
-                </p>
-              @endif
-
-              <p>
-                {{ trans('app.form.ac_bank_address') . ': ' }}
-                {{ $shop_config->ac_bank_address }}
-              </p>
-            </div>
-
-            <div class="mt-5 text-center">
-              <a href="javascript:void(0)" data-link="{{ route('admin.setting.bankInfo.edit', [$shop->id]) }}" class="btn btn-default ajax-modal-btn">
-                <i class="fa fa-money"></i>
-                @lang('app.update_bank_detail')
-              </a>
-            </div>
-
-            <div class="spacer30"></div>
-          @endif
 
           @if (isset($shop) && $shop->logoImage)
             <div class="form-group text-center">

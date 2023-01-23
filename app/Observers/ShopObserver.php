@@ -9,13 +9,6 @@ use App\Models\User;
 class ShopObserver
 {
     /**
-     * Handle events after all transactions are committed.
-     *
-     * @var bool
-     */
-    public $afterCommit = true;
-
-    /**
      * Listen to the Shop created event.
      *
      * @param  \App\Models\Shop  $shop

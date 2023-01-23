@@ -141,6 +141,7 @@ trait Imageable
             ->where('type', 'icon');
     }
 
+
     /**
      * Return the slider image for mobile app
      *

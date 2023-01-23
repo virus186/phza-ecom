@@ -45,6 +45,10 @@ class AppServiceProvider extends ServiceProvider
         // Artisan::call('dump-autoload');
 
 
+        Shop::observe(ShopObserver::class);
+        Order::observe(OrderObserver::class);
+        Refund::observe(RefundObserver::class);
+
         // Add Google recaptcha validation rule
         Validator::extend('recaptcha', 'App\\Helpers\\ReCaptcha@validate');
 
@@ -128,12 +132,6 @@ class AppServiceProvider extends ServiceProvider
 
             case 'paypal-express':
                 return \App\Services\Payments\PaypalExpressPaymentService::class;
-
-            case 'paypal':
-                return \Incevio\Package\Paypal\Services\PaypalPaymentService::class;
-
-            case 'iyzico':
-                return \Incevio\Package\Iyzico\Services\IyzicoPaymentService::class;
 
             case 'paypal-marketplace':
                 return \Incevio\Package\PaypalMarketplace\Services\PaypalMarketplacePaymentService::class;

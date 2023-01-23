@@ -159,30 +159,6 @@ class Config extends BaseModel
     }
 
     /**
-     * Get the paypal for the shop.
-     */
-    public function paypal()
-    {
-        return $this->hasOne(\Incevio\Package\Paypal\Models\ConfigPaypal::class, 'shop_id');
-    }
-
-    /**
-     * Get the iyzico for the shop.
-     */
-    public function iyzico()
-    {
-        return $this->hasOne(\Incevio\Package\Iyzico\Models\ConfigIyzico::class, 'shop_id');
-    }
-
-    /**
-     * Get the Payfast for the shop.
-     */
-    public function payfast()
-    {
-        return $this->hasOne(\Incevio\Package\Payfast\Models\ConfigPayfast::class, 'shop_id');
-    }
-
-    /**
      * Get the cybersource for the shop.
      */
     public function cybersource()

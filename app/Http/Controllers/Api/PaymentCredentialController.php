@@ -41,9 +41,9 @@ class PaymentCredentialController extends Controller
         $encrypted_credential = openssl_encrypt(
             json_encode($credential),
             Config::get('app.cipher'),
-            Config::get('app.Phza24_encryption_key'),
+            Config::get('app.phza24_encryption_key'),
             0,
-            Config::get('app.Phza24_encryption_iv')
+            Config::get('app.phza24_encryption_iv')
         );
 
         return [

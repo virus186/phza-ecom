@@ -26,7 +26,7 @@
             <div class="col-md-4">
               <span class="fa-stack fa-4x">
                 <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                <i class="fa fa-rocket fa-stack-1x fa-inverse"></i>
+                <i class="fa fa-{{ trans('theme.benefit.one.icon') }} fa-stack-1x fa-inverse"></i>
               </span>
               <h4 class="service-heading">{{ trans('theme.benefit.one.title') }}</h4>
               <p class="text-muted">{{ trans('theme.benefit.one.detail') }}</p>
@@ -34,7 +34,7 @@
             <div class="col-md-4">
               <span class="fa-stack fa-4x">
                 <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                <i class="fa fa-tablet fa-stack-1x fa-inverse"></i>
+                <i class="fa fa-{{ trans('theme.benefit.two.icon') }} fa-stack-1x fa-inverse"></i>
               </span>
               <h4 class="service-heading">{{ trans('theme.benefit.two.title') }}</h4>
               <p class="text-muted">{{ trans('theme.benefit.two.detail') }}</p>
@@ -42,7 +42,7 @@
             <div class="col-md-4">
               <span class="fa-stack fa-4x">
                 <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                <i class="fa fa-credit-card fa-stack-1x fa-inverse"></i>
+                <i class="fa fa-{{ trans('theme.benefit.three.icon') }} fa-stack-1x fa-inverse"></i>
               </span>
               <h4 class="service-heading">{{ trans('theme.benefit.three.title') }}</h4>
               <p class="text-muted">{{ trans('theme.benefit.three.detail') }}</p>
@@ -167,8 +167,11 @@
                       <li class='pricing-feature'>{{ __('theme.plan.inventory_limit', ['limit' => $plan->inventory_limit]) }}</li>
 
                       @if ($plan->transaction_fee > 0 && $plan->marketplace_commission > 0)
+
                         <li class='pricing-feature'>{{ __('theme.plan.transaction_and_commission', ['commission' => $plan->marketplace_commission, 'fee' => get_formated_currency($plan->transaction_fee)]) }}</li>
+
                       @else
+
                         @if ($plan->transaction_fee > 0)
                           <li class='pricing-feature'>{{ __('theme.plan.transaction_fee', ['fee' => get_formated_currency($plan->transaction_fee)]) }}</li>
                         @else
@@ -180,6 +183,7 @@
                         @else
                           <li class='pricing-feature'>{{ __('theme.plan.no_marketplace_commission') }}</li>
                         @endif
+
                       @endif
                     </ul>
                     <a href="{{ route('vendor.register', $plan) }}" class='pricing-action'>{{ __('theme.button.choose_plan') }}</a>

@@ -10,12 +10,10 @@ use App\Http\Resources\CustomerResource;
 use App\Notifications\Auth\CustomerResetPasswordNotification as SendPasswordResetEmail;
 use App\Notifications\Auth\SendVerificationEmail as EmailVerificationNotification;
 use App\Notifications\Customer\PasswordUpdated as PasswordResetSuccess;
-use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-
 // use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use Carbon\Carbon;
 
@@ -23,22 +21,14 @@ class AuthController extends Controller
 {
     public function register(RegisterCustomerRequest $request)
     {
-        $data = [
+        $customer = Customer::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => $request->password,
             'accepts_marketing' => $request->subscribe,
             'verification_token' => Str::random(40),
             'active' => 0,
-        ];
-
-        if (is_incevio_package_loaded('otp-login')) {
-            $data['phone'] =  $request->phone;
-
-            send_otp_code($data['phone']);
-        }
-
-        $customer = Customer::create($data);
+        ]);
 
         // Sent email address verification notich to customer
         $customer->notify(new EmailVerificationNotification($customer));
@@ -57,25 +47,6 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        if (is_incevio_package_loaded('otp-login') && $request->has('phone')) {
-            $request->validate([
-                'phone' => 'required|exists:customers,phone'
-            ]);
-
-            // if (!Customer::where('phone', $request->phone)->exists()) {
-            //     return response()->json(['message' => trans('otp-login::lang.not_registered')], 302);
-            // }
-
-            try {
-                send_otp_code($request->phone, null);
-            } catch (\Exception $e) {
-                return redirect()->route('customer.login')
-                    ->withErrors([trans('otp-login::lang.phone_session_expired')]);
-            }
-
-            return response()->json(['message' => trans('otp-login::lang.verification_code_sent')], 200);
-        }
-
         $credentials = [
             'email' => $request->email,
             'password' => $request->password,

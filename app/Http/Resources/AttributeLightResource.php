@@ -3,7 +3,6 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Auth;
 
 class AttributeLightResource extends JsonResource
 {
@@ -17,11 +16,11 @@ class AttributeLightResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
-            'attribute_type' => $this->attributeType->type,
-            'entities_count' => $this->attribute_values_count,
-            'categories_count' => $this->categories_count,
-            'order' => (int) $this->order,
+            'name' => $this->attribute->name,
+            'value' => $this->value,
+            'color' => $this->color,
+            'pattern_img' => (new ImageResource($this->image))->size('tiny'),
+            'order' => (int) $this->attribute->order,
         ];
     }
 }

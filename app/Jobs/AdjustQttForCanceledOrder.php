@@ -25,8 +25,6 @@ class AdjustQttForCanceledOrder implements ShouldQueue
 
     public $order;
 
-    public $canelled_items;
-
     /**
      * Delete the job if its models no longer exist.
      *
@@ -39,10 +37,9 @@ class AdjustQttForCanceledOrder implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(Order $order, $canelled_items = null)
+    public function __construct(Order $order)
     {
         $this->order = $order;
-        $this->canelled_items = $canelled_items;
     }
 
     /**
@@ -53,13 +50,7 @@ class AdjustQttForCanceledOrder implements ShouldQueue
     public function handle()
     {
         foreach ($this->order->inventories as $item) {
-            // Increase stock_quantities of canceled items
-            if (
-                !$this->canelled_items ||
-                (is_array($this->canelled_items) && in_array($item->id, $this->canelled_items))
-            ) {
-                $item->increment('stock_quantity', $item->pivot->quantity);
-            }
+            $item->increment('stock_quantity', $item->pivot->quantity);
         }
     }
 }

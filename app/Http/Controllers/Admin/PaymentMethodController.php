@@ -69,18 +69,6 @@ class PaymentMethodController extends Controller
                 return redirect()->route('admin.setting.instamojo.activate');
                 break;
 
-            case 'iyzico':
-                return redirect()->route('admin.setting.iyzico.activate');
-                break;
-
-            case 'paypal':
-                return redirect()->route('admin.setting.paypal.activate');
-                break;
-
-            case 'payfast':
-                return redirect()->route('admin.setting.payfast.activate');
-                break;
-
             case 'paypal-express':
                 return redirect()->route('admin.setting.paypalExpress.activate');
                 break;

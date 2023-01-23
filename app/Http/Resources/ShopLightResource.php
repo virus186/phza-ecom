@@ -3,7 +3,6 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use function Aws\boolean_value;
 
 class ShopLightResource extends JsonResource
 {
@@ -51,24 +50,6 @@ class ShopLightResource extends JsonResource
 
                 return $feedback ? new FeedbackResource($feedback) : null;
             }),
-
-            $this->mergeWhen($request->is('api/deliveryboy/*'), function() {
-                return [
-                    'owner' => [
-                        'name' => $this->owner->name,
-                        'email' => $this->owner->email,
-                        'status' => boolean_value($this->owner->active),
-                    ]
-                ];
-            })
-
-//            $this->mergeWhen($request->is('api/deliveryboy/*'),[
-//                'owner' => [
-//                    'name' => $this->owner->name,
-//                    'email' => $this->owner->email,
-//                    'status' => boolean_value($this->owner->active),
-//                ]
-//            ])
 
             // 'feedback' => $this->when($request->is('api/order/*'), function () {
             //     $feedback = \App\Models\Feedback::find($this->feedback_id);

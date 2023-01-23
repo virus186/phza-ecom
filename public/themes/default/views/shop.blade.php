@@ -22,7 +22,7 @@
 @endsection
 
 @section('scripts')
-  @if(is_incevio_package_loaded('liveChat'))
+  @if(is_phza24_package_loaded('liveChat'))
     @if (is_chat_enabled($shop))
       @include('liveChat::livechat', ['shop' => $shop, 'agent' => $shop->owner, 'agent_status' => trans('theme.online')])
     @endif

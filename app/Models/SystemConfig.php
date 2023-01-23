@@ -50,8 +50,6 @@ class SystemConfig extends BaseModel
         'active_theme',
         'pagination',
         'show_seo_info_to_frontend',
-        'hide_out_of_stock_items',
-        'hide_technical_details_on_product_page',
         'show_address_title',
         'address_show_country',
         'address_show_map',
@@ -139,7 +137,7 @@ class SystemConfig extends BaseModel
         if (config('system.subscription.billing') == 'wallet') {
             $dependencies = ['wallet', 'subscription'];
 
-            if (is_incevio_package_loaded($dependencies)) {
+            if (is_phza24_package_loaded($dependencies)) {
                 return true;
             }
 
@@ -170,15 +168,6 @@ class SystemConfig extends BaseModel
             case 'instamojo':
                 return (bool) (config('instamojo.api_key') && config('instamojo.auth_token'));
 
-            case 'iyzico':
-                return (bool) (config('iyzico.api_key') && config('iyzico.secret_key'));
-
-            case 'paypal':
-                return (bool) (config('paypal.client_id') && config('paypal.client_secret'));
-
-            case 'payfast':
-                return (bool) (config('payfast.merchant_id') && config('payfast.merchant_key'));
-
             case 'authorizenet':
                 return (bool) (config('authorizenet.api_login_id') && config('authorizenet.transaction_key'));
 
@@ -206,7 +195,7 @@ class SystemConfig extends BaseModel
             case 'wire':
             case 'cod':
                 return (bool) get_from_option_table('wallet_payment_info_' . $code);
-                // return is_incevio_package_loaded('wallet') && (bool) get_from_option_table('wallet_payment_info_' . $code);
+                // return is_phza24_package_loaded('wallet') && (bool) get_from_option_table('wallet_payment_info_' . $code);
         }
 
         return null;

@@ -1,20 +1,20 @@
 <?php
 
-use Carbon\Carbon;
 use App\Models\Cart;
-use App\Models\Shop;
 use App\Models\Order;
+use App\Models\Shop;
 use App\Models\Customer;
-use App\Helpers\ListHelper;
-use Illuminate\Support\Str;
 use App\Models\ShippingRate;
 use App\Models\SystemConfig;
+use App\Helpers\ListHelper;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+
 // use Laravel\Cashier\Cashier;
+use Carbon\Carbon;
 
 if (!function_exists('getPlatformFeeForOrder')) {
     /**
@@ -43,7 +43,7 @@ if (!function_exists('getPlatformFeeForOrder')) {
         }
 
         // Dynamic commission
-        if (is_incevio_package_loaded('dynamicCommission')) {
+        if (is_phza24_package_loaded('dynamicCommission')) {
             // Check if custom commission for the shop
             if ($shop->commission_rate !== null) {
                 if ($shop->commission_rate > 0) {
@@ -138,6 +138,7 @@ if (!function_exists('setSystemTimezone')) {
      */
     function setSystemTimezone($shop = null)
     {
+        // $system_timezone = ListHelper::system_timezone();
         $system_timezone = Cache::rememberForever('system_timezone', function () {
             return ListHelper::system_timezone();
         });
@@ -262,11 +263,7 @@ if (!function_exists('setAdditionalCartInfo')) {
 
         foreach ($request->input('cart') as $cart) {
             $total = $total + ($cart['quantity'] * $cart['unit_price']);
-
-            // Sum total cart weight when its has value
-            if ($cart['shipping_weight'] && is_numeric($cart['shipping_weight'])) {
-                $shipping_weight += $cart['shipping_weight'];
-            }
+            $shipping_weight += $cart['shipping_weight'];
         }
 
         $grand_total = ($total + $handling + $request->input('shipping') + $request->input('taxes'));
@@ -289,7 +286,6 @@ if (!function_exists('setAdditionalCartInfo')) {
             'total' => $total,
             'handling' => $handling,
             'grand_total' => $grand_total,
-            'order_status_id' => $request->payment_method_id == Order::PAYMENT_STATUS_PAID ? Order::PAYMENT_STATUS_PAID : Order::STATUS_WAITING_FOR_PAYMENT,
             'billing_address' => $request->input('same_as_shipping_address') ?
                 $request->input('shipping_address') : $request->input('billing_address'),
             'approved' => 1,
@@ -452,7 +448,7 @@ if (!function_exists('crosscheckAndUpdateOldCartInfo')) {
         // Packaging
         if (
             $request->packaging_id != $cart->packaging_id &&
-            is_incevio_package_loaded('packaging')
+            is_phza24_package_loaded('packaging')
         ) {
             if ($request->packaging_id == \Incevio\Package\Packaging\Models\Packaging::FREE_PACKAGING_ID) {
                 $cart->packaging = null;
@@ -578,43 +574,6 @@ if (!function_exists('get_payment_config_info')) {
                     'msg' => trans('theme.notify.we_dont_save_card_info'),
                 ];
 
-            case 'iyzico':
-                if ($shop) {
-                    $config = $shop->config->iyzico ?? null;
-                } else {
-                    $config = config('iyzico.api_key');
-                }
-
-                return  [
-                    'config' => $config,
-                    'msg'    => trans('theme.notify.we_dont_save_card_info'),
-                ];
-
-
-            case 'payfast':
-                if ($shop) {
-                    $config = $shop->config->payfast ?? null;
-                } else {
-                    $config = config('payfast.merchant_key');
-                }
-
-                return  [
-                    'config' => $config,
-                    'msg'    => trans('theme.notify.we_dont_save_card_info'),
-                ];
-
-            case 'paypal':
-                if ($shop) {
-                    $config = $shop->config->paypal ?? null;
-                } else {
-                    $config = config('paypal.client_id');
-                }
-
-                return  [
-                    'config' => $config,
-                    'msg'    => trans('theme.notify.we_dont_save_card_info'),
-                ];
-
             case 'instamojo':
                 if ($shop) {
                     $config = $shop->config->instamojo ?? null;
@@ -679,7 +638,7 @@ if (!function_exists('get_payment_config_info')) {
                 if ($shop) {
                     $config = $shop->config->paystack ?? null;
                 } else {
-                    $config = config('paystack.public_key');
+                    $config = config('paystack.secret');
                 }
 
                 return [
@@ -778,8 +737,8 @@ if (!function_exists('get_payment_config_info')) {
     }
 }
 
-if (!function_exists('is_incevio_package_loaded')) {
-    function is_incevio_package_loaded($packages)
+if (!function_exists('is_phza24_package_loaded')) {
+    function is_phza24_package_loaded($packages)
     {
         $allpackages = is_array($packages) ? $packages : [$packages];
 
@@ -815,7 +774,7 @@ if (!function_exists('is_incevio_package_loaded')) {
 if (!function_exists('can_set_cancellation_fee')) {
     function can_set_cancellation_fee()
     {
-        return !vendor_get_paid_directly() && is_incevio_package_loaded(['wallet']);
+        return !vendor_get_paid_directly() && is_phza24_package_loaded(['wallet']);
     }
 }
 
@@ -843,7 +802,7 @@ if (!function_exists('cancellation_require_admin_approval')) {
 if (!function_exists('customer_has_wallet')) {
     function customer_has_wallet()
     {
-        return config('system.customer.has_wallet') && is_incevio_package_loaded(['wallet']);
+        return config('system.customer.has_wallet') && is_phza24_package_loaded(['wallet']);
     }
 }
 

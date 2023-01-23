@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @php
-  $can_update = Gate::allows('update', $system) ?: null;
+$can_update = Gate::allows('update', $system) ?: null;
 @endphp
 
 @section('content')
@@ -204,7 +204,7 @@
                         @endif
                       </div>
                       <div class="help-block with-errors">
-                        @if (!is_incevio_package_loaded(['wallet']))
+                        @if (!is_phza24_package_loaded(['wallet']))
                           <small class="text-danger">
                             <i class="fa fa-ban"></i>
                             {{ trans('help.option_dependence_module', ['dependency' => 'wallet']) }}
@@ -304,46 +304,6 @@
             <div class="col-sm-6">
               <fieldset>
                 <legend><i class="fa fa-cubes hidden-sm"></i> {{ trans('app.inventory') }}</legend>
-
-                <div class="row">
-                  <div class="col-sm-7 text-right">
-                    <div class="form-group">
-                      {!! Form::label('hide_technical_details_on_product_page', trans('app.hide_technical_details_on_product_page') . ':', ['class' => 'with-help control-label']) !!}
-                      <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="left" title="{{ trans('help.hide_technical_details_on_product_page') }}"></i>
-                    </div>
-                  </div>
-                  <div class="col-sm-4">
-                    @if ($can_update)
-                      <div class="handle horizontal text-center">
-                        <a href="javascript:void(0)" data-link="{{ route('admin.setting.system.config.toggle', 'hide_technical_details_on_product_page') }}" type="button" class="btn btn-md btn-secondary btn-toggle {{ $system->hide_technical_details_on_product_page ? 'active' : '' }}" data-toggle="button" aria-pressed="{{ $system->hide_technical_details_on_product_page ? 'true' : 'false' }}" autocomplete="off">
-                          <div class="btn-handle"></div>
-                        </a>
-                      </div>
-                    @else
-                      <span>{{ $system->hide_technical_details_on_product_page ? trans('app.on') : trans('app.off') }}</span>
-                    @endif
-                  </div>
-                </div> <!-- /.row -->
-
-                <div class="row">
-                  <div class="col-sm-7 text-right">
-                    <div class="form-group">
-                      {!! Form::label('hide_out_of_stock_items', trans('app.hide_out_of_stock_items') . ':', ['class' => 'with-help control-label']) !!}
-                      <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="left" title="{{ trans('help.hide_out_of_stock_items') }}"></i>
-                    </div>
-                  </div>
-                  <div class="col-sm-4">
-                    @if ($can_update)
-                      <div class="handle horizontal text-center">
-                        <a href="javascript:void(0)" data-link="{{ route('admin.setting.system.config.toggle', 'hide_out_of_stock_items') }}" type="button" class="btn btn-md btn-secondary btn-toggle {{ $system->hide_out_of_stock_items ? 'active' : '' }}" data-toggle="button" aria-pressed="{{ $system->hide_out_of_stock_items ? 'true' : 'false' }}" autocomplete="off">
-                          <div class="btn-handle"></div>
-                        </a>
-                      </div>
-                    @else
-                      <span>{{ $system->hide_out_of_stock_items ? trans('app.on') : trans('app.off') }}</span>
-                    @endif
-                  </div>
-                </div> <!-- /.row -->
 
                 <div class="row">
                   <div class="col-sm-7 text-right">
@@ -689,7 +649,7 @@
             <div class="col-sm-6">
               <fieldset>
                 <legend>{{ trans('app.config_promotions') }}</legend>
-                @if (is_incevio_package_loaded('coupons'))
+                @if (is_phza24_package_loaded('coupons'))
                   <div class="form-group">
                     {!! Form::label('coupon_code_size', '*' . trans('coupons::lang.coupon_code_size') . ':', ['class' => 'with-help col-sm-7 control-label']) !!}
                     <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="left" title="{{ trans('help.config_coupon_code_size') }}"></i>

@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
-
 // use App\Events\Profile\ProfileUpdated;
 // use App\Events\Profile\PasswordUpdated;
 use Illuminate\Database\Eloquent\Builder;
@@ -61,7 +60,7 @@ class AccountController extends Controller
                 },
             ])->first();
 
-        if (is_incevio_package_loaded('wishlist')) {
+        if (is_phza24_package_loaded('wishlist')) {
             $data->load([
                 'wishlists' => function ($query) {
                     $query->with('inventory:id,slug,title', 'inventory.images')->latest()->take(5);
@@ -69,7 +68,7 @@ class AccountController extends Controller
             ])->loadCount('wishlists');
         }
 
-        if (is_incevio_package_loaded('coupon')) {
+        if (is_phza24_package_loaded('coupon')) {
             $data->loadCount('coupons');
         }
 
@@ -113,7 +112,7 @@ class AccountController extends Controller
      */
     private function wishlist()
     {
-        if (is_incevio_package_loaded('wishlist')) {
+        if (is_phza24_package_loaded('wishlist')) {
             return \Incevio\Package\Wishlist\Models\Wishlist::mine()
                 ->whereHas('inventory', function ($q) {
                     $q->available();
@@ -214,7 +213,7 @@ class AccountController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request)
@@ -224,19 +223,10 @@ class AccountController extends Controller
                 ->with('warning', trans('messages.demo_restriction'));
         }
 
-        $request->validate([
-            'email' =>  'required|email|max:255|unique:customers,email,'.Auth::guard('customer')->user()->id,
-        ]);
-
         $user = Auth::guard('customer')->user();
         $user->name = $request->input('name');
         $user->nice_name = $request->input('nice_name');
         $user->email = $request->input('email');
-
-        if ($request->has('phone')) {
-            $user->phone = $request->input('phone');
-        }
-
         $user->dob = $request->input('dob');
         $user->description = $request->input('description');
         $user->save();
@@ -248,7 +238,7 @@ class AccountController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function password_update(SelfPasswordUpdateRequest $request)
@@ -269,7 +259,7 @@ class AccountController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function create_address(Request $request)
@@ -289,7 +279,7 @@ class AccountController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function save_address(CreateAddressRequest $request)
@@ -304,7 +294,7 @@ class AccountController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function address_edit(Request $request, Address $address)
@@ -319,7 +309,7 @@ class AccountController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function address_update(SelfAddressUpdateRequest $request, Address $address)
@@ -332,7 +322,7 @@ class AccountController extends Controller
     /**
      * delete the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function address_delete(SelfAddressDeleteRequest $request, Address $address)
@@ -375,4 +365,5 @@ class AccountController extends Controller
 
         return redirect()->route('homepage')->with('success', trans('theme.notify.account_delete'));
     }
+
 }

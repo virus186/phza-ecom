@@ -315,7 +315,7 @@ $can_update = Gate::allows('update', $system) ?? null;
                 <hr class="style3" />
 
                 <div class="col-sm-4 text-center">
-                  <a href="{{ route('admin.incevio.clear') }}" class="btn btn-default btn-lg confirm">
+                  <a href="{{ route('admin.phza24.clear') }}" class="btn btn-default btn-lg confirm">
                     {{ trans('app.clear_cache') }}
                   </a>
 
@@ -360,29 +360,29 @@ $can_update = Gate::allows('update', $system) ?? null;
             <div class="col-sm-6">
               <div class="spacer10"></div>
               <div class="form-group">
-                <label for="">{{ trans('app.Phza24_application_key') }}</label>
+                <label for="">{{ trans('app.phza24_application_key') }}</label>
                 <div class="input-group">
-                  <input type="password" id="key" class="form-control" value="{{ env('Phza24_API_KEY') ?: env('Phza24_API_KEY') }}" readonly>
+                  <input type="password" id="key" class="form-control" value="{{ env('PHZA24_API_KEY') ?: env('PHZA24_API_KEY') }}" readonly>
                   <span class="input-group-addon fa fa-clipboard" onclick="copy_to_clipboard(this)" data-key="copy-key"> {{ trans('app.copy') }}</span>
                 </div>
               </div>
               <div class="form-group">
-                <label for="">{{ trans('app.Phza24_application_secret') }}</label>
+                <label for="">{{ trans('app.phza24_application_secret') }}</label>
                 <div class="input-group">
-                  <input type="password" id="secret" class="form-control" value="{{ env('Phza24_ENCRYPTION_KEY') ?? env('Phza24_ENCRYPTION_KEY') }}" readonly>
+                  <input type="password" id="secret" class="form-control" value="{{ env('PHZA24_ENCRYPTION_KEY') ?? env('PHZA24_ENCRYPTION_KEY') }}" readonly>
                   <span class="input-group-addon fa fa-clipboard" onclick="copy_to_clipboard(this)" data-key="copy-secret"> {{ trans('app.copy') }}</span>
                 </div>
               </div>
               <div class="form-group">
-                <label for="">{{ trans('app.Phza24_application_iv') }}</label>
+                <label for="">{{ trans('app.phza24_application_iv') }}</label>
                 <div class="input-group">
-                  <input type="password" id="iv" class="form-control" value="{{ env('Phza24_ENCRYPTION_IV') ?? env('Phza24_ENCRYPTION_IV') }}" readonly>
+                  <input type="password" id="iv" class="form-control" value="{{ env('PHZA24_ENCRYPTION_IV') ?? env('PHZA24_ENCRYPTION_IV') }}" readonly>
                   <span class="input-group-addon fa fa-clipboard" onclick="copy_to_clipboard(this)" data-key="copy-iv"> {{ trans('app.copy') }}</span>
                 </div>
               </div>
 
               @if (config('app.demo') == true)
-                <div class="alert alert-warning" id="Phza24_application_key_warning">
+                <div class="alert alert-warning" id="phza24_application_key_warning">
                   {{ trans('messages.demo_restriction') }}
                 </div>
               @endif

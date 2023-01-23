@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\Validations\UpdateMainNavCategoryRequest;
 use App\Models\Category;
 use App\Models\Inventory;
+use App\Models\Manufacturer;
+use App\Common\Authorizable;
 use App\Helpers\ListHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Validations\UpdateBestFindsRequest;
@@ -30,7 +31,19 @@ class PromotionsController extends Controller
      */
     public function index()
     {
-        return view('admin.promotions.options');
+        $categories = Category::all()->pluck('name', 'id')->toArray();
+
+        if ($trending_ids = get_from_option_table('trending_categories', [])) {
+            $trending_categories = Category::whereIn('id', $trending_ids)
+                ->get()->pluck('name', 'id')->toArray();
+        } else {
+            $trending_categories = [];
+        }
+
+        $id = get_from_option_table('deal_of_the_day');
+        $deal_of_the_day = Inventory::where('id', $id)->first();
+
+        return view('admin.promotions.options', compact('categories', 'trending_categories', 'deal_of_the_day'));
     }
 
     /**
@@ -96,9 +109,12 @@ class PromotionsController extends Controller
      */
     public function editFeaturedBrands()
     {
-        $brands = ListHelper::manufacturers();
+        $brands = Manufacturer::all()->pluck('name', 'id')->toArray();
 
         $featured_brands = ListHelper::featured_brands();
+
+        // $featured_brands = Manufacturer::whereIn('id', get_from_option_table('featured_brands', []))
+        // ->get()->pluck('name', 'id')->toArray();
 
         return view('admin.promotions._edit_featured_brands', compact('featured_brands', 'brands'));
     }
@@ -139,9 +155,7 @@ class PromotionsController extends Controller
      */
     public function editFeaturedCategories()
     {
-        $featured_categories = ListHelper::featured_categories()->toArray();
-
-        return view('admin.promotions._edit_featured_categories', compact('featured_categories'));
+        return view('admin.promotions._edit_featured_categories');
     }
 
     /**
@@ -153,8 +167,7 @@ class PromotionsController extends Controller
     public function updateFeaturedCategories(UpdateFeaturedCategories $request)
     {
         try {
-            // Reset all featured categories
-            Category::where('featured', true)->update(['featured' => null]);
+            Category::where('featured', true)->update(['featured' => null]); // Reset all featured categories
 
             if ($featured_categories = $request->input('featured_categories')) {
                 Category::whereIn('id', $featured_categories)->update(['featured' => true]);
@@ -162,12 +175,15 @@ class PromotionsController extends Controller
 
             // Clear featured_categories from cache
             Cache::forget('featured_categories');
+
+            return redirect()->route('admin.promotions', '#settings-tab')
+                ->with('success', trans('messages.updated_featured_categories'));
         } catch (\Exception $e) {
-            return redirect()->route('admin.promotions')->with('warning', $e->getMessage());
+            // Failed
         }
 
-        return redirect()->route('admin.promotions', '#settings-tab')
-            ->with('success', trans('messages.updated_featured_categories'));
+        return redirect()->route('admin.promotions')
+            ->with('warning', trans('messages.failed'));
     }
 
     /**
@@ -211,9 +227,13 @@ class PromotionsController extends Controller
      */
     public function editTrendingNow()
     {
-        $trending_categories = ListHelper::trending_categories();
+        $categories = Category::all()->pluck('name', 'id')->toArray();
 
-        return view('admin.promotions._edit_trending_categories', compact('trending_categories'));
+        $ids = get_from_option_table('trending_categories', []);
+        $trending_categories = Category::whereIn('id', $ids)
+            ->get()->pluck('name', 'id')->toArray();
+
+        return view('admin.promotions._edit_trending_categories', compact('categories', 'trending_categories'));
     }
 
     /**
@@ -271,73 +291,5 @@ class PromotionsController extends Controller
         }
 
         return redirect()->route('admin.promotions')->with('error', trans('messages.failed'));
-    }
-
-    /**
-     * Show form for Main Nav Categories.
-     * @return \Illuminate\Http\Response
-     */
-    public function editNavCategories()
-    {
-        $categories = ListHelper::categories();
-
-        $nav_categories = (get_main_nav_categories())->pluck('id');
-
-        return view('admin.promotions._edit_nav_categories', compact('categories', 'nav_categories'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function updateNavCategories(UpdateMainNavCategoryRequest $request)
-    {
-        if (update_or_create_option_table_record('main_nav_categories', $request->main_nav_categories)) {
-            // Clear trending_categories from cache
-            Cache::forget('main_nav_categories');
-
-            return redirect()->route('admin.promotions')
-                ->with('success', trans('messages.main_nav_category_updated'));
-        }
-
-        return redirect()->route('admin.promotions')
-            ->with('warning', trans('messages.failed'));
-    }
-
-    /**
-     * Edit the nagivation items
-     * @return \Illuminate\Http\Response
-     */
-    public function editNavigation()
-    {
-        $navigations = ListHelper::navigations();
-
-        $hidden_items = hidden_menu_items();
-
-        return view('admin.promotions._edit_navigation', compact('navigations', 'hidden_items'));
-    }
-
-    /**
-     * Update the nagivation items
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function updateNavigation(Request $request)
-    {
-        $hidden = $request->hide ?? [];
-
-        if (update_or_create_option_table_record('hidden_menu_items', $hidden)) {
-            // Clear trending_categories from cache
-            Cache::forget('hidden_menu_items');
-
-            return redirect()->route('admin.promotions')
-                ->with('success', trans('messages.main_nav_category_updated'));
-        }
-
-        return redirect()->route('admin.promotions')
-            ->with('warning', trans('messages.failed'));
     }
 }

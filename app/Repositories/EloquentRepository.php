@@ -100,7 +100,7 @@ abstract class EloquentRepository
     {
         $model = $this->model->onlyTrashed()->findOrFail($id);
 
-        // $model->flushImages();
+        $model->flushImages();
 
         return $model->forceDelete();
     }

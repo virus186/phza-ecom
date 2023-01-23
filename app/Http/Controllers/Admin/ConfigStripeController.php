@@ -58,7 +58,7 @@ class ConfigStripeController extends Controller
                 if ($exist) {
                     $config->stripe->update($data);
                 } else {
-                    $config->stripe()->create($data);
+                    $config->stripe->create($data);
                 }
 
                 return redirect()->route('admin.setting.config.paymentMethod.index')

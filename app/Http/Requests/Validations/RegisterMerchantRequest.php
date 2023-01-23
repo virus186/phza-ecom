@@ -25,27 +25,13 @@ class RegisterMerchantRequest extends Request
     {
         $this->merge(['role_id' => \App\Models\Role::MERCHANT]);
 
-        $rules =  [
-            'shop_name' => 'required|string|max:255|unique:shops,name',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
-            'agree' => 'required',
-        ];
-
-        if (is_subscription_enabled()) {
-            $rules['plan'] = 'required';
-        }
-
-        // When recaptcha in configured and the call is not from api
-        if (config('services.recaptcha.key') && !$this->is('api/vendor/*')) {
-            $rules['g-recaptcha-response'] = 'required|recaptcha';
-        }
-
-        if (is_incevio_package_loaded('otp-login')) {
-            $rules['phone'] = 'required|string|unique:users';
-        }
-
-        return $rules;
+        return [
+        'shop_name' => 'required|string|max:255|unique:shops,name',
+        'email' => 'required|string|email|max:255|unique:users',
+        'password' => 'required|string|min:6|confirmed',
+        'agree' => 'required',
+        'g-recaptcha-response' => 'required|recaptcha',
+    ];
     }
 
     /**
@@ -56,7 +42,7 @@ class RegisterMerchantRequest extends Request
     public function messages()
     {
         return [
-            'email.unique' => trans('validation.register_email_unique'),
-        ];
+        'email.unique' => trans('validation.register_email_unique'),
+    ];
     }
 }

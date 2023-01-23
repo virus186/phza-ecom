@@ -39,7 +39,7 @@ trait PackageConfig
     // public function dependencyLoaded(): bool
     // {
     //     foreach ($this->dependentModules as $module) {
-    //         if (! is_incevio_package_loaded($module)) {
+    //         if (! is_phza24_package_loaded($module)) {
     //             return false;
     //         }
     //     }

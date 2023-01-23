@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Storefront;
 use App\Models\Banner;
 use App\Models\Attribute;
 use App\Models\Country;
-use App\Models\Currency;
 use App\Models\Inventory;
 use App\Models\Manufacturer;
 use App\Models\Page;
@@ -17,14 +16,12 @@ use App\Models\CategoryGroup;
 use App\Models\CategorySubGroup;
 use App\Helpers\ListHelper;
 use App\Http\Controllers\Controller;
-use App\Models\System;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Session;
 use Carbon\Carbon;
-use function PHPUnit\Framework\isNull;
 
 class HomeController extends Controller
 {
@@ -90,7 +87,7 @@ class HomeController extends Controller
         });
 
         // Flash Deal Items
-        if (is_incevio_package_loaded('flashdeal')) {
+        if (is_phza24_package_loaded('flashdeal')) {
             $flashdeals = Cache::remember('flashdeals', config('cache.remember.deals', 0), function () {
                 return get_flash_deals();
             });
@@ -275,11 +272,13 @@ class HomeController extends Controller
     {
         // DB::enableQueryLog();
         $item = Inventory::where('slug', $slug)->withCount('feedbacks')->available()->first();
-
+        //return $item;
         // dd(DB::getQueryLog());
         if (!$item) {
             return view('theme::exceptions.item_not_available');
         }
+
+        // $item = $item->loadCount('feedbacks');
 
         $item->load([
             'product' => function ($q) use ($item) {
@@ -289,8 +288,7 @@ class HomeController extends Controller
                     }]);
             },
             'attributeValues' => function ($q) {
-                $q->select('id', 'attribute_values.attribute_id', 'value', 'color', 'order')
-                    ->with('attribute:id,name,attribute_type_id,order');
+                $q->select('id', 'attribute_values.attribute_id', 'value', 'color', 'order')->with('attribute:id,name,attribute_type_id,order');
             },
             'shop' => function ($q) {
                 $q->withCount('inventories')
@@ -312,7 +310,7 @@ class HomeController extends Controller
         $this->update_recently_viewed_items($item); //update_recently_viewed_items
 
         $variants = ListHelper::variants_of_product($item, $item->shop_id);
-
+        //return $variants;
         $attr_pivots = DB::table('attribute_inventory')
             ->select('attribute_id', 'inventory_id', 'attribute_value_id')
             ->whereIn('inventory_id', $variants->pluck('id'))->get();
@@ -326,7 +324,8 @@ class HomeController extends Controller
                 $query->whereIn('id', $attr_pivots->pluck('attribute_value_id'))->orderBy('order');
             }])
             ->orderBy('order')->get();
-
+        //return $attributes;
+        // TEST
         $related = ListHelper::related_products($item);
         $linked_items = ListHelper::linked_items($item);
 
@@ -363,7 +362,7 @@ class HomeController extends Controller
             ])
             ->withCount('feedbacks')->firstOrFail();
 
-        $this->update_recently_viewed_items($item); // update recently viewed items
+        $this->update_recently_viewed_items($item); //update_recently_viewed_items
 
         $variants = ListHelper::variants_of_product($item, $item->shop_id);
 

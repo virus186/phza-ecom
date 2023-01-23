@@ -69,12 +69,8 @@ class SeedFromSQLDump extends Command
             mysqli_multi_query($link, $queries) or die(mysqli_error($link));
 
             do {
-                // DON'T REMOVE THIS EMPTY LOOP!
                 // This loop is important to run the query synchronously.
             } while (mysqli_next_result($link));
-
-            // Refresh scout indexes
-            $this->call('phza24:fresh-index');
 
             $this->comment(PHP_EOL . "Seeding completed");
         }

@@ -18,7 +18,7 @@
 
   $shipping_options = isset($shipping_zone->id) ? getShippingRates($shipping_zone->id) : 'NaN';
 
-  if (is_incevio_package_loaded('packaging')) {
+  if (is_phza24_package_loaded('packaging')) {
       $packaging_options = getPackagings();
       $default_packaging = isset($cart->packaging_id) ? $cart->shippingPackage : getDefaultPackaging();
   }
@@ -45,7 +45,7 @@
           {{ Form::hidden('taxrate', null, ['id' => 'cart-taxrate']) }}
           {{ Form::hidden('taxes', null, ['id' => 'cart-taxes']) }}
 
-          @if (is_incevio_package_loaded('packaging'))
+          @if (is_phza24_package_loaded('packaging'))
             {{ Form::hidden('packaging_id', $default_packaging ? $default_packaging->id : null, ['id' => 'packaging_id']) }}
             {{ Form::hidden('packaging', $default_packaging ? $default_packaging->cost : null, ['id' => 'cart-packaging']) }}
           @endif
@@ -104,7 +104,7 @@
                   </td>
                 </tr>
 
-                @if (is_incevio_package_loaded('packaging'))
+                @if (is_phza24_package_loaded('packaging'))
                   <tr>
                     <td class="text-right">
                       <a class="packaging-options" data-toggle="popover" title="{{ trans('app.packaging') }}">
@@ -325,7 +325,7 @@
 
       var cartWeight = 0;
 
-      @if (is_incevio_package_loaded('packaging'))
+      @if (is_phza24_package_loaded('packaging'))
         var packaging_options = <?= $packaging_options ?>;
       @endif
 
@@ -334,7 +334,7 @@
 
       var cart = "{{ isset($cart) ? true : false }}";
       if (cart) {
-        @if (is_incevio_package_loaded('packaging'))
+        @if (is_phza24_package_loaded('packaging'))
           setPackagingCost('{{ $default_packaging->name }}', {{ $default_packaging->cost }}, {{ $default_packaging->id }});
         @endif
 

@@ -240,7 +240,7 @@ class ProcessInventoryCsvBulkUpload implements ShouldQueue
         }
 
         // Sync packaging
-        if (is_incevio_package_loaded('packaging')) {
+        if (is_phza24_package_loaded('packaging')) {
             if ($data['packaging_ids']) {
                 $temp_arr = explode(',', $data['packaging_ids']);
                 $packaging_ids = \Incevio\Package\Packaging\Models\Packaging::select('id')->mine()

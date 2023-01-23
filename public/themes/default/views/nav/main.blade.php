@@ -3,8 +3,8 @@
     <div class="container-fluid">
       <div class="header__top-inner py-0">
         <div class="header__top-welcome">
-          {{-- @if (is_incevio_package_loaded('zipcode') && Session::has('zipcode')) --}}
-          @if (is_incevio_package_loaded('zipcode') && Session::has('zipcode_default'))
+          {{-- @if (is_phza24_package_loaded('zipcode') && Session::has('zipcode')) --}}
+          @if (is_phza24_package_loaded('zipcode') && Session::has('zipcode_default'))
             <a class="modalAction" href="{{ route(config('zipcode.routes.shipTo')) }}">
               <i class="fal fa-location-arrow"></i> {{ trans('theme.ship_to') . ' ' . Session::get('zipcode_default') }}
             </a>
@@ -141,7 +141,7 @@
 
         <div class="header__search ml-md-2 my-1">
           {!! Form::open(['route' => 'inCategoriesSearch', 'method' => 'GET', 'id' => 'search-categories-form', 'class' => 'navbar-left navbar-search mb-1', 'role' => 'search']) !!}
-          <div class="search-box header-search-border-color">
+          <div class="search-box">
             <div class="search-box__input">
               {!! Form::text('q', Request::get('q'), ['id' => 'autoSearchInput', 'placeholder' => trans('theme.main_searchbox_placeholder'), 'autocomplete' => 'off', 'data-search']) !!}
             </div>
@@ -165,9 +165,7 @@
             </div>
 
             <div class="search-box__button">
-              <button type="submit" class="navbar-search-submit">
-
-                {{-- <button type="submit" class="navbar-search-submit" onclick="document.getElementById('search-categories-form').submit()"> --}}
+              <button type="submit" class="navbar-search-submit" onclick="document.getElementById('search-categories-form').submit()">
                 {{-- <a class="navbar-search-submit" onclick="document.getElementById('search-categories-form').submit()"> --}}
                 <i class="fal fa-search"></i>
                 {{-- </a> --}}
@@ -175,16 +173,14 @@
             </div>
 
             {{-- Search Autocomplete package load --}}
-            @if (is_incevio_package_loaded('searchAutocomplete'))
+            @if (is_phza24_package_loaded('searchAutocomplete'))
               @include('searchAutocomplete::_autoComplete')
             @endif
           </div>
           {!! Form::close() !!}
 
-          <p id="search-nav-feedabck" class="pl-4 text-danger small hide">{{ trans('theme.type_min_char', ['min' => 3]) }}</p>
-
           {{-- Trending Keywords --}}
-          @if (is_incevio_package_loaded('trendingKeywords'))
+          @if (is_phza24_package_loaded('trendingKeywords'))
             @include('trendingKeywords::_keyword_lists')
           @endif
         </div>
@@ -198,19 +194,7 @@
               </a>
             </li>
 
-            @if (is_incevio_package_loaded('comparison'))
-              @php
-                $comparison_item = !empty(Session::get('comparables')) ? count(Session::get('comparables')) : 0;
-              @endphp
-              <li>
-                <a href="{{ route('product.comparables') }}">
-                  <i class="fal fa-repeat"></i>
-                  <span id="globalCompareItemCount" class="badge {{ $comparison_item == 0 ? 'hidden' : '' }}">{{ $comparison_item }}</span>
-                </a>
-              </li>
-            @endif
-
-            @if (is_incevio_package_loaded('wishlist'))
+            @if (is_phza24_package_loaded('wishlist'))
               <li>
                 <a href="{{ route('account', 'wishlist') }}">
                   <i class="fal fa-heart"></i>
@@ -227,14 +211,13 @@
                 <span id="globalCartItemCount" class="badge {{ $cart_item_count == 0 ? 'hidden' : '' }}">{{ $cart_item_count }}</span>
               </a>
             </li>
-
             {{-- <li>
-              <a href="#">
-                <i class="fas fa-wallet"></i>
-                <!-- <img src="images/wal.svg" alt=""> -->
-                <span>$159.00</span>
-              </a>
-            </li> --}}
+                          <a href="#">
+                            <i class="fas fa-wallet"></i>
+                            <!-- <img src="images/wal.svg" alt=""> -->
+                            <span>$159.00</span>
+                          </a>
+                        </li> --}}
           </ul>
         </div>
       </div>
@@ -246,105 +229,89 @@
   <div class="container">
     <div class="header__navigation-inner">
       <ul class="menu-dropdown-list header__navigation-category">
-        @if (is_null($hidden_menu_items) || !in_array('Categories', $hidden_menu_items))
-          <li>
-            <a href="{{ route('categories') }}" class="menu-link" data-menu-link>
-              <i class="fas fa-stream" style="margin-right: 10px;"></i>
-              {{ trans('theme.categories') }}
-              {{-- <i class="far fa-chevron-down"></i> --}}
-            </a>
+        <li>
+          <a href="{{ route('categories') }}" class="menu-link" data-menu-link>
+            <i class="fas fa-stream" style="margin-right: 10px;"></i>
+            {{ trans('theme.categories') }}
+            {{-- <i class="far fa-chevron-down"></i> --}}
+          </a>
 
-            <ul class="menu-cat" data-menu-toggle>
-              @foreach ($all_categories as $catGroup)
-                @if ($catGroup->subGroups->count())
-                  @php
-                    $categories_count = $catGroup->subGroups->sum('categories_count');
-                    $cat_counter = 0;
-                  @endphp
-                  <li>
-                    <a href="{{ route('categoryGrp.browse', $catGroup->slug) }}">
-                      @if ($catGroup->logoImage && Storage::exists($catGroup->logoImage->path))
-                        <img src="{{ get_storage_file_url($catGroup->logoImage->path, 'tiny_thumb') }}" alt="{{ $catGroup->name }}">
-                      @else
-                        <i class="fal {{ $catGroup->icon ?? 'fa-cube' }}"></i>
-                      @endif
+          <ul class="menu-cat" data-menu-toggle>
+            @foreach ($all_categories as $catGroup)
+              @if ($catGroup->subGroups->count())
+                @php
+                  $categories_count = $catGroup->subGroups->sum('categories_count');
+                  $cat_counter = 0;
+                @endphp
+                <li>
+                  <a href="{{ route('categoryGrp.browse', $catGroup->slug) }}">
+                    @if ($catGroup->logoImage && Storage::exists($catGroup->logoImage->path))
+                      <img src="{{ get_storage_file_url($catGroup->logoImage->path, 'tiny_thumb') }}" alt="{{ $catGroup->name }}">
+                    @else
+                      <i class="fal {{ $catGroup->icon ?? 'fa-cube' }}"></i>
+                    @endif
 
-                      <span>{{ $catGroup->name }}</span>
-                      <i class="fal fa-chevron-right"></i>
-                    </a>
+                    <span>{{ $catGroup->name }}</span>
+                    <i class="fal fa-chevron-right"></i>
+                  </a>
 
-                    <div class="mega-dropdown" style="background-image:url({{ $catGroup->backgroundImage ? get_storage_file_url(optional($catGroup->backgroundImage)->path, 'full') : '' }}); background-position: right bottom; background-repeat: no-repeat;margin-right: 0; background-size: contain;">
+                  <div class="mega-dropdown" style="background-image:url({{ $catGroup->backgroundImage ? get_storage_file_url(optional($catGroup->backgroundImage)->path, 'full') : '' }}); background-position: right bottom; background-repeat: no-repeat;margin-right: 0; background-size: contain;">
 
-                      <div class="row">
-                        @foreach ($catGroup->subGroups as $subGroup)
-                          <div class="col-lg-{{ $categories_count > 15 ? '4' : '6' }}">
-                            @php
-                              $cat_counter = 0; //Reset the counter
-                            @endphp
+                    <div class="row">
+                      @foreach ($catGroup->subGroups as $subGroup)
+                        <div class="col-lg-{{ $categories_count > 15 ? '4' : '6' }}">
+                          @php
+                            $cat_counter = 0; //Reset the counter
+                          @endphp
 
-                            <div class="mega-dropdown__item">
-                              <h3>
-                                <a href="{{ route('categories.browse', $subGroup->slug) }}">{{ $subGroup->name }}</a>
-                              </h3>
-                              <ul>
-                                @foreach ($subGroup->categories as $cat)
-                                  <li>
-                                    <a href="{{ route('category.browse', $cat->slug) }}">{{ $cat->name }}</a>
-                                    @if ($cat->description)
-                                      <p class="text-muted">{!! $cat->description !!}</p>
-                                    @endif
-                                  </li>
-                                  @php
-                                    $cat_counter++; //Increase the counter value by 1
-                                  @endphp
-                                @endforeach
-                              </ul>
-                            </div>
+                          <div class="mega-dropdown__item">
+                            <h3>
+                              <a href="{{ route('categories.browse', $subGroup->slug) }}">{{ $subGroup->name }}</a>
+                            </h3>
+                            <ul>
+                              @foreach ($subGroup->categories as $cat)
+                                <li>
+                                  <a href="{{ route('category.browse', $cat->slug) }}">{{ $cat->name }}</a>
+                                  @if ($cat->description)
+                                    <p class="text-muted">{!! $cat->description !!}</p>
+                                  @endif
+                                </li>
+                                @php
+                                  $cat_counter++; //Increase the counter value by 1
+                                @endphp
+                              @endforeach
+                            </ul>
                           </div>
-                        @endforeach
-                      </div>
+                        </div>
+                      @endforeach
                     </div>
-                  </li>
-                @endif
-              @endforeach
-            </ul>
-          </li>
-        @endif
+                  </div>
+                </li>
+              @endif
+            @endforeach
+          </ul>
+        </li>
       </ul>
 
       <ul class="header__menu">
-        @if (is_null($hidden_menu_items) || !in_array('Brands', $hidden_menu_items))
+        <li>
+          <a class="menu-link" href="{{ route('brands') }}">
+            <i class="fal fa-crown menu-icon"></i> {{ trans('theme.brands') }}
+          </a>
+        </li>
+
+        <li>
+          <a class="menu-link" href="{{ route('shops') }}">
+            <i class="fal fa-store menu-icon"></i> {{ trans('theme.vendors') }}
+          </a>
+        </li>
+
+        @if (is_phza24_package_loaded('eventy'))
           <li>
-            <a class="menu-link" href="{{ route('brands') }}">
-              <i class="fal fa-crown menu-icon"></i> {{ trans('theme.brands') }}
+            <a class="menu-link" href="{{ route('events') }}">
+              <i class="fal fa-calendar-alt menu-icon"></i> {{ trans('theme.events') }}
             </a>
           </li>
-        @endif
-
-        @if (is_null($hidden_menu_items) || !in_array('Vendors', $hidden_menu_items))
-          <li>
-            <a class="menu-link" href="{{ route('shops') }}">
-              <i class="fal fa-store menu-icon"></i> {{ trans('theme.vendors') }}
-            </a>
-          </li>
-        @endif
-
-        @foreach (get_main_nav_categories() as $nav_cat)
-          <li>
-            <a class="menu-link" href="{{ route('category.browse', $nav_cat->slug) }}">
-              <i class="fas fa-fire-alt menu-icon"></i> {{ $nav_cat->name }}
-            </a>
-          </li>
-        @endforeach
-
-        @if (is_incevio_package_loaded('eventy'))
-          @if (is_null($hidden_menu_items) || !in_array('events', $hidden_menu_items))
-            <li>
-              <a class="menu-link" href="{{ route('events') }}">
-                <i class="fal fa-calendar-alt menu-icon"></i> {{ trans('theme.events') }}
-              </a>
-            </li>
-          @endif
         @endif
 
         @foreach ($pages->where('position', 'main_nav') as $page)
@@ -355,14 +322,12 @@
           </li>
         @endforeach
 
-        @if (is_null($hidden_menu_items) || !in_array('Sale', $hidden_menu_items))
-          <li>
-            <a class="menu-link" href="{{ url('/selling') }}">
-              <i class="fal fa-seedling menu-icon"></i>
-              {{ trans('theme.nav.sell_on', ['platform' => get_platform_title()]) }}
-            </a>
-          </li>
-        @endif
+        <li>
+          <a class="menu-link" href="{{ url('/selling') }}">
+            <i class="fal fa-seedling menu-icon"></i>
+            {{ trans('theme.nav.sell_on', ['platform' => get_platform_title()]) }}
+          </a>
+        </li>
 
         {{-- <li class="menu-dropdown-list">
                       <a class="menu-link" href="#">

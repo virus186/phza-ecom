@@ -13,7 +13,7 @@ class ApiPaymentCredentialRequest extends Request
      */
     public function authorize()
     {
-        return $this->header('APPKEY') === config('app.Phza24_api_key');
+        return $this->header('APPKEY') === config('app.phza24_api_key');
     }
 
     /**

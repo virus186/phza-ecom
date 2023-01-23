@@ -21,7 +21,7 @@
     <a href="{{ route('account', 'orders') }}"><i class="fas fa-shopping-cart"></i> @lang('theme.nav.my_orders')</a>
   </li>
 
-  @if (is_incevio_package_loaded('wishlist'))
+  @if (is_phza24_package_loaded('wishlist'))
     <li class="{{ $tab == 'wishlist' ? 'active' : '' }}">
       <a href="{{ route('account', 'wishlist') }}">
         <i class="fas fa-heart"></i> @lang('theme.nav.my_wishlist')
@@ -34,7 +34,7 @@
     <a href="{{ route('account', 'disputes') }}"><i class="fas fa-rocket"></i> @lang('theme.nav.refunds_disputes')</a>
   </li>
 
-  @if (is_incevio_package_loaded('coupons'))
+  @if (is_phza24_package_loaded('coupons'))
     <li class="{{ $tab == 'coupons' ? 'active' : '' }}">
       <a href="{{ route('account', 'coupons') }}">
         <i class="fas fa-tags"></i> @lang('theme.nav.my_coupons')
@@ -43,7 +43,7 @@
     </li>
   @endif
 
-  @if (is_incevio_package_loaded('eventy'))
+  @if (is_phza24_package_loaded('eventy'))
     <li class="{{ $tab == 'events' ? 'active' : '' }}">
       <a href="{{ route('account', 'events') }}">
         <i class="fas fa-calendar"></i> @lang('eventy::lang.my_events')

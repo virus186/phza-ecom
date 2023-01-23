@@ -26,9 +26,9 @@ class CreateTaxRequest extends Request
         Request::merge(['shop_id' => Request::user()->merchantId()]); //Set shop_id
 
         return [
-            'name' => 'required',
-            'taxrate' => 'required|numeric',
-            'country_id' => 'required',
+           'name' => 'required',
+           'taxrate' => 'required|numeric',
+           'country_id' => 'required',
         ];
     }
 }

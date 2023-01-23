@@ -9,9 +9,7 @@
       <div class="form-group">
         {!! Form::label('trending_categories', trans('app.form.categories')) !!}
         {{-- <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="top" title="{{ trans('help.trending_now_category_help') }}"></i> --}}
-
-        {!! Form::select('trending_categories[]', $trending_categories, array_keys($trending_categories), ['class' => 'form-control searchCategoryForSelect', 'multiple' => 'multiple', 'style' => 'width: 100%']) !!}
-
+        {!! Form::select('trending_categories[]', $categories, array_keys($trending_categories), ['class' => 'form-control select2-normal', 'multiple' => 'multiple']) !!}
         <small class="text-muted">{{ trans('help.trending_now_category_help') }}</small>
         <div class="help-block with-errors"></div>
       </div>

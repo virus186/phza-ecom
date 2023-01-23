@@ -14,12 +14,10 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
-// Uncomment below line to enable Wallet plugin. (Have to install the plugin.)
 // use Incevio\Package\Wallet\Traits\HasWallet;
 
 class Shop extends BaseModel
 {
-    // Uncomment below line to enable Wallet plugin. (Have to install the plugin.)
     // use HasWallet;
 
     use HasFactory, SoftDeletes, Loggable, Notifiable, Addressable, Imageable, Feedbackable, Billable;
@@ -761,7 +759,7 @@ class Shop extends BaseModel
      */
     public function scopeZipcode($query): object
     {
-        if (is_incevio_package_loaded('zipcode')) {
+        if (is_phza24_package_loaded('zipcode')) {
             return $query->whereHas('address', function ($builder) {
                 return $builder->where('zip_code', session('zipcode_default'));
             });

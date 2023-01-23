@@ -70,7 +70,7 @@
                           <span class="d-none d-sm-inline-block">{{ trans('theme.add_to_cart') }}</span>
                         </a>
 
-                        @if (is_incevio_package_loaded('wishlist'))
+                        @if (is_phza24_package_loaded('wishlist'))
                         <a href="javascript:void(0)" data-link="{{ route('wishlist.add', $deal_of_the_day) }}" class="add-to-wishlist">
                           <i class="far fa-heart"></i> {{ trans('theme.button.add_to_wishlist') }}
                         </a>

@@ -14,7 +14,7 @@ class PackageController extends Controller
     public function isLoaded(Request $request, $slug)
     {
         return response()->json([
-            'data' => (bool) is_incevio_package_loaded($slug)
+            'data' => (bool) is_phza24_package_loaded($slug)
         ]);
     }
 }

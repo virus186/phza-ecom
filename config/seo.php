@@ -113,7 +113,7 @@ return [
         | TWITTER SITE
         |--------------------------------------------------------------------------
         |
-        | Here you may provide your twitter @username of your account. Example: @incevio
+        | Here you may provide your twitter @username of your account. Example: @phza24
         |
         */
         'twitter_site' => '',
@@ -148,7 +148,7 @@ return [
         | Not important in Google
         |
         */
-        'keywords' => 'incevio,Phza24,multi-vendor,multivendor application,laravel ecommerce',
+        'keywords' => 'phza24,Phza24,multi-vendor,multivendor application,laravel ecommerce',
 
     ],
 

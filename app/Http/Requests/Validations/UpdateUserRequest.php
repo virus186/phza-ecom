@@ -23,12 +23,14 @@ class UpdateUserRequest extends Request
      */
     public function rules()
     {
+        $id = Request::segment(count(Request::segments())); //Current model ID
+
         return [
-            'name' => 'bail|required|max:255',
-            'email' =>  'email|max:255|unique:users,email,' . $this->route('user'),
-            'role_id' => 'required',
-            'active' => 'required',
-            'image' => 'mimes:jpg,jpeg,png',
+           'name' => 'bail|required|max:255',
+           'email' =>  'email|max:255|composite_unique:users, '.$id,
+           'role_id' => 'required',
+           'active' => 'required',
+           'image' => 'mimes:jpg,jpeg,png',
         ];
     }
 }

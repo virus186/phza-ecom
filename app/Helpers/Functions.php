@@ -295,7 +295,7 @@ if (!function_exists('get_avatar_src')) {
             return get_gravatar_url($model->email, $size);
         }
 
-        return get_gravatar_url('help@incevio.com', $size);
+        return get_gravatar_url('help@phza24.com', $size);
     }
 }
 
@@ -712,7 +712,7 @@ if (!function_exists('get_logo_url')) {
 
                 return  get_storage_file_url(optional($system->logoImage)->path, $size) ?? null;
             });
-        } elseif (is_object($model) && $model->logoImage) {
+        } elseif ($model->logoImage) {
             return get_storage_file_url($model->logoImage->path, $size);
         }
 
@@ -729,7 +729,7 @@ if (!function_exists('get_icon_url')) {
 
                 return  get_storage_file_url(optional($system->iconImage)->path, $size) ?? null;
             });
-        } elseif (is_object($model) && $model->iconImage) {
+        } elseif ($model->iconImage) {
             return get_storage_file_url($model->iconImage->path, $size);
         }
 
@@ -964,12 +964,8 @@ if (!function_exists('get_formated_gender')) {
      *
      * @return string      formated gender to display
      */
-    function get_formated_gender($sex, $show_icon = true)
+    function get_formated_gender($sex)
     {
-        if (!$show_icon) {
-            return trans($sex);
-        }
-
         $icon = '';
         if ('Male' == $sex || 'app.male' == $sex) {
             $icon = "<i class='fa fa-mars'></i> ";
@@ -2386,34 +2382,6 @@ if (!function_exists('get_featured_category')) {
     }
 }
 
-if (!function_exists('get_main_nav_categories')) {
-    /**
-     * Get featured brands
-     * @return array
-     */
-    function get_main_nav_categories()
-    {
-        return Cache::rememberForever('main_nav_categories', function () {
-            $ids = get_from_option_table('main_nav_categories', []);
-
-            return Category::findMany($ids, ['id', 'slug', 'name']);
-        });
-    }
-}
-
-if (!function_exists('hidden_menu_items')) {
-    /**
-     * get hide menu item
-     * @return array|mixed|null
-     */
-    function hidden_menu_items()
-    {
-        return Cache::rememberForever('hidden_menu_items', function () {
-            return get_from_option_table('hidden_menu_items', []);
-        });
-    }
-}
-
 if (!function_exists('get_trending_categories')) {
     /**
      * Get trending_categories
@@ -2538,17 +2506,5 @@ if (!function_exists('update_env')) {
         }
 
         return;
-    }
-}
-
-if (!function_exists('is_social_login_configured')) {
-    /**
-     * Check if social login plugin configured
-     */
-    function is_social_login_configured()
-    {
-        return is_incevio_package_loaded('facebook-login') ||
-            is_incevio_package_loaded('google-login') ||
-            is_incevio_package_loaded('apple-login');
     }
 }

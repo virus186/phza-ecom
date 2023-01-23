@@ -16,7 +16,7 @@ class SelfAddressUpdateRequest extends Request
     {
         if ($this->user() instanceof Customer) {
             return $this->route('address')->addressable_id == $this->user()->id
-                && $this->route('address')->addressable_type == Customer::class;
+                    && $this->route('address')->addressable_type == \App\Models\Customer::class;
         }
 
         return false;
@@ -30,9 +30,9 @@ class SelfAddressUpdateRequest extends Request
     public function rules()
     {
         return [
-            'address_type' => 'bail|required|exists:address_types,type|composite_unique:addresses,addressable_id,addressable_type,' . $this->route('address')->id,
-            'address_line_1' => 'required',
-            'country_id' => 'required|integer',
+           'address_type' => 'bail|required|exists:address_types,type|composite_unique:addresses,addressable_id,addressable_type,'.$this->route('address')->id,
+           'address_line_1' => 'required',
+           'country_id' => 'required|integer',
         ];
     }
 

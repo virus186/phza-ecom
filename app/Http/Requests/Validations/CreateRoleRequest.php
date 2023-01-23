@@ -30,18 +30,18 @@ class CreateRoleRequest extends Request
 
         if ($shop_id) {
             Request::merge(['shop_id' => $shop_id]);
-        } // Set merhant related info
+        } //Set merhant related info
         else {
             $rules['public'] = 'required';
         }
 
         if (Request::user()->accessLevel()) {
-            $rules['level'] = 'nullable|integer|between:' . Request::user()->accessLevel() . ',' . config('system_settings.max_role_level');
+            $rules['level'] = 'nullable|integer|between:'.Request::user()->accessLevel().','.config('system_settings.max_role_level');
         }
 
-        if (Request::input('level') && !Request::user()->accessLevel()) {
+        if (Request::input('level') && ! Request::user()->accessLevel()) {
             Request::replace(['level' => null]);
-        } // Reset the level
+        } //Reset the level
 
         return $rules;
     }

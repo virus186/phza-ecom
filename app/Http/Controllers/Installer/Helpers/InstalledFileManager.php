@@ -1,7 +1,7 @@
 <?php
 /*   __________________________________________________
     |  Obfuscated by YAK Pro - Php Obfuscator  2.0.14  |
-    |              on 2022-12-16 18:01:51              |
+    |              on 2022-08-31 19:46:01              |
     |    GitHub: https://github.com/pk-fr/yakpro-po    |
     |__________________________________________________|
 */
@@ -11,4 +11,4 @@
 * Proprietary and confidential
 * Written by Munna Khan <help.Phza24@gmail.com>, September 2018
 */
- namespace App\Http\Controllers\Installer\Helpers; class InstalledFileManager { public function create() { $installedLogFile = storage_path("\151\x6e\x73\x74\141\x6c\x6c\x65\x64"); $dateStamp = date("\131\x2f\x6d\x2f\x64\40\150\x3a\x69\72\163\141"); if (!file_exists($installedLogFile)) { goto pTVsX; } $message = trans("\x69\x6e\163\164\141\x6c\x6c\x65\162\x5f\x6d\145\x73\163\x61\x67\x65\163\x2e\x75\x70\144\141\x74\x65\162\x2e\154\157\x67\56\163\165\x63\x63\145\163\x73\137\x6d\145\x73\163\x61\147\145") . $dateStamp; file_put_contents($installedLogFile, $message . PHP_EOL, FILE_APPEND | LOCK_EX); goto UXco0; pTVsX: $message = trans("\x69\156\x73\x74\141\x6c\154\x65\162\x5f\155\145\163\163\141\147\145\163\56\151\156\x73\164\x61\154\154\x65\144\56\x73\165\143\x63\x65\x73\163\137\154\157\x67\137\x6d\145\x73\163\141\147\x65") . $dateStamp . "\xa"; file_put_contents($installedLogFile, $message); UXco0: return $message; } public function update() { return $this->create(); } }
+ namespace App\Http\Controllers\Installer\Helpers; class InstalledFileManager { public function create() { $installedLogFile = storage_path("\151\x6e\x73\164\x61\154\154\x65\144"); $dateStamp = date("\x59\x2f\x6d\57\x64\x20\150\72\151\72\163\141"); if (!file_exists($installedLogFile)) { goto c6cwF; } $message = trans("\151\x6e\163\x74\141\x6c\154\x65\x72\137\x6d\x65\163\x73\x61\x67\145\163\x2e\x75\160\144\141\x74\145\162\56\154\157\x67\56\163\165\143\x63\145\x73\163\137\x6d\x65\x73\x73\x61\x67\x65") . $dateStamp; file_put_contents($installedLogFile, $message . PHP_EOL, FILE_APPEND | LOCK_EX); goto k0sMA; c6cwF: $message = trans("\x69\156\163\x74\x61\154\154\145\162\137\155\145\x73\163\x61\147\x65\163\x2e\x69\x6e\163\164\x61\x6c\x6c\145\144\x2e\163\165\143\x63\145\x73\x73\x5f\x6c\x6f\147\x5f\155\145\x73\163\x61\147\x65") . $dateStamp . "\xa"; file_put_contents($installedLogFile, $message); k0sMA: return $message; } public function update() { return $this->create(); } }

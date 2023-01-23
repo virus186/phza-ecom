@@ -46,14 +46,6 @@ class OrderCancellationController extends Controller
         return view('admin.order._cancellation_create', compact('order'));
     }
 
-    /**
-     * Process cancellation requests
-     *
-     * @param OrderDetailRequest $request
-     * @param Order $order
-     * @param string $action
-     * @return \Illuminate\Http\Response
-     */
     public function handleCancellationRequest(OrderDetailRequest $request, Order $order, $action = 'decline')
     {
         $this->authorize('cancel', $order); // Check permission

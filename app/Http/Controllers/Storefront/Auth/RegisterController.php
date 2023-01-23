@@ -68,7 +68,7 @@ class RegisterController extends Controller
     /**
      * Get a validator for an incoming registration request.
      *
-     * @param array $data
+     * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data)
@@ -80,11 +80,6 @@ class RegisterController extends Controller
             'agree' => 'required',
         ];
 
-        if (is_incevio_package_loaded('otp-login')) {
-            $rules['phone'] = 'required|string|unique:customers';
-        }
-
-        // When recaptcha in configured
         if (config('services.recaptcha.key')) {
             $rules['g-recaptcha-response'] = 'required|recaptcha';
         }
@@ -95,7 +90,7 @@ class RegisterController extends Controller
     /**
      * Handle a registration request for the application.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function register(Request $request)
@@ -121,22 +116,9 @@ class RegisterController extends Controller
             $data['accepts_marketing'] = 1;
         }
 
-        // When otp-login plugin active
-        if (is_incevio_package_loaded('otp-login')) {
-            $phone = $request->input('phone');
-
-            send_otp_code($phone, 'customer.register');
-
-            $data['phone'] = $phone;
-
-            Customer::create($data);
-
-            return redirect()->route('phoneverification.notice')->with(['phone_number' => $phone]);
-        }
-
         $customer = Customer::create($data);
 
-        if (is_incevio_package_loaded('zipcode')) {
+        if (is_phza24_package_loaded('zipcode')) {
             $customer->addresses()->create($request->all());
         }
 
@@ -150,7 +132,7 @@ class RegisterController extends Controller
     /**
      * Verify the User the given token.
      *
-     * @param string|null $token
+     * @param  string|null  $token
      * @return \Illuminate\Http\Response
      */
     public function verify($token = null)
@@ -185,11 +167,12 @@ class RegisterController extends Controller
     /**
      * The user has been registered.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param mixed $customer
+     * @param  \Illuminate\Http\Request  $request
+     * @param  mixed  $customer
      * @return mixed
      */
-    protected function registered(Request $request, Customer $customer)
+    protected function registered(Request $request, $customer)
     {
+        //
     }
 }

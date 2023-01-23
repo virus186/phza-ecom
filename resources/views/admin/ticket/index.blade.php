@@ -13,18 +13,18 @@
 			<div class="box-body">
 				<table class="table table-hover table-no-sort">
 					<thead>
-					<tr>
-						<th>{{ trans('app.merchant') }}</th>
-						<th>{{ trans('app.subject') }}</th>
-						<th>{{ trans('app.priority') }}</th>
-						<th>{{ trans('app.replies') }}</th>
-						<th>{{ trans('app.assigned_to') }}</th>
-						<th>{{ trans('app.updated_at') }}</th>
-						<th>{{ trans('app.option') }}</th>
-					</tr>
+						<tr>
+							<th>{{ trans('app.merchant') }}</th>
+							<th>{{ trans('app.subject') }}</th>
+							<th>{{ trans('app.priority') }}</th>
+							<th>{{ trans('app.replies') }}</th>
+							<th>{{ trans('app.assigned_to') }}</th>
+							<th>{{ trans('app.updated_at') }}</th>
+							<th>{{ trans('app.option') }}</th>
+						</tr>
 					</thead>
 					<tbody>
-					@foreach($assigned as $ticket )
+						@foreach($assigned as $ticket )
 						<tr>
 							<td>
 								<img src="{{ get_storage_file_url(optional($ticket->shop->image)->path, 'tiny') }}" class="img-circle img-sm" alt="{{ trans('app.logo') }}">
@@ -32,7 +32,7 @@
 									<strong>
 										{{ $ticket->shop->name }}
 									</strong>
-									<br/>
+									 <br/>
 									{{ trans('app.by') . ' ' . $ticket->user->name }}
 								</p>
 							</td>
@@ -43,8 +43,8 @@
 							</td>
 							<td>{!! $ticket->priorityLevel() !!}</td>
 							<td><span class="label label-default">{{ $ticket->replies_count }}</span></td>
-							<td>{{ ($ticket->assignedTo) ? $ticket->assignedTo->name : '-' }}</td>
-							<td>{{ $ticket->updated_at->diffForHumans() }}</td>
+							<td>{{ ($ticket->assigned_to) ? $ticket->assignedTo->name : '-' }}</td>
+				          	<td>{{ $ticket->updated_at->diffForHumans() }}</td>
 							<td class="row-options">
 								@can('reply', $ticket)
 									<a href="javascript:void(0)" data-link="{{ route('admin.support.ticket.reply', $ticket) }}"  class="ajax-modal-btn"><i data-toggle="tooltip" data-placement="top" title="{{ trans('app.reply') }}" class="fa fa-reply"></i></a>&nbsp;
@@ -59,7 +59,7 @@
 								@endcan
 							</td>
 						</tr>
-					@endforeach
+						@endforeach
 					</tbody>
 				</table>
 			</div> <!-- /.box-body -->
@@ -77,18 +77,18 @@
 		<div class="box-body">
 			<table class="table table-hover table-no-sort">
 				<thead>
-				<tr>
-					<th>{{ trans('app.merchant') }}</th>
-					<th>{{ trans('app.subject') }}</th>
-					<th>{{ trans('app.priority') }}</th>
-					<th>{{ trans('app.replies') }}</th>
-					<th>{{ trans('app.assigned_to') }}</th>
-					<th>{{ trans('app.updated_at') }}</th>
-					<th>{{ trans('app.option') }}</th>
-				</tr>
+					<tr>
+						<th>{{ trans('app.merchant') }}</th>
+						<th>{{ trans('app.subject') }}</th>
+						<th>{{ trans('app.priority') }}</th>
+						<th>{{ trans('app.replies') }}</th>
+						<th>{{ trans('app.assigned_to') }}</th>
+						<th>{{ trans('app.updated_at') }}</th>
+						<th>{{ trans('app.option') }}</th>
+					</tr>
 				</thead>
 				<tbody>
-				@foreach($tickets as $ticket )
+					@foreach($tickets as $ticket )
 					<tr>
 						<td>
 							<img src="{{ get_storage_file_url(optional($ticket->shop->image)->path, 'tiny') }}" class="img-circle img-sm" alt="{{ trans('app.logo') }}">
@@ -97,7 +97,7 @@
 									{{ $ticket->shop->name }}
 								</strong>
 								@if($ticket->user)
-									<br/>
+									 <br/>
 									{{ trans('app.by') . ' ' . $ticket->user->name }}
 								@endif
 							</p>
@@ -109,8 +109,8 @@
 						</td>
 						<td>{!! $ticket->priorityLevel() !!}</td>
 						<td><span class="label label-default">{{ $ticket->replies_count }}</span></td>
-						<td>{{ ($ticket->assignedTo) ? $ticket->assignedTo->name : '-' }}</td>
-						<td>{{ $ticket->updated_at->diffForHumans() }}</td>
+						<td>{{ ($ticket->assigned_to) ? $ticket->assignedTo->name : '-' }}</td>
+			          	<td>{{ $ticket->updated_at->diffForHumans() }}</td>
 						<td class="row-options">
 							@can('reply', $ticket)
 								<a href="javascript:void(0)" data-link="{{ route('admin.support.ticket.reply', $ticket) }}"  class="ajax-modal-btn"><i data-toggle="tooltip" data-placement="top" title="{{ trans('app.reply') }}" class="fa fa-reply"></i></a>&nbsp;
@@ -125,7 +125,7 @@
 							@endcan
 						</td>
 					</tr>
-				@endforeach
+					@endforeach
 				</tbody>
 			</table>
 		</div> <!-- /.box-body -->
@@ -142,23 +142,23 @@
 		<div class="box-body">
 			<table class="table table-hover table-no-sort">
 				<thead>
-				<tr>
-					<th>{{ trans('app.shop') }}</th>
-					<th>{{ trans('app.subject') }}</th>
-					<th>{{ trans('app.priority') }}</th>
-					<th>{{ trans('app.assigned_to') }}</th>
-					<th>{{ trans('app.updated_at') }}</th>
-					<th>{{ trans('app.option') }}</th>
-				</tr>
+					<tr>
+						<th>{{ trans('app.shop') }}</th>
+						<th>{{ trans('app.subject') }}</th>
+						<th>{{ trans('app.priority') }}</th>
+						<th>{{ trans('app.assigned_to') }}</th>
+						<th>{{ trans('app.updated_at') }}</th>
+						<th>{{ trans('app.option') }}</th>
+					</tr>
 				</thead>
 				<tbody>
-				@foreach($closed as $ticket )
+					@foreach($closed as $ticket )
 					<tr>
 						<td>
 							<strong>
 								{{ $ticket->shop->name }}
 							</strong>
-							<br/>
+							 <br/>
 							{{ trans('app.by') . ' ' . $ticket->user->name }}
 						</td>
 						<td>
@@ -167,17 +167,17 @@
 							<a href="{{ route('admin.support.ticket.show', $ticket->id) }}">{{ $ticket->subject }}</a>
 						</td>
 						<td>{!! $ticket->priorityLevel() !!}</td>
-						<td>{{ ($ticket->assignedTo) ? $ticket->assignedTo->name : '-' }}</td>
-						<td>{{ $ticket->updated_at->diffForHumans() }}</td>
+						<td>{{ ($ticket->assigned_to) ? $ticket->assignedTo->name : '-' }}</td>
+			          	<td>{{ $ticket->updated_at->diffForHumans() }}</td>
 						<td class="row-options">
 							@can('update', $ticket)
-								{!! Form::open(['route' => ['admin.support.ticket.reopen', $ticket->id], 'method' => 'POST', 'class' => 'data-form']) !!}
-								{!! Form::button('<i class="glyphicon glyphicon-refresh"></i>', ['type' => 'submit', 'class' => 'confirm ajax-silent', 'title' => trans('app.reopen'), 'data-toggle' => 'tooltip', 'data-placement' => 'top']) !!}
+			                    {!! Form::open(['route' => ['admin.support.ticket.reopen', $ticket->id], 'method' => 'POST', 'class' => 'data-form']) !!}
+			                        {!! Form::button('<i class="glyphicon glyphicon-refresh"></i>', ['type' => 'submit', 'class' => 'confirm ajax-silent', 'title' => trans('app.reopen'), 'data-toggle' => 'tooltip', 'data-placement' => 'top']) !!}
 								{!! Form::close() !!}
 							@endcan
 						</td>
 					</tr>
-				@endforeach
+					@endforeach
 				</tbody>
 			</table>
 		</div> <!-- /.box-body -->

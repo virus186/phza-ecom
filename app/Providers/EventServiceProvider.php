@@ -2,14 +2,6 @@
 
 namespace App\Providers;
 
-use App\Models\Inventory;
-use App\Models\Order;
-use App\Models\Refund;
-use App\Models\Shop;
-use App\Observers\ShopObserver;
-use App\Observers\OrderObserver;
-use App\Observers\RefundObserver;
-use App\Observers\InventoryObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -239,12 +231,6 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // Model Observers
-        Shop::observe(ShopObserver::class);
-        Order::observe(OrderObserver::class);
-        Refund::observe(RefundObserver::class);
-        Inventory::observe(InventoryObserver::class);
-
         Queue::failing(function (JobFailed $event) {
             Log::channel('joblog')->error('Job Failed!', [
                 'Queue Connection' => $event->connectionName,

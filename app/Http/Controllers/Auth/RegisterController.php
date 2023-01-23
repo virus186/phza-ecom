@@ -74,50 +74,6 @@ class RegisterController extends Controller
         // Start transaction!
         DB::beginTransaction();
 
-        // When otp-login plugin active
-        if (is_incevio_package_loaded('otp-login')) {
-            $phone = $request->input('phone');
-
-            send_otp_code($phone, 'vendor.register');
-
-            try {
-                $merchant = $this->create($request->all());
-
-                // Dispatching Shop create job
-                CreateShopForMerchant::dispatch($merchant, $request->all());
-
-                //Auth::guard()->login($merchant);
-
-                if (is_subscription_enabled()) {
-                    SubscribeShopToNewPlan::dispatch($merchant, $request->input('plan'));
-                }
-            } catch (\Exception $e) {
-                // rollback the transaction and log the error
-                DB::rollback();
-                Log::error('Vendor Registration Failed: ' . $e->getMessage());
-
-                // Set error messages:
-                $error = new MessageBag();
-                $error->add('errors', trans('responses.vendor_config_failed'));
-
-                return redirect()->route('vendor.register')->withErrors($error)->withInput();
-            }
-
-            // Everything is fine. Now commit the transaction
-            DB::commit();
-
-            // Trigger after registration events
-            $this->triggerAfterEvents($merchant);
-
-            // Send notification to Admin
-            if (config('system_settings.notify_when_vendor_registered')) {
-                $system = System::orderBy('id', 'asc')->first();
-                $system->superAdmin()->notify(new VerdorRegisteredNotification($merchant));
-            }
-
-            return redirect()->route('vendor.phoneverification.notice')->with(['phone_number' => $phone]);
-        }
-
         try {
             $merchant = $this->create($request->all());
 
@@ -163,19 +119,13 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \App\Models\User
      */
-    protected function create(array $request_data)
+    protected function create(array $data)
     {
-        $data = [
-            'email' => $request_data['email'],
-            'password' => bcrypt($request_data['password']),
+        return User::create([
+            'email' => $data['email'],
+            'password' => bcrypt($data['password']),
             'verification_token' => Str::random(40),
-        ];
-
-        if (is_incevio_package_loaded('otp-login')) {
-            $data['phone'] = $request_data['phone'];
-        }
-
-        return User::create($data);
+        ]);
     }
 
     /**
@@ -221,15 +171,13 @@ class RegisterController extends Controller
         $user = User::where('verification_token', $token)->first();
 
         if (!$user) {
-            return redirect()->route('admin.admin.dashboard')
-                ->with('success', trans('auth.invalid_token'));
+            return redirect()->route('admin.admin.dashboard')->with('success', trans('auth.invalid_token'));
         }
 
         $user->verification_token = null;
 
         if ($user->save()) {
-            return redirect()->route('admin.admin.dashboard')
-                ->with('success', trans('auth.verification_successful'));
+            return redirect()->route('admin.admin.dashboard')->with('success', trans('auth.verification_successful'));
         }
 
         return redirect()->route('admin.admin.dashboard')->with('error', trans('auth.verification_failed'));

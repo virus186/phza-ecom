@@ -107,21 +107,21 @@ class Role extends BaseModel
      */
     public function scopeLowerPrivileged($query)
     {
-        if (Auth::user()->isFromPlatform()) {
-            if (Auth::user()->role->level) {
-                return $query->whereNull('level')->orWhere('level', '>', Auth::user()->role->level);
+        if (Auth::guard('web')->user()->isFromPlatform()) {
+            if (Auth::guard('web')->user()->role->level) {
+                return $query->whereNull('level')->orWhere('level', '>', Auth::guard('web')->user()->role->level);
             }
 
             return $query->whereNull('level');
         }
 
-        if (Auth::user()->role->level) {
-            return $query->where('shop_id', Auth::user()->merchantId())
+        if (Auth::guard('web')->user()->role->level) {
+            return $query->where('shop_id', Auth::guard('web')->user()->merchantId())
                 ->whereNull('level')
-                ->orWhere('level', '>', Auth::user()->role->level);
+                ->orWhere('level', '>', Auth::guard('web')->user()->role->level);
         }
 
-        return $query->where('shop_id', Auth::user()->merchantId())->whereNull('level');
+        return $query->where('shop_id', Auth::guard('web')->user()->merchantId())->whereNull('level');
     }
 
     /**
@@ -142,15 +142,5 @@ class Role extends BaseModel
     public function scopeNotPublic($query)
     {
         return $query->where('public', '!=', 1);
-    }
-
-    /**
-     * Scope a query to only include records from the users shop.
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeMine($query)
-    {
-        return $query->where('shop_id', Auth::user()->merchantId());
     }
 }

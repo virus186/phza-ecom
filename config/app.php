@@ -92,7 +92,7 @@ return [
     |
     */
 
-    'Phza24_api_key' => env('Phza24_API_KEY'),
+    'phza24_api_key' => env('PHZA24_API_KEY'),
 
     /*
     |--------------------------------------------------------------------------
@@ -105,7 +105,7 @@ return [
     |
     */
 
-    'Phza24_encryption_key' => env('Phza24_ENCRYPTION_KEY'),
+    'phza24_encryption_key' => env('PHZA24_ENCRYPTION_KEY'),
 
     /*
     |--------------------------------------------------------------------------
@@ -116,7 +116,7 @@ return [
     |
     */
 
-    'Phza24_encryption_iv' => env('Phza24_ENCRYPTION_IV'),
+    'phza24_encryption_iv' => env('PHZA24_ENCRYPTION_IV'),
 
     /*
     |--------------------------------------------------------------------------

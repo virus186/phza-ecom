@@ -136,7 +136,7 @@ class CheckoutCartRequest extends Request
 
         // Pharmacy plugin rules
         if (
-            is_incevio_package_loaded('pharmacy') &&
+            is_phza24_package_loaded('pharmacy') &&
             get_from_option_table('pharmacy_prescription_required', 1)
         ) {
             $mimes = 'mimes:jpg,jpeg,png,pdf';

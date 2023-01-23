@@ -115,7 +115,7 @@
                   <td style="width: 75%;">{{ get_formated_weight($inventory->shipping_weight) }}</td>
                 </tr>
 
-                @if(is_incevio_package_loaded('packaging'))
+                @if(is_phza24_package_loaded('packaging'))
                 <tr>
                   <th class="text-right">{{ trans('app.packagings') }}:</th>
                   <td style="width: 75%;">

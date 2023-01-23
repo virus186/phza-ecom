@@ -5,7 +5,6 @@ namespace App\Notifications\Order;
 use App\Models\Order;
 use App\Models\Customer;
 use App\Notifications\Push\HasNotifications;
-use App\Services\FCMService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -30,21 +29,11 @@ class OrderCreated extends Notification implements ShouldQueue
     /**
      * Get the notification's delivery channels.
      *
-     * @param mixed $notifiable
+     * @param  mixed  $notifiable
      * @return array
      */
     public function via($notifiable)
     {
-        //push notification to vendor
-        $token = $this->order->shop->owner->fcm_token;
-
-        if (!is_null($token)) {
-            FCMService::send($token, [
-                'title' => trans('notifications.order_created.subject', ['order' => $this->order->order_number]),
-                'body' => trans('notifications.order_created.message', ['order' => $this->order->order_number]),
-            ]);
-        }
-
         if ($this->order->device_id !== null) {
             HasNotifications::pushNotification(self::toArray($notifiable));
         }
@@ -59,7 +48,7 @@ class OrderCreated extends Notification implements ShouldQueue
     /**
      * Get the mail representation of the notification.
      *
-     * @param mixed $notifiable
+     * @param  mixed  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)
@@ -78,7 +67,7 @@ class OrderCreated extends Notification implements ShouldQueue
     /**
      * Get the array representation of the notification.
      *
-     * @param mixed $notifiable
+     * @param  mixed  $notifiable
      * @return array
      */
     public function toArray($notifiable)

@@ -120,7 +120,7 @@ class AccountController extends Controller
      */
     public function coupons()
     {
-        if (is_incevio_package_loaded('coupons')) {
+        if (is_phza24_package_loaded('coupons')) {
             $coupons = Auth::guard('api')->user()->coupons()
                 ->with('shop')->paginate(10);
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\DeliveryBoy;
+namespace App\Http\Controllers\Api\Deliveryboy;
 
 use App\Models\Shop;
 use App\Helpers\ApiAlert;

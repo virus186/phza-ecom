@@ -99,7 +99,7 @@
         </li><!-- /.notifications-menu -->
 
         <!-- Announcement Menu -->
-        @if (is_incevio_package_loaded('announcement'))
+        @if (is_phza24_package_loaded('announcement'))
           @if ($active_announcement = get_global_announcement())
             <li class="dropdown tasks-menu" id="announcement-dropdown">
               <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">
@@ -123,7 +123,7 @@
         @endif
 
         <!-- Wallet -->
-        @if (Auth::user()->isMerchant() && is_incevio_package_loaded('wallet'))
+        @if (Auth::user()->isMerchant() && is_phza24_package_loaded('wallet'))
           <li class="dropdown tasks-menu" id="wallet-dropdown">
             <a href="{{ route('merchant.wallet') }}">
               <span>{{ trans('wallet::lang.balance') }}: </span>

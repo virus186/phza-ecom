@@ -23,11 +23,14 @@ class UpdateSupplierRequest extends Request
      */
     public function rules()
     {
+        $shop_id = Request::user()->merchantId(); //Get current user's shop_id
+        $id = Request::segment(count(Request::segments())); //Current model ID
+
         return [
-            'name' => 'bail|required',
-            'email' =>  'nullable|email',
-            'active' => 'required',
-            'image' => 'max:' . config('system_settings.max_img_size_limit_kb') . '|mimes:jpg,jpeg,png,gif',
+           'name' => 'bail|required|composite_unique:suppliers,shop_id:'.$shop_id.', '.$id,
+           'email' =>  'nullable|email|max:255|composite_unique:suppliers,shop_id:'.$shop_id.', '.$id,
+           'active' => 'required',
+           'image' => 'max:'.config('system_settings.max_img_size_limit_kb').'|mimes:jpg,jpeg,png,gif',
         ];
     }
 

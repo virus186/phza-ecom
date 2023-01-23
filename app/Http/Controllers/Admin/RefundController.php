@@ -3,14 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Common\Authorizable;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
 use App\Events\Refund\RefundApproved;
 use App\Events\Refund\RefundDeclined;
 use App\Events\Refund\RefundInitiated;
-use App\Repositories\Refund\RefundRepository;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Validations\InitiateRefundRequest;
+use App\Repositories\Refund\RefundRepository;
+use Illuminate\Http\Request;
 
 class RefundController extends Controller
 {
@@ -70,7 +69,7 @@ class RefundController extends Controller
     public function initiate(InitiateRefundRequest $request)
     {
         // Start transaction!
-        DB::beginTransaction();
+        \DB::beginTransaction();
         try {
             $refund = $this->refund->store($request);
 
@@ -80,12 +79,12 @@ class RefundController extends Controller
         } catch (\Exception $e) {
             \Log::error($e);        // Log the error
 
-            DB::rollback();         // rollback the transaction and log the error
+            \DB::rollback();         // rollback the transaction and log the error
 
             return redirect()->back()->with('error', $e->getMessage());
         }
 
-        DB::commit();           // Everything is fine. Now commit the transaction
+        \DB::commit();           // Everything is fine. Now commit the transaction
 
         return back()->with('success', trans('messages.created', ['model' => $this->model_name]));
     }

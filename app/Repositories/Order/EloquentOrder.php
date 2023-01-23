@@ -80,7 +80,7 @@ class EloquentOrder extends EloquentRepository implements BaseRepository, OrderR
 
     public function store(Request $request)
     {
-        setAdditionalCartInfo($request); // Set some system information using helper function
+        setAdditionalCartInfo($request); //Set some system information using helper function
 
         $order = parent::store($request);
 
@@ -187,15 +187,5 @@ class EloquentOrder extends EloquentRepository implements BaseRepository, OrderR
         if (!empty($temp)) {
             $order->inventories()->sync($temp);
         }
-    }
-
-    /**
-     * remove permanently
-     */
-    public function destroy($id)
-    {
-        $model = $this->model->onlyTrashed()->findOrFail($id);
-
-        return $model->forceDelete();
     }
 }

@@ -37,14 +37,6 @@
   </div>
 </div>
 
-@if(is_incevio_package_loaded('otp-login'))
-  <div class="row">
-    <div class="col-md-12">
-    @include('otp-login::phone_field')
-  </div>
-  </div>
-@endif
-
 @unless(isset($merchant))
   <div class="row">
     <div class="col-md-6 nopadding-right">

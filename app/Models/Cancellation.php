@@ -69,9 +69,6 @@ class Cancellation extends BaseModel
         return $this->belongsTo(Customer::class)->withDefault();
     }
 
-    /**
-     * Get the cancellation reason associated with the model.
-     */
     public function cancellation_reason()
     {
         return $this->belongsTo(CancellationReason::class, 'cancellation_reason_id');

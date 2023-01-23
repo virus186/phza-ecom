@@ -3,7 +3,6 @@
 namespace App\Http\Requests\Validations;
 
 use App\Http\Requests\Request;
-use Illuminate\Support\Facades\Auth;
 
 class SelfAvatarUpdateRequest extends Request
 {
@@ -14,7 +13,7 @@ class SelfAvatarUpdateRequest extends Request
      */
     public function authorize()
     {
-        return Auth::guard('customer')->check() || Auth::guard('api')->check();
+        return \Auth::guard('customer')->check() || \Auth::guard('api')->check();
     }
 
     /**
@@ -25,7 +24,7 @@ class SelfAvatarUpdateRequest extends Request
     public function rules()
     {
         return [
-            'avatar' => 'required|mimes:jpeg,jpg,png',
+           'avatar' => 'required|mimes:jpeg,jpg,png',
         ];
     }
 

@@ -24,9 +24,9 @@ class UpdateAttributeValueRequest extends Request
     public function rules()
     {
         return [
-            'attribute_id' => 'required',
-            'value' => 'required',
-            'image' => 'mimes:jpg,jpeg,png',
+           'attribute_id' => 'required',
+           'value' => 'required',
+           'image' => 'mimes:jpg,jpeg,png',
         ];
     }
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\DeliveryBoy;
+namespace App\Http\Controllers\Api\Deliveryboy;
 
 use Carbon\Carbon;
 use App\Helpers\ApiAlert;
@@ -88,7 +88,7 @@ class AuthController extends Controller
             $user->password = $request->get('newpassword');
             $user->save();
         } catch (\Exception $e) {
-            return $this->error($e->getMessage());
+            return $this->error(trans('api.something_Went_wrong'));
         }
 
         // DeliveryBoy::where('id', Auth::guard('delivery_boy-api')->id())->update([
@@ -119,11 +119,14 @@ class AuthController extends Controller
         $token = generateUniqueNumber();
 
         $passwordReset = DB::table('password_resets')
-            ->updateOrInsert(['email' => $deliveryBoy->email], [
-                'email' => $deliveryBoy->email,
-                'token' => $token,
-                'created_at' => Carbon::now(),
-            ]);
+            ->updateOrInsert(
+                ['email' => $deliveryBoy->email],
+                [
+                    'email' => $deliveryBoy->email,
+                    'token' => $token,
+                    'created_at' => Carbon::now(),
+                ]
+            );
 
         if ($deliveryBoy && $passwordReset) {
             $deliveryBoy->notify(new PasswordReset($token));
@@ -146,7 +149,6 @@ class AuthController extends Controller
         if ($request->token) {
             $token = $request->token;
         }
-
         $passwordReset = DB::table('password_resets')
             ->where('token', $token)->first();
 
@@ -159,7 +161,9 @@ class AuthController extends Controller
         if (Carbon::parse($passwordReset->created_at)->addMinutes(720)->isPast()) {
             DB::table('password_resets')->where('token', $token)->delete();
 
-            return response()->json(['message' => trans('api.password_reset_token_invalid')], 404);
+            return response()->json([
+                'message' => trans('api.password_reset_token_invalid')
+            ], 404);
         }
 
         return response()->json($passwordReset);
@@ -184,12 +188,16 @@ class AuthController extends Controller
             ->where('token', $request->token)->first();
 
         if (!$passwordReset) {
-            return response()->json(['message' => trans('api.password_reset_token_404')], 404);
+            return response()->json([
+                'message' => trans('api.password_reset_token_404')
+            ], 404);
         }
 
         $deliveryBoy = DeliveryBoy::where('email', $passwordReset->email)->first();
         if (!$deliveryBoy) {
-            return response()->json(['message' => trans('api.email_account_not_found')], 404);
+            return response()->json([
+                'message' => trans('api.email_account_not_found')
+            ], 404);
         }
 
         $deliveryBoy->password = $request->password;
@@ -199,6 +207,8 @@ class AuthController extends Controller
 
         //$deliveryBoy->notify(new PasswordResetSuccess($customer));
 
-        return response()->json(['message' => trans('api.password_reset_successful')], 200);
+        return response()->json([
+            'message' => trans('api.password_reset_successful')
+        ], 200);
     }
 }

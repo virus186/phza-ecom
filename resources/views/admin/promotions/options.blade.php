@@ -60,7 +60,7 @@
             </th>
             <td>
               @if ($deal_of_the_day)
-                <span class="label label-outline">{{ $deal_of_the_day->title . ' | ' . $deal_of_the_day->sku . ' | ' . get_formated_currency($deal_of_the_day->current_sale_price()) }}</span>
+                <span class="label label-outline">{{ $deal_of_the_day->title .' | ' .$deal_of_the_day->sku .' | ' .get_formated_currency($deal_of_the_day->current_sale_price()) }}</span>
               @endif
             </td>
             <td class="text-right">
@@ -137,43 +137,6 @@
               <a href="javascript:void(0)" data-link="{{ route('admin.featuredBrands.edit') }}" class="ajax-modal-btn btn btn-sm btn-link flat"><i class="fa fa-edit"></i> @lang('app.edit')</a>
 
               {{-- <a href="javascript:void(0)" data-link="{{ route('admin.appearance.featuredBrands') }}" class="ajax-modal-btn btn btn-sm btn-default flat"><i class="fa fa-edit"></i> @lang('app.edit')</a> --}}
-            </td>
-          </tr>
-
-          <tr>
-            <th>
-              <h4>@lang('app.show_category_on_main_nav')</h4>
-              <small class="text-muted">
-                {!! trans('help.show_category_on_main_nav') !!}
-              </small>
-            </th>
-            <td>
-              @forelse ($main_nav_categories as $category)
-                <span class="label label-outline">{{ $category->name }}</span>
-              @empty
-                <a href="javascript:void(0)" data-link="{{ route('admin.promotion.navCategories.edit') }}" class="ajax-modal-btn">
-                  <em class="text-info">{{ trans('app.select_categories') }}</em>
-                </a>
-              @endforelse
-            </td>
-            <td class="text-right">
-              <a href="javascript:void(0)" data-link="{{ route('admin.promotion.navCategories.edit') }}" class="ajax-modal-btn btn btn-sm btn-link flat"><i class="fa fa-edit"></i> @lang('app.edit')</a>
-            </td>
-          </tr>
-          <tr>
-            <th>
-              <h4>@lang('app.hide_item_from_main_nav')</h4>
-              <small class="text-muted">
-                {!! trans('help.hide_item_from_main_nav') !!}
-              </small>
-            </th>
-            <td>
-              @foreach ($hidden_menu_items as $hidden_item)
-                <span class="label label-outline">{{ $hidden_item }}</span>
-              @endforeach
-            </td>
-            <td>
-              <a href="javascript:void(0)" data-link="{{ route('admin.promotion.navigation.edit') }}" class="ajax-modal-btn btn btn-sm btn-link flat"><i class="fa fa-edit"></i> @lang('app.edit')</a>
             </td>
           </tr>
         </tbody>

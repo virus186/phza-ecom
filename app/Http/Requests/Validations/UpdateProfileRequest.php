@@ -3,7 +3,6 @@
 namespace App\Http\Requests\Validations;
 
 use App\Http\Requests\Request;
-use Illuminate\Support\Facades\Auth;
 
 class UpdateProfileRequest extends Request
 {
@@ -14,7 +13,7 @@ class UpdateProfileRequest extends Request
      */
     public function authorize()
     {
-        return Auth::check() || Auth::guard('vendor_api')->check();
+        return \Auth::check();
     }
 
     /**
@@ -25,8 +24,8 @@ class UpdateProfileRequest extends Request
     public function rules()
     {
         return [
-            'name' => 'bail|required|max:255',
-            'email' =>  'nullable|email|max:255|unique:users,email, ' . auth()->user()->id,
+           'name' => 'bail|required|max:255',
+           'email' =>  'nullable|email|max:255|unique:users,email, '.auth()->user()->id,
         ];
     }
 }

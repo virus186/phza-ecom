@@ -21,7 +21,7 @@
       @endif
 
       <div class="form-group has-feedback">
-        {!! Form::email('email', null, ['class' => 'form-control input-lg', 'placeholder' => trans('app.placeholder.valid_email')]) !!}
+        {!! Form::email('email', null, ['class' => 'form-control input-lg', 'placeholder' => trans('app.placeholder.valid_email'), 'required']) !!}
         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
         <div class="help-block with-errors"></div>
       </div>
@@ -36,15 +36,11 @@
         <div class="help-block with-errors"></div>
       </div>
 
-      @if (is_incevio_package_loaded('otp-login'))
-        @include('otp-login::phone_field')
-      @else
-        <div class="form-group has-feedback">
-          {!! Form::text('phone', null, ['class' => 'form-control input-lg', 'placeholder' => trans('app.placeholder.phone')]) !!}
-          <i class="glyphicon glyphicon-phone form-control-feedback"></i>
-          <div class="help-block with-errors"></div>
-        </div>
-      @endif
+      <div class="form-group has-feedback">
+        {!! Form::text('phone', null, ['class' => 'form-control input-lg', 'placeholder' => trans('app.placeholder.phone')]) !!}
+        <i class="glyphicon glyphicon-phone form-control-feedback"></i>
+        <div class="help-block with-errors"></div>
+      </div>
 
       <div class="form-group has-feedback">
         {!! Form::text('shop_name', null, ['class' => 'form-control input-lg', 'placeholder' => trans('app.placeholder.shop_name'), 'required']) !!}
@@ -52,12 +48,12 @@
         <div class="help-block with-errors"></div>
       </div>
 
-      @if (config('services.recaptcha.key'))
         <div class="form-group has-feedback">
-          <div class="g-recaptcha" data-sitekey="{!! config('services.recaptcha.key') !!}"></div>
-          <div class="help-block with-errors"></div>
+            @if (config('services.recaptcha.key'))
+                <div class="g-recaptcha" data-sitekey="{!! config('services.recaptcha.key') !!}"></div>
+            @endif
+            <div class="help-block with-errors"></div>
         </div>
-      @endif
 
       <div class="row">
         <div class="col-xs-8">
@@ -80,6 +76,6 @@
   </div>
   <!-- /.form-box -->
 
-  {{--  recaptcha api --}}
+{{--  recaptcha api--}}
   <script src='https://www.google.com/recaptcha/api.js'></script>
 @endsection

@@ -19,7 +19,6 @@ use App\Http\Controllers\Api\AuthSocialController;
 use App\Http\Controllers\Api\PaymentCredentialController;
 use Illuminate\Support\Facades\Route;
 use Incevio\Package\LiveChat\Http\Controllers\Api\ConversationController;
-use Incevio\Package\OtpLogin\Http\Controllers\Api\PhoneVerificationController;
 use Incevio\Package\Wishlist\Http\Controllers\Api\WishlistController;
 
 // Get Payment API Credentials
@@ -30,7 +29,6 @@ Route::post('payment/{payment_method}/credential', [
 // Homepage
 Route::get('announcement', [HomeController::class, 'announcement']);
 Route::get('sliders', [HomeController::class, 'sliders']);
-Route::get('banners', [HomeController::class, 'banners']);
 Route::get('banners', [HomeController::class, 'banners']);
 Route::get('page/{slug}', [HomeController::class, 'page']);
 Route::get('currencies', [HomeController::class, 'currencies']);
@@ -118,7 +116,6 @@ Route::prefix('auth')->group(function () {
   Route::get('reset/{token}', [AuthController::class, 'token']);
   Route::post('reset', [AuthController::class, 'reset']);
   Route::post('social/{provider}', [AuthSocialController::class, 'socialLgin']);
-  Route::post('customer/phone/verify', [PhoneVerificationController::class, 'verifyotp']);
 });
 
 // Customer

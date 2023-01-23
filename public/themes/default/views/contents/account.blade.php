@@ -43,16 +43,6 @@
             </div>
           </div>
 
-          @if (is_incevio_package_loaded('otp-login'))
-            <div class="form-group">
-              {!! Form::label('phone', trans('otp-login::lang.phone') . '*', ['class' => 'col-sm-4 control-label']) !!}
-              <div class="col-md-8 col-sm-12">
-                {!! Form::text('phone', null, ['class' => 'form-control flat', 'placeholder' => trans('otp-login::lang.valid_phone'), 'id' => 'phone', 'required']) !!}
-                <div class="help-block with-errors"></div>
-              </div>
-            </div>
-          @endif
-
           <div class="form-group">
             {!! Form::label('dob', trans('theme.dob'), ['class' => 'col-sm-4 control-label']) !!}
             <div class="col-md-8 col-sm-12">
@@ -202,6 +192,7 @@
           <button class="btn btn-danger confirm  flat" data-confirm="@lang('theme.confirm_action.delete')" type="submit" data-toggle="tooltip" data-title="{{ trans('theme.button.delete') }}" data-placement="left">{{ trans('theme.button.delete') }}</button>
           {!! Form::close() !!}
         </div>
+
       </div>
     </div><!-- /#delete-tab -->
   </div><!-- /.tab-content -->

@@ -97,7 +97,6 @@ class SubscriptionController extends Controller
                 ->with('warning', trans('messages.demo_restriction'));
         }
 
-        // Create Stripe customer if not exist
         if (!$request->user()->hasBillingToken()) {
             $request->user()->shop->createAsStripeCustomer([
                 'email' => $request->user()->email,
@@ -106,8 +105,6 @@ class SubscriptionController extends Controller
 
         if ($request->has('payment')) {
             $request->user()->shop->updateDefaultPaymentMethod($request->input('payment'));
-
-            $request->user()->shop->forceFill(['card_holder_name' => $request->input('name')])->save();
 
             return redirect()->route('admin.account.billing')
                 ->with('success', trans('messages.card_updated'));

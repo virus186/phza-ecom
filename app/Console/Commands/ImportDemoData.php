@@ -53,9 +53,6 @@ class ImportDemoData extends Command
 
         $this->call('phza24:evaluate-ratings');
 
-        // Refresh scout indexes
-        $this->call('phza24:fresh-index');
-
         $this->info('Demo data seeded!');
     }
 }

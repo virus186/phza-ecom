@@ -110,6 +110,5 @@ return [
   "add" => "Add",
   "edit" => "Edit",
   "delete_confirmation" => "Are you sure to delete?",
-  "delete_content" => "You will not be able to recover this item.",
-  "order_assign_successfully" => "Order assign successfully",
+  "delete_content" => "You will not be able to recover this item."
 ];

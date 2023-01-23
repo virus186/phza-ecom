@@ -179,7 +179,7 @@ class HomeController extends Controller
      */
     public function packaging($shop)
     {
-        if (is_incevio_package_loaded('packaging')) {
+        if (is_phza24_package_loaded('packaging')) {
             $shop = Shop::where('slug', $shop)->active()->firstOrFail();
 
             $platformDefaultPackaging = new PackagingResource(getPlatformDefaultPackaging());

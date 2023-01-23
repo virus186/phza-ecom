@@ -19,7 +19,7 @@ class DashboardResource extends JsonResource
             'name' => $this->name,
             'nice_name' => $this->nice_name,
             'dob' => $this->dob ? date('F j, Y', strtotime($this->dob)) : null,
-            'sex' => get_formated_gender($this->sex, false),
+            'sex' => trans($this->sex),
             'description' => $this->description,
             'active' => $this->active,
             'accepts_marketing' => $this->accepts_marketing,

@@ -28,6 +28,7 @@ class ConversationResource extends JsonResource
             'label' => $this->label,
             'attachments' => $this->when($this->attachments, AttachmentResource::collection($this->attachments)),
             'replies' => ReplyResource::collection($this->whenLoaded('replies')),
+            // 'replies' => ReplyResource::collection($this->replies),
         ];
     }
 }

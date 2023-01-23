@@ -27,7 +27,7 @@ class CartController extends Controller
             'shop' => function ($q) {
                 $q->with('config')->active();
 
-                if (is_incevio_package_loaded('packaging')) {
+                if (is_phza24_package_loaded('packaging')) {
                     $q->with(['packagings' => function ($query) {
                         $query->active();
                     }]);
@@ -36,12 +36,12 @@ class CartController extends Controller
             'state:id,name', 'country:id,name', 'inventories.image',
         ]);
 
-        if (is_incevio_package_loaded('coupons')) {
+        if (is_phza24_package_loaded('coupons')) {
             $carts->load('coupon:id,shop_id,name,code,value,min_order_amount,type');
         }
 
         // Load related models
-        //        if (is_incevio_package_loaded('coupons') && is_incevio_package_loaded('packaging')){
+        //        if (is_phza24_package_loaded('coupons') && is_phza24_package_loaded('packaging')){
         //            $carts->load([
         //                'shop' => function ($q) {
         //                    $q->with(['config', 'packagings' => function ($query) {
@@ -55,7 +55,7 @@ class CartController extends Controller
         //            // Get platform's default packaging
         //            $platformDefaultPackaging = getPlatformDefaultPackaging();
         //
-        //        } else if(is_incevio_package_loaded('coupons')){
+        //        } else if(is_phza24_package_loaded('coupons')){
         //            $carts->load([
         //                'shop' => function ($q) {
         //                    $q->with('config')->active();
@@ -64,7 +64,7 @@ class CartController extends Controller
         //                'state:id,name', 'country:id,name', 'inventories.image',
         //            ]);
         //
-        //        } else if(is_incevio_package_loaded('packaging')){
+        //        } else if(is_phza24_package_loaded('packaging')){
         //            $carts->load([
         //                'shop' => function ($q) {
         //                    $q->with(['config', 'packagings' => function ($query) {
@@ -157,7 +157,7 @@ class CartController extends Controller
             $cart->save();
         }
 
-        if (is_incevio_package_loaded('packaging')) {
+        if (is_phza24_package_loaded('packaging')) {
             $platformDefaultPackaging = getPlatformDefaultPackaging();
 
             return view('theme::cart', compact('carts', 'business_areas', 'shipping_zones', 'shipping_options', 'platformDefaultPackaging', 'expressId'));

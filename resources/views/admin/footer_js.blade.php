@@ -123,15 +123,15 @@
         });
       });
 
-      @if (is_incevio_package_loaded('announcement'))
-        // Update announcement read timestamp.
-        $('#announcement-dropdown').on('click', function(e) {
-          var url = "{{ route('admin.setting.announcement.read') }}";
+      @if (is_phza24_package_loaded('announcement'))
+      // Update announcement read timestamp.
+      $('#announcement-dropdown').on('click', function(e) {
+        var url = "{{ route('admin.setting.announcement.read') }}";
 
-          $.get(url, function(data) {}).done(function() {
-            $('#announcement-dropdown').find('span.label').text('');
-          });
+        $.get(url, function(data) {}).done(function() {
+          $('#announcement-dropdown').find('span.label').text('');
         });
+      });
       @endif
 
     });
@@ -224,10 +224,10 @@
   };
 
   // Push the expiry_date into the columns
-  @if (is_incevio_package_loaded('pharmacy'))
+  @if (is_phza24_package_loaded('pharmacy'))
     dataTableOptions.columns.splice(dataTableOptions.columns.length - 1, 0, {
-      'data': 'expiry_date',
-      'name': 'expiry_date'
+    'data': 'expiry_date',
+    'name': 'expiry_date'
     });
   @endif
 
@@ -331,12 +331,7 @@
 
     @if (config('system_settings.show_item_conditions'))
       // Insert the condition in 5th column
-      inventoryTblColumns.splice(4, 0, {
-        'data': 'condition',
-        'name': 'condition',
-        'orderable': false,
-        'searchable': false
-      });
+      inventoryTblColumns.splice(4, 0, { 'data': 'condition', 'name': 'condition', 'orderable': false, 'searchable': false});
     @endif
 
     // Load active inventoris
@@ -712,21 +707,21 @@
     $('.select2-search__field').css('width', '100%');
 
     //Search for zipCode Test functtion here
-    @if (is_incevio_package_loaded('zipcode'))
+    @if (is_phza24_package_loaded('zipcode'))
       $('.searchZipcode').select2({
-        ajax: {
-          url: "{{ route(config('zipcode.routes.search')) }}",
-          dataType: 'json',
-          processResults: function(data) {
-            return {
-              results: data,
-              flag: 'selectprogram',
-            };
-          },
-          cache: true
-        },
-        placeholder: "{{ trans('zipcode::lang.search_zipcode') }}",
-        minimumInputLength: 3,
+      ajax: {
+      url : "{{ route(config('zipcode.routes.search')) }}",
+      dataType: 'json',
+      processResults: function (data) {
+      return {
+      results: data,
+      flag: 'selectprogram',
+      };
+      },
+      cache: true
+      },
+      placeholder: "{{ trans('zipcode::lang.search_zipcode') }}",
+      minimumInputLength: 3,
       });
     @endif
     //End search forr zipcde
@@ -821,24 +816,6 @@
         cache: true
       },
       placeholder: "{!! trans('app.search_inventory') !!}",
-      minimumInputLength: 3,
-      allowClear: true
-    });
-    //End Products Search for Select2
-
-    // Inventories Search for Select2
-    $('.searchCategoryForSelect').select2({
-      ajax: {
-        url: "{{ route('search.findCategory') }}",
-        dataType: 'json',
-        processResults: function(data) {
-          return {
-            results: data
-          };
-        },
-        cache: true
-      },
-      placeholder: "{!! trans('app.search_category') !!}",
       minimumInputLength: 3,
       allowClear: true
     });
@@ -1119,12 +1096,6 @@
         } else if (route.match(/category/i)) {
           var tbl = 'categories';
           var url = 'category/';
-        } else if (route.match(/product/i)) {
-          var tbl = 'products';
-          var url = 'product/';
-        } else if (route.match(/manufacturer/i)) {
-          var tbl = 'manufacturers';
-          var url = 'brand/';
         } else if (route.match(/inventory/i)) {
           var tbl = 'inventories';
           var url = 'product/';

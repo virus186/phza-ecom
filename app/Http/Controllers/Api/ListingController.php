@@ -68,15 +68,10 @@ class ListingController extends Controller
 
         $products = Inventory::search($term)->where('active', 1)->paginate(0);
 
-        $products = $products->where('available_from', '<=', $now);
+        $products = $products->where('stock_quantity', '>', 0)
+            ->where('available_from', '<=', $now);
 
-        // Hide out-of-stock items when enabled
-        if (config('system_settings.hide_out_of_stock_items')) {
-            $products = $products->where('stock_quantity', '>', 0);
-        }
-
-        // Check expiry date when pharmacy plugin is enabled
-        if (is_incevio_package_loaded('pharmacy')) {
+        if (is_phza24_package_loaded('pharmacy')) {
             $products = $products->where('expiry_date', '>', $now);
         }
 
@@ -85,8 +80,7 @@ class ListingController extends Controller
         // Keep results only from active shops
         $products = $products->filter(function ($product) {
             if (is_subscription_enabled()) {
-                return ($product->shop->current_billing_plan !== null) &&
-                    ($product->shop->active == 1);
+                return ($product->shop->current_billing_plan !== null) && ($product->shop->active == 1);
             }
 
             return $product->shop->active == 1;

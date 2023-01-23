@@ -57,8 +57,11 @@
 <div class="row">
   <div class="col-md-12">
     <div class="form-group">
-      {!! Form::label('business_days', trans('app.form.business_days') . '*') !!}
-      {!! Form::select('business_days[]', $business_days, null, ['class' => 'form-control select2-normal', 'multiple' => 'multiple', 'required']) !!}
+      @php
+        $businessDays = isset($warehouse) ? explode(',', $warehouse->business_days) : [];
+      @endphp
+      {!! Form::label('business_day', trans('app.form.business_days') . '*') !!}
+      {!! Form::select('business_day[]', ['Sat' => 'Saturday', 'Sun' => 'Sunday', 'Mon' => 'Monday', 'Tues' => 'Tuesday', 'Wed' => 'Wednesday', 'Thurs' => 'Thursday', 'Fri' => 'Friday'], array_values($businessDays), ['class' => 'form-control select2-normal', 'multiple' => 'multiple', 'required']) !!}
       <div class="help-block with-errors"></div>
     </div>
   </div>

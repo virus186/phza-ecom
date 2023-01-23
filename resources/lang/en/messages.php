@@ -288,6 +288,5 @@ return [
     'custom_css_updated' => 'Custom css updated successfully',
     'custom_css_deleted' => 'Custom css deleted successfully',
     'vendor_can_use_own_catalog_only_notice' => 'The marketplace is configured as a <code>vendor can use own catalog only</code>. You can off this settings from SETTINGS >> CONFIGURATION section.',
-    'account_delete' => 'Your all data in our system related with your account will be removed permanently. You can\'t revert this action',
-    'main_nav_category_updated' => 'Main Nav category updated successfully',
+    'account_delete' => 'Your all data in our system related with your account will be removed permanently. You can\'t revert this action'
 ];

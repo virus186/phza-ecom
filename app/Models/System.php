@@ -17,7 +17,7 @@ class System extends BaseModel
      *
      * @var string
      */
-    const VERSION = '2.7.0'; // The current version
+    const VERSION = '2.6.5'; // The current version
 
     /**
      * API version compnatibilities

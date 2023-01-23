@@ -3,7 +3,6 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Auth;
 
 class OrderLightResource extends JsonResource
 {
@@ -15,13 +14,10 @@ class OrderLightResource extends JsonResource
      */
     public function toArray($request)
     {
-        $vendor = $request->is('api/vendor/*');
-
         return [
             'id' => $this->id,
             'order_number' => $this->order_number,
             'customer_id' => $this->customer_id,
-            'customer_name' => $this->customer->name,
             'dispute_id' => optional($this->dispute)->id,
             'order_status' => $this->orderStatus(true),
             'payment_status' => $this->paymentStatusName(true),
@@ -36,12 +32,8 @@ class OrderLightResource extends JsonResource
             'can_evaluate' => $this->canEvaluate(),
             'tracking_id' => $this->tracking_id,
             'tracking_url' => $this->getTrackingUrl(),
-            'item_count' => $this->when($vendor, $this->inventories_count),
-            'delivery_boy' => new DeliveryBoyLightResource($this->deliveryBoy),
-            $this->mergeWhen(!$vendor, [
-                'shop' => new ShopLightResource($this->shop),
-                'items' => OrderItemResource::collection($this->inventories),
-            ]),
+            'shop' => new ShopLightResource($this->shop),
+            'items' => OrderItemResource::collection($this->inventories),
         ];
     }
 }
