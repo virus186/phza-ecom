@@ -472,13 +472,13 @@
         </li>
       @endif
 
-      @if (Auth::user()->isAdmin())
+      <!-- @if (Auth::user()->isAdmin())
         <li class="{{ Request::is('admin/packages*') ? 'active' : '' }}">
           <a href="{{ url('admin/packages') }}">
             <i class="fa fa-plug"></i> <span>{{ trans('nav.packages') }}</span>
           </a>
         </li>
-      @endif
+      @endif -->
 
       <li class="treeview {{ Request::is('admin/setting*') ? 'active' : '' }}">
         <a href="javascript:void(0)">
