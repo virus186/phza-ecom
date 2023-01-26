@@ -21,6 +21,8 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Cookie\Middleware\EncryptCookies;
+use League\Glide\ServerFactory;
+use League\Glide\Responses\LaravelResponseFactory;
 // use Request;
 
 class AppServiceProvider extends ServiceProvider
@@ -98,8 +100,8 @@ class AppServiceProvider extends ServiceProvider
             function ($app) {
                 $filesystem = $app->make(Filesystem::class);
 
-                return \League\Glide\ServerFactory::create([
-                    'response' => new \League\Glide\Responses\LaravelResponseFactory(app('request')),
+                return ServerFactory::create([
+                    'response' => new LaravelResponseFactory(app('request')),
                     'driver' => config('image.driver'),
                     'presets' => config('image.sizes'),
                     'source' => $filesystem->getDriver(),
