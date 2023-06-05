@@ -193,7 +193,7 @@ trait ShoppingCart
                 'customer_id' => $this->getCartOwnerId($request, $cart),
                 'payment_method_id' => $request->payment_method_id ?? $cart->payment_method_id,
                 'grand_total' => $cart->calculate_grand_total(),
-                'order_number' => get_formated_order_number($cart->shop_id),
+                'order_number' => getRandomIdGenerate('OR'),
                 'carrier_id' => $cart->carrier() ? $cart->carrier->id : null,
                 'shipping_address' => $request->shipping_address ?? $cart->shipping_address,
                 'billing_address' => $request->shipping_address ?? $cart->shipping_address,

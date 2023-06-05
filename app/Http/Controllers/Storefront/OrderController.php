@@ -14,6 +14,9 @@ use App\Services\Payments\PaymentService;
 use App\Services\Payments\PaypalExpressPaymentService;
 use App\Contracts\PaymentServiceContract as PaymentGateway;
 use App\Exceptions\PaymentFailedException;
+use App\Models\Payment;
+use App\Models\Transaction;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
@@ -111,6 +114,82 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+
+
+
+    public function paymentGatewayResponse($request): JsonResponse
+    {
+        try {
+            DB::beginTransaction();
+            $transactionStatus = 'Fail';
+            \Log::debug('This is response from third party in deposit response');
+            \Log::debug($request);
+            \Log::debug(gettype($request));
+            $status = @$request['status'];
+            $externalOrderID = @$request['out_trade_no'];
+
+            $transaction = Transaction::whereTransactionId($externalOrderID)->first();
+            $payment = Payment::whereTransactionId($transaction->id)->first();
+
+            if (!$transaction) {
+                return response()->json([
+                    'messages' => ['Update Transaction not found'],
+                ], 200);
+            }
+
+
+            if (in_array($transaction->status, ['Approve', 'Success']))
+                return response()->json([
+                    'messages' => ['Transaction Already updated'],
+                ], 400);
+
+            if ($status == 'SUCCESS') {
+                $transactionStatus = 'Success';
+                //updateCustomerWallet($transaction->member_id, $transaction->currency_id, TRANSFER_IN, $transaction->amount);
+            }
+            //update transaction
+
+            $transaction->update([
+                'final_response' => $request->all(),
+                'status' => $transactionStatus
+            ]);
+
+            if ($payment) {
+                $payment->update([
+                    'status' => $transactionStatus
+                ]);
+
+                $orderStatusParent = ['status' => 'reserved'];
+                $orderStatus = ['status' => $status == 'SUCCESS' ? 'complete' : 'reserved'];
+
+                $orderProducts = OrderProduct::whereIdIn(explode(',', $payment->order_product_ids))->get();
+
+                foreach ($orderProducts as $order) {
+
+                    OrderProduct::whereId($order->id)->update($orderStatus);
+
+                    $orderProductCount = OrderProduct::where('order_id', $order->order_id)->count();
+                    $orderProductCountConfirm = OrderProduct::where('order_id', $order->order_id)->where('status', 'confirmed')->count();
+                    if ($orderProductCountConfirm == $orderProductCount) {
+                        $orderStatusParent = ['status' => 'confirmed'];
+                    } else if ($orderProductCountConfirm > 0) {
+                        $orderStatusParent = ['status' => 'remaining'];
+                    }
+                    Order::where('id', $order->order_id)->update($orderStatusParent);
+                }
+            }
+
+            DB::commit();
+
+            return response()->json([
+                'messages' => ['Deposit responded successfully'],
+            ], 200);
+        } catch (\Exception $e) {
+            return generalErrorResponse($e);
+        }
+    }
+
     public function paymentGatewaySuccessResponse(Request $request, $gateway, $order)
     {
         // Verify Payment Gateway Calls

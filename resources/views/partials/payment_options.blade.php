@@ -13,7 +13,8 @@
                 <label>
                     <input name="payment_method" value="{{ $paymentMethod->code }}" data-code="{{ $paymentMethod->code }}"
                         class="i-radio-blue payment-option" type="radio" data-type="{{ $paymentMethod->type }}"
-                        required="required" {{ old('payment_method') == $paymentMethod->code ? 'checked' : '' }} />
+                        required="required"
+                        {{ old('payment_method') == $paymentMethod->code ? 'checked' : 'checked' }} />
                     {{ $paymentMethod->name }}
                 </label>
             </div>

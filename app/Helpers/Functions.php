@@ -59,7 +59,8 @@ if (!function_exists('getConfigs')) {
             'client_id'         => env('PAYMENT_GATEWAY_CLIENT_ID', '7c84ad7b-c8e3-41f5-8d4c-3cc52cdb3f9a'),
             'client_secret'     => env('PAYMENT_GATEWAY_CLIENT_SECRET', ':8mnO8-TOlUPAE857a1%AB6@Pcf*$l@CO*S1.<@&m&[jxGO,c!%<)b9'),
             'seller_code'       => env('PAYMENT_GATEWAY_SELLER_CODE', 'CU2305-28043196470717855'),
-            'api_secret_key'    => env('PAYMENT_GATEWAY_API_SECRET_KEY', 'T1(CGa?u@&4wvs@2oRNY0wN)FsAggRTc_]BHJcbkIEPt,d$3~B^}N@q')
+            'api_secret_key'    => env('PAYMENT_GATEWAY_API_SECRET_KEY', 'T1(CGa?u@&4wvs@2oRNY0wN)FsAggRTc_]BHJcbkIEPt,d$3~B^}N@q'),
+            'expire_at'         => env('PAYMENT_GATEWAY_EXPIRE_AT', '300')
         ];
         return $configs;
     }
@@ -97,6 +98,36 @@ if (!function_exists('getToken')) {
             Log::info("token error ended");
             throw $th;
         }
+    }
+}
+
+if (!function_exists('getRandomIdGenerate')) {
+    function getRandomIdGenerate($prefix = null)
+    {
+        return $prefix . '-' . Carbon::now()->timestamp . mt_rand(100, 99999);
+    }
+}
+
+if (!function_exists('toUrlParams')) {
+    function toUrlParams(array $values)
+    {
+        ksort($values);
+
+        $values = array_filter($values, function ($var) {
+            return !is_null($var);
+        });
+
+        $buff = "";
+
+        foreach ($values as $k => $v) {
+            if ($k != "sign" && $v !== "" && !is_array($v) && !is_object($v)) {
+                $buff .= $k . "=" . $v . "&";
+            }
+        }
+
+        $buff = trim($buff, "&");
+
+        return $buff;
     }
 }
 

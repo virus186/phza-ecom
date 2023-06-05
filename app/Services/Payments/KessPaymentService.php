@@ -6,6 +6,8 @@ use App\Models\Customer;
 use App\Models\Payment;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class KessPaymentService extends PaymentService
 {
@@ -24,7 +26,7 @@ class KessPaymentService extends PaymentService
     public function setConfig()
     {
 
-        $this->setStripeToken();
+        // $this->setStripeToken();
 
         return $this;
     }
@@ -33,9 +35,11 @@ class KessPaymentService extends PaymentService
     {
         $enablePayment = env('THIRD_PARTY_PAYMENT_ENABLE', true);
 
+
+
         $transaction = Transaction::create([
             'transaction_ID' => $this->order->order_number,
-            'member_id' => auth()->user()->id,
+            'member_id' => $this->payee->id,
             'transaction_type' => 'transfer_out',
             'currency_id' => get_currency_code(),
             'amount' => get_cent_from_doller($this->amount),
@@ -46,7 +50,7 @@ class KessPaymentService extends PaymentService
 
 
         $dataPayment['payment_id']  = rand();
-        $dataPayment['customer_id'] = Auth()->user()->id;
+        $dataPayment['customer_id'] = $this->payee->id;
         $dataPayment['amount']      = $this->amount;
         $dataPayment['order_product_ids'] = $this->getOrderId();
         $dataPayment['transaction_id']      = !empty($transaction->id) ? $transaction->id : 1;
@@ -65,10 +69,10 @@ class KessPaymentService extends PaymentService
                 "seller_code" => getConfigs()['seller_code'],
                 "out_trade_no" => $this->order->order_number,
                 "body" => "Payment against purchase order",
-                "total_amount" => get_cent_from_doller($this->amount),
+                "total_amount" => $this->amount,
                 "currency" => get_currency_code(),
-                "notify_url" => url('/') . '/api/transactions/deposit-response',
-                "expires_in" => 3600,
+                "notify_url" => url('/') . '/api/paymentSuccess/5/' . $this->order->id,
+                "expires_in" => getConfigs()['expire_at'],
                 "login_type" => "ANONYMOUS"
             ];
             $data['sign'] = signature($data, getConfigs()['api_secret_key']);
@@ -77,9 +81,9 @@ class KessPaymentService extends PaymentService
             $result = callHttp($url, $data);
             if (@$result['success'] == true) {
                 $this->link = @$result['data']['payment_link'];
-                $this->status = self::STATUS_PAID;
+                $this->status = self::STATUS_PENDING;
 
-                //  return redirect(@$resp['data']['payment_link']);
+                return redirect()->to(@$result['data']['payment_link']);
             } else {
                 $paymentFail = true;
                 $this->status = self::STATUS_ERROR;
@@ -98,7 +102,7 @@ class KessPaymentService extends PaymentService
 
     private function setStripeToken()
     {
-        $this->token = getToken();
+        // $this->token = getToken();
     }
 
     public function setOrderInfo($order)
