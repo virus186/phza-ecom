@@ -49,24 +49,14 @@ class CheckoutController extends Controller
         // Abort if the shop is not exist or inactive
         abort_unless($shop, 406, trans('theme.notify.store_not_available'));
 
-        if (vendor_get_paid_directly()) {
-            $shop->load(['paymentMethods' => function ($q) {
-                $q->active();
-            }]);
 
-            $paymentMethods = $shop->paymentMethods;
-            if (!$paymentMethods) {
-                return redirect()->route('cart.index')
-                    ->with('warning', trans('theme.notify.seller_has_no_payment_method'));
-            }
-        } else {
-            $paymentMethods = PaymentMethod::active()->get();
-        }
+        $paymentMethods = PaymentMethod::active()->get();
 
-        // When coupons module available
-        if (is_phza24_package_loaded('coupons')) {
-            $cart->load('coupon:id,shop_id,name,code,value,min_order_amount,type');
-        }
+
+        // // When coupons module available
+        // if (is_phza24_package_loaded('coupons')) {
+        //     $cart->load('coupon:id,shop_id,name,code,value,min_order_amount,type');
+        // }
 
         $customer = Auth::guard('customer')->check() ? Auth::guard('customer')->user() : null;
 
@@ -93,15 +83,15 @@ class CheckoutController extends Controller
         $shipping_options[$cart->id] = isset($shipping_zones[$cart->id]->id) ? getShippingRates($shipping_zones[$cart->id]->id) : 'NaN';
 
         // When packaging module available
-        if (is_phza24_package_loaded('packaging')) {
-            $shop->load(['packagings' => function ($query) {
-                $query->active();
-            }]);
+        // if (is_phza24_package_loaded('packaging')) {
+        //     $shop->load(['packagings' => function ($query) {
+        //         $query->active();
+        //     }]);
 
-            $platformDefaultPackaging = getPlatformDefaultPackaging();
+        //     $platformDefaultPackaging = getPlatformDefaultPackaging();
 
-            return view('theme::checkout', compact('cart', 'customer', 'shop', 'business_areas', 'shipping_zones', 'shipping_options', 'states', 'paymentMethods', 'platformDefaultPackaging'));
-        }
+        //     return view('theme::checkout', compact('cart', 'customer', 'shop', 'business_areas', 'shipping_zones', 'shipping_options', 'states', 'paymentMethods', 'platformDefaultPackaging'));
+        // }
 
         return view('theme::checkout', compact('cart', 'customer', 'shop', 'business_areas', 'shipping_zones', 'shipping_options', 'states', 'paymentMethods'));
     }

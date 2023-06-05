@@ -140,6 +140,8 @@ class AppServiceProvider extends ServiceProvider
 
             case 'wire':
                 return \App\Services\Payments\WirePaymentService::class;
+            case 'kess':
+                return \App\Services\Payments\KessPaymentService::class;
 
             case 'cod':
                 return \App\Services\Payments\CodPaymentService::class;

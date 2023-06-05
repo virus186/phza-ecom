@@ -29,6 +29,119 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
+
+
+if (!function_exists('signature')) {
+    function signature(array $params, $api_secret_key)
+    {
+        $signType = $params['sign_type'] ?? "MD5";
+
+        $string = toUrlParams($params);
+        $string = $string . "&key=" . $api_secret_key;
+
+        if ($signType == "MD5")
+            $string = md5($string);
+        else if ($signType == "HMAC-SHA256")
+            $string = hash_hmac("sha256", $string, $api_secret_key);
+
+        return $string;
+    }
+}
+
+if (!function_exists('getConfigs')) {
+    function getConfigs()
+    {
+        $configs = [
+            'url'               => env('PAYMENT_GATEWAY_URL', "https://devwebpayment.kesspay.io"),
+            'username'          => env('PAYMENT_GATEWAY_USERNAME', "bigwing@gmail.com"),
+            'password'          => env('PAYMENT_GATEWAY_PASSWORD', 'YHPb*FBHUn1AQ%Qz]DpgHsv&VTu|5(6e%q%3{]Eg}~M??<X%HOqt5ls'),
+            'client_id'         => env('PAYMENT_GATEWAY_CLIENT_ID', '7c84ad7b-c8e3-41f5-8d4c-3cc52cdb3f9a'),
+            'client_secret'     => env('PAYMENT_GATEWAY_CLIENT_SECRET', ':8mnO8-TOlUPAE857a1%AB6@Pcf*$l@CO*S1.<@&m&[jxGO,c!%<)b9'),
+            'seller_code'       => env('PAYMENT_GATEWAY_SELLER_CODE', 'CU2305-28043196470717855'),
+            'api_secret_key'    => env('PAYMENT_GATEWAY_API_SECRET_KEY', 'T1(CGa?u@&4wvs@2oRNY0wN)FsAggRTc_]BHJcbkIEPt,d$3~B^}N@q')
+        ];
+        return $configs;
+    }
+}
+
+if (!function_exists('getToken')) {
+    function getToken()
+    {
+        if (isset($_COOKIE['access_token'])) {
+            return $_COOKIE['access_token'];
+        }
+
+        $params = [
+            'grant_type' => "password",
+            'client_id' => getConfigs()['client_id'],
+            'client_secret' => getConfigs()['client_secret'],
+            "username" => getConfigs()['username'],
+            "password" => getConfigs()['password'],
+        ];
+
+        $url = getConfigs()['url'] . '/oauth/token';
+        try {
+            $resp = callHttp($url, $params);
+            //  dd($resp);
+            Log::info("token started ");
+            Log::info($resp);
+            Log::info("token ended");
+            if (@$resp['access_token']) {
+                setcookie('access_token', @$resp['access_token'], @$resp['expires_in'] - 100);
+            }
+            return @$resp['access_token'];
+        } catch (\Throwable $th) {
+            Log::info("token error started ");
+            Log::info($th);
+            Log::info("token error ended");
+            throw $th;
+        }
+    }
+}
+
+if (!function_exists('callHttp')) {
+    function callHttp($url, $params)
+    {
+
+        try {
+
+            $headers = ["Content-Type: application/json"];
+            if (!str_contains($url, "oauth/token") && $token = getToken()) {
+                $headers[] =  "Authorization: Bearer " . $token;
+            }
+
+            $curl = curl_init();
+
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => $url,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'POST',
+                CURLOPT_POSTFIELDS => json_encode($params),
+                CURLOPT_HTTPHEADER =>  $headers,
+                CURLOPT_SSL_VERIFYPEER => false
+            ));
+
+            $response = curl_exec($curl);
+
+            if ($response === false) {
+                throw new Exception(curl_error($curl));
+            }
+
+            curl_close($curl);
+
+            return json_decode($response, true);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+}
+
 
 // if (! function_exists('get_platform_tld'))
 // {

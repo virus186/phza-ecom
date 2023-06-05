@@ -41,7 +41,7 @@ class OrderController extends Controller
             // Create the order
             $order = $this->saveOrderFromCart($request, $cart);
 
-            $receiver = vendor_get_paid_directly() ? 'merchant' : 'platform';
+            $receiver = 'platform';
 
             $response = $payment->setReceiver($receiver)
                 ->setOrderInfo($order)
