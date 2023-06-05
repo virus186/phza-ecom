@@ -3,6 +3,7 @@
 namespace App\Services\Payments;
 
 use App\Models\Customer;
+use App\Models\Payment;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 
@@ -35,10 +36,10 @@ class KessPaymentService extends PaymentService
         $transaction = Transaction::create([
             'transaction_ID' => $this->order->order_number,
             'member_id' => auth()->user()->id,
-            'transaction_type' => TRANSFER_OUT,
-            'currency_id' => $currencyId,
-            'amount' => $orderAmount,
-            'third_party_amount' => $orderAmount,
+            'transaction_type' => 'transfer_out',
+            'currency_id' => get_currency_code(),
+            'amount' => get_cent_from_doller($this->amount),
+            'third_party_amount' => get_cent_from_doller($this->amount),
             'status' => $enablePayment == true ? "Pending" : "Success",
             'message' => "{{Payment transaction}}",
         ]);
