@@ -52,7 +52,7 @@ class KessPaymentService extends PaymentService
         $dataPayment['payment_id']  = rand();
         $dataPayment['customer_id'] = $this->payee->id;
         $dataPayment['amount']      = $this->amount;
-        $dataPayment['order_product_ids'] = $this->getOrderId();
+        $dataPayment['order_product_ids'] = $this->order->id;
         $dataPayment['transaction_id']      = !empty($transaction->id) ? $transaction->id : 1;
         $dataPayment['provider']    = $enablePayment == true ? 'KES' : 'test';
         $dataPayment['status']      = $enablePayment == true ? 'pending' : 'complete';
@@ -100,11 +100,6 @@ class KessPaymentService extends PaymentService
         return $this;
     }
 
-    private function setStripeToken()
-    {
-        // $this->token = getToken();
-    }
-
     public function setOrderInfo($order)
     {
         $this->order = $order;
@@ -116,27 +111,11 @@ class KessPaymentService extends PaymentService
 
         $this->meta = [
             'order_number' => $order->order_number,
-            'shipping_address' => strip_tags($order->shipping_address),
-            'buyer_note' => $order->buyer_note,
+            // 'shipping_address' => strip_tags($order->shipping_address),
+            // 'buyer_note' => $order->buyer_note,
         ];
 
         return $this;
-    }
-
-    private function setStripAccountId()
-    {
-        if ($this->order && $this->receiver == 'merchant') {
-            $this->stripe_account_id = $this->order->shop->config->stripe->stripe_user_id;
-        } else {
-            $this->stripe_account_id = config('services.stripe.account_id');
-        }
-    }
-
-    private function chargeSavedCustomer()
-    {
-        return $this->payee && $this->payee->hasBillingToken() &&
-            ($this->request->has('remember_the_card') ||
-                $this->request->payment_method == 'saved_card');
     }
 
     /* Set the card info */

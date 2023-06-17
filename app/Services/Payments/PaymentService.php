@@ -4,6 +4,7 @@ namespace App\Services\Payments;
 
 use App\Models\Order;
 use App\Contracts\PaymentServiceContract;
+use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -46,6 +47,8 @@ class PaymentService implements PaymentServiceContract
             $this->setPayee(Auth::guard('api')->user());
         } elseif (Auth::guard('web')->check() && Auth::user()->isMerchant()) {
             $this->setPayee(Auth::user()->owns);
+        } else {
+            $this->setPayee(Customer::whereId(1)->first());
         }
     }
 

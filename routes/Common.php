@@ -17,6 +17,11 @@ Route::post('/contact_us', [
     ContactUsController::class, 'send'
 ])->name('contact_us');
 
+// Payment
+Route::get('/payment', [
+    PaymentController::class, 'payment'
+])->name('payment.done');
+
 // To view img no need to login
 Route::get('image/{path}', [
     ImageController::class, 'show'
